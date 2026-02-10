@@ -1,60 +1,83 @@
 // _light.scss
-// Light theme color definitions
+// Light theme: same color scheme as dark, with dark/light roles flipped
 
 $light-theme: (
-  // Background colors
-  'bg-primary': #F8F9FA,
-  'bg-secondary': #FFFFFF,
-  'bg-gradient-start': #F8F9FA,
-  'bg-gradient-end': #FFFFFF,
-  
-  // Surface colors
-  'surface': #FFFFFF,
-  'surface-secondary': #F5F5F5,
-  'surface-elevated': #FFFFFF,
-  'surface-hover': #E5E7EB,
-  
-  // Text colors
-  'text-primary': #1B2431,
-  'text-secondary': rgba(27, 36, 49, 0.9),
-  'text-muted': rgba(27, 36, 49, 0.6),
-  'text-subtle': rgba(27, 36, 49, 0.4),
-  'text-inverse': #FFFFFF,
-  
-  // Border colors
-  'border-default': #E5E7EB,
-  'border-subtle': rgba(229, 231, 235, 0.5),
-  'border-focus': #2852b3,
-  
-  // Semantic colors (slightly adjusted for light mode)
-  'primary': #2852b3,
-  'primary-hover': #1e3d8a,
-  'secondary': #6B7280,
-  'success': #4e9e1c,
-  'info': #035A68,
-  'warning': #FEC53D,
-  'danger': #E22B40,
-  
-  // Interactive states
-  'hover-overlay': rgba(0, 0, 0, 0.05),
-  'focus-ring': rgba(40, 82, 179, 0.2),
-  
-  // Navigation
-  'nav-bg': #FFFFFF,
-  'nav-gradient-start': #FFFFFF,
-  'nav-gradient-end': #F8F9FA,
-  
-  // Button colors
-  'btn-primary-bg': #2852b3,
-  'btn-primary-color': #FFFFFF,
-  'btn-secondary-bg': #6B7280,
-  'btn-secondary-color': #FFFFFF,
-  'btn-success-bg': #4e9e1c,
-  'btn-success-color': #FFFFFF,
-  'btn-info-bg': #035A68,
-  'btn-info-color': #FFFFFF,
-  'btn-warning-bg': #FEC53D,
-  'btn-warning-color': #1B2431,
-  'btn-danger-bg': #E22B40,
-  'btn-danger-color': #FFFFFF,
+  // Layout colors (flipped: dark bg → light bg, dark fg → light fg)
+  'background': #FFFFFF,
+  'foreground': #11181C,
+  'divider': #11111126,
+  'focus': #006FEE,
+
+  // Content colors (flipped: content1 lightest, content4 darkest)
+  'content1': #FFFFFF,
+  'content2': #f4f4f5,
+  'content3': #e4e4e7,
+  'content4': #d4d4d8,
+
+  // Base colors
+  'default': #d4d4d8,
+  'primary': #006FEE,
+  'secondary': #7828c8,
+  'success': #17c964,
+  'warning': #f5a524,
+  'danger': #f31260,
+
+  // Default (scale reversed: 50 = lightest, 900 = darkest)
+  'default-50': #fafafa,
+  'default-100': #f4f4f5,
+  'default-200': #e4e4e7,
+  'default-300': #d4d4d8,
+  'default-400': #a1a1aa,
+  'default-500': #71717a,
+  'default-600': #52525b,
+  'default-700': #3f3f46,
+  'default-800': #27272a,
+  'default-900': #18181b,
+
+  // Primary (scale reversed)
+  'primary-50': #e6f1fe,
+  'primary-100': #cce3fd,
+  'primary-200': #99c7fb,
+  'primary-300': #66aaf9,
+  'primary-400': #338ef7,
+  'primary-500': #006FEE,
+  'primary-600': #005bc4,
+  'primary-700': #004493,
+  'primary-800': #002e62,
+  'primary-900': #001731,
+
+  // Secondary (scale reversed)
+  'secondary-50': #f2eafa,
+  'secondary-100': #c9a9e9,
+  'secondary-200': #ae7ede,
+  'secondary-300': #9353d3,
+  'secondary-400': #7828c8,
+  'secondary-500': #6020a0,
+  'secondary-600': #481878,
+  'secondary-700': #301050,
+  'secondary-800': #180828,
+
+  // Warning (scale reversed)
+  'warning-50': #fefce8,
+  'warning-100': #fdedd3,
+  'warning-200': #fbdba7,
+  'warning-300': #f9c97c,
+  'warning-400': #f7b750,
+  'warning-500': #f5a524,
+  'warning-600': #c4841d,
+  'warning-700': #936316,
+  'warning-800': #62420e,
+  'warning-900': #312107,
+
+  // Danger (scale reversed)
+  'danger-50': #fee7ef,
+  'danger-100': #fdd0df,
+  'danger-200': #faa0bf,
+  'danger-300': #f871a0,
+  'danger-400': #f54180,
+  'danger-500': #f31260,
+  'danger-600': #c20e4d,
+  'danger-700': #920b3a,
+  'danger-800': #610726,
+  'danger-900': #310413,
 );
