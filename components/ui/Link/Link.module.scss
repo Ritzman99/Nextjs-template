@@ -1,0 +1,27 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s, opacity 0.2s;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px theme.theme-color('focus-ring');
+    border-radius: var(--unit-1);
+  }
+}
+
+.underline {
+  text-decoration: underline;
+}
+.none {
+  text-decoration: none;
+}
+
+.colorPrimary { color: theme.theme-color('primary'); }
+.colorPrimary:hover { color: theme.theme-color('primary-hover'); }
+.colorSecondary { color: theme.theme-color('text-secondary'); }
+.colorSecondary:hover { color: theme.theme-color('text-primary'); }
+.colorMuted { color: theme.theme-color('text-muted'); }
+.colorMuted:hover { color: theme.theme-color('text-secondary'); }

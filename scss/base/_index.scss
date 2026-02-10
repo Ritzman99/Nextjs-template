@@ -1,0 +1,15 @@
+// Base styles (body and root layout)
+// Theme CSS vars (--theme-*) are set in scss/themes
+
+body {
+  color: var(--theme-text-primary);
+  background-color: var(--theme-bg-primary);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+// Root layout class: full viewport height and font smoothing
+.root {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,41 @@
+@use 'abstracts/theme-variables' as theme;
+
+.container {
+  position: fixed;
+  bottom: var(--unit-4);
+  right: var(--unit-4);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+  max-width: 24rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  padding: var(--unit-3) var(--unit-4);
+  border-radius: var(--unit-2);
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('surface');
+  color: theme.theme-color('text-primary');
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.success { border-left: 4px solid theme.theme-color('success'); }
+.error { border-left: 4px solid theme.theme-color('danger'); }
+.warning { border-left: 4px solid theme.theme-color('warning'); }
+.info { border-left: 4px solid theme.theme-color('info'); }

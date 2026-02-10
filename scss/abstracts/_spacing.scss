@@ -1,0 +1,25 @@
+// _spacing.scss
+// 4px-based spacing/sizing tokens as CSS custom properties on :root.
+// Numeric: unit-0 (0px) through unit-96 (384px). Semantic: unit-xs (8px) through unit-9xl (640px).
+
+:root {
+  // Numeric scale: 0 to 96 (step 4px) -> 0px to 384px
+  @for $i from 0 through 96 {
+    --unit-#{$i}: #{$i * 4px};
+  }
+
+  // Semantic scale: xs (8px) through 9xl (640px)
+  --unit-xs: 8px;
+  --unit-sm: 12px;
+  --unit-md: 16px;
+  --unit-lg: 24px;
+  --unit-xl: 32px;
+  --unit-2xl: 48px;
+  --unit-3xl: 64px;
+  --unit-4xl: 96px;
+  --unit-5xl: 128px;
+  --unit-6xl: 160px;
+  --unit-7xl: 192px;
+  --unit-8xl: 256px;
+  --unit-9xl: 640px;
+}

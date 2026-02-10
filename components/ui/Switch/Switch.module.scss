@@ -1,0 +1,67 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  cursor: pointer;
+  user-select: none;
+
+  &:has(input:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+
+  &:focus-visible + .track {
+    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+  }
+
+  &:checked + .track {
+    background-color: theme.theme-color('primary');
+    .thumb {
+      transform: translateX(var(--unit-5));
+    }
+  }
+}
+
+.track {
+  flex-shrink: 0;
+  width: var(--unit-10);
+  height: var(--unit-6);
+  border-radius: 9999px;
+  background-color: theme.theme-color('border-default');
+  position: relative;
+  transition: background-color 0.2s;
+
+  .wrapper:hover:not(:has(input:disabled)) & {
+    background-color: theme.theme-color('border-focus');
+  }
+}
+
+.thumb {
+  position: absolute;
+  top: var(--unit-1);
+  left: var(--unit-1);
+  width: var(--unit-4);
+  height: var(--unit-4);
+  border-radius: 50%;
+  background-color: theme.theme-color('surface');
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.label {
+  font-size: 1rem;
+  color: theme.theme-color('text-primary');
+}

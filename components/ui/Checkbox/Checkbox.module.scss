@@ -1,0 +1,73 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  cursor: pointer;
+  user-select: none;
+
+  &:has(input:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  position: absolute;
+  width: var(--unit-4);
+  height: var(--unit-4);
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.box {
+  flex-shrink: 0;
+  width: var(--unit-4);
+  height: var(--unit-4);
+  border: 2px solid theme.theme-color('border-default');
+  border-radius: var(--unit-1);
+  background-color: theme.theme-color('surface');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background-color 0.2s;
+
+  .wrapper:hover:not(:has(input:disabled)) & {
+    border-color: theme.theme-color('border-focus');
+  }
+
+  .input:focus-visible + & {
+    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+  }
+
+  .input:checked + &,
+  .input[data-indeterminate] + & {
+    background-color: theme.theme-color('primary');
+    border-color: theme.theme-color('primary');
+  }
+}
+
+.check {
+  width: var(--unit-2);
+  height: var(--unit-3);
+  border: solid theme.theme-color('btn-primary-color');
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translateY(-1px);
+  opacity: 0;
+  .input:checked + .box & {
+    opacity: 1;
+  }
+}
+
+.indeterminate {
+  width: var(--unit-2);
+  height: 2px;
+  background-color: theme.theme-color('btn-primary-color');
+}
+
+.label {
+  font-size: 1rem;
+  color: theme.theme-color('text-primary');
+}

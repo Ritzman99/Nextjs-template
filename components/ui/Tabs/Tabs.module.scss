@@ -1,0 +1,42 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  gap: var(--unit-1);
+  border-bottom: 2px solid theme.theme-color('border-default');
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tab {
+  padding: var(--unit-2) var(--unit-4);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: theme.theme-color('text-muted');
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: theme.theme-color('text-primary');
+  }
+
+  &[data-active] {
+    color: theme.theme-color('primary');
+    border-bottom-color: theme.theme-color('primary');
+  }
+}
+
+.panel {
+  padding: var(--unit-4);
+  color: theme.theme-color('text-primary');
+}

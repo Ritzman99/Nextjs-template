@@ -1,0 +1,14 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--unit-1) var(--unit-2);
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+  color: theme.theme-color('text-primary');
+  background-color: theme.theme-color('surface-secondary');
+  border: 1px solid theme.theme-color('border-default');
+  border-radius: var(--unit-1);
+  box-shadow: 0 1px 0 theme.theme-color('border-default');
+}

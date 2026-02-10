@@ -1,0 +1,77 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+.viewport {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  gap: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.controls {
+  position: absolute;
+  bottom: var(--unit-4);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--unit-2);
+  align-items: center;
+  z-index: 1;
+}
+
+.dot {
+  width: var(--unit-2);
+  height: var(--unit-2);
+  border-radius: 50%;
+  background-color: theme.theme-color('border-default');
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  &.active {
+    background-color: theme.theme-color('primary');
+  }
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--unit-8);
+  height: var(--unit-8);
+  border-radius: 50%;
+  background-color: theme.theme-color('surface');
+  border: 1px solid theme.theme-color('border-default');
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: background-color 0.2s, border-color 0.2s;
+  &:hover {
+    background-color: theme.theme-color('surface-hover');
+  }
+}
+
+.prev {
+  left: var(--unit-2);
+}
+.next {
+  right: var(--unit-2);
+}

@@ -1,13 +1,13 @@
 # Next.js Template
 
-Starter template with Next.js 15 (Turbopack), React 19, TypeScript, Tailwind CSS 4, and common libraries pre-installed.
+Starter template with Next.js 15 (Turbopack), React 19, TypeScript, custom Sass, and common libraries pre-installed.
 
 ## Stack
 
 - **Next.js 15** (App Router, Turbopack)
 - **React 19**
 - **TypeScript**
-- **Tailwind CSS 4**
+- **Custom Sass** (global `scss/` bundle + colocated `*.module.scss` per component)
 - **NextAuth** + MongoDB adapter
 - **Mongoose**
 - **AWS S3** (client + presigner)
@@ -40,8 +40,13 @@ npm run dev
 
 Replace the placeholder logic in `scripts/` with your own seeding when you use this template.
 
+## Styling
+
+All CSS comes from **compiled Sass** only: the global entry `app/globals.scss` (which loads `scss/main.scss`: themes, base, layout, utilities, global component classes, vendors) and **component module Sass** files colocated with components (`ComponentName.module.scss` next to `ComponentName.tsx`). Use `@use 'abstracts/theme-variables'` or `@use 'abstracts/variables'` in module files (see `next.config.ts` `sassOptions.includePaths`).
+
 ## Project structure
 
-- `app/` – App Router (layout, page, globals.css)
+- `app/` – App Router (layout, page, globals.scss, page.module.scss)
+- `scss/` – Global Sass (themes, base, layout, utilities, components, vendors)
 - `scripts/` – Seed and utility scripts
-- `next.config.ts`, `tsconfig.json`, `postcss.config.mjs` – Config
+- `next.config.ts`, `tsconfig.json` – Config

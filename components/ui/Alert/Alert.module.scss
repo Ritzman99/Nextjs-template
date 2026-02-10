@@ -1,0 +1,44 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--unit-3);
+  padding: var(--unit-4);
+  border-radius: var(--unit-2);
+  border: 1px solid transparent;
+}
+
+.solid.colorSuccess { background-color: theme.theme-color('success'); color: theme.theme-color('btn-success-color'); }
+.solid.colorInfo { background-color: theme.theme-color('info'); color: theme.theme-color('btn-info-color'); }
+.solid.colorWarning { background-color: theme.theme-color('warning'); color: theme.theme-color('btn-warning-color'); }
+.solid.colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('btn-danger-color'); }
+
+.outline.colorSuccess { background-color: transparent; border-color: theme.theme-color('success'); color: theme.theme-color('text-primary'); }
+.outline.colorInfo { background-color: transparent; border-color: theme.theme-color('info'); color: theme.theme-color('text-primary'); }
+.outline.colorWarning { background-color: transparent; border-color: theme.theme-color('warning'); color: theme.theme-color('text-primary'); }
+.outline.colorDanger { background-color: transparent; border-color: theme.theme-color('danger'); color: theme.theme-color('text-primary'); }
+
+.soft.colorSuccess { background-color: theme.theme-color('hover-overlay'); color: theme.theme-color('btn-success-bg'); }
+.soft.colorInfo { background-color: theme.theme-color('hover-overlay'); color: theme.theme-color('btn-info-bg'); }
+.soft.colorWarning { background-color: theme.theme-color('hover-overlay'); color: theme.theme-color('btn-warning-bg'); }
+.soft.colorDanger { background-color: theme.theme-color('hover-overlay'); color: theme.theme-color('btn-danger-bg'); }
+
+.content {
+  flex: 1;
+  font-size: 0.875rem;
+}
+
+.dismiss {
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  font-size: 1rem;
+  line-height: 1;
+  &:hover {
+    opacity: 1;
+  }
+}

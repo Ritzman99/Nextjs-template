@@ -1,0 +1,39 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  padding: var(--unit-1) var(--unit-3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--unit-2);
+  border: 1px solid transparent;
+}
+
+.solid.colorPrimary { background-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-color'); }
+.solid.colorSecondary { background-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-color'); }
+.solid.colorSuccess { background-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-color'); }
+.solid.colorDanger { background-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-color'); }
+
+.outline.colorPrimary { background-color: transparent; border-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-bg'); }
+.outline.colorSecondary { background-color: transparent; border-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-bg'); }
+.outline.colorSuccess { background-color: transparent; border-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-bg'); }
+.outline.colorDanger { background-color: transparent; border-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-bg'); }
+
+.remove {
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  font-size: 1rem;
+  line-height: 1;
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,59 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+}
+
+.popover {
+  position: absolute;
+  z-index: 50;
+  padding: var(--unit-2) var(--unit-3);
+  font-size: 0.875rem;
+  color: theme.theme-color('text-inverse');
+  background-color: theme.theme-color('text-primary');
+  border-radius: var(--unit-2);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  max-width: 16rem;
+  white-space: normal;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper:hover .popover,
+.wrapper:focus-within .popover {
+  opacity: 1;
+  visibility: visible;
+}
+
+.placementTop {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(-1 * var(--unit-2)));
+  margin-bottom: var(--unit-1);
+}
+.placementBottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(var(--unit-2));
+  margin-top: var(--unit-1);
+}
+.placementLeft {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(calc(-1 * var(--unit-2)));
+  margin-right: var(--unit-1);
+}
+.placementRight {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(var(--unit-2));
+  margin-left: var(--unit-1);
+}

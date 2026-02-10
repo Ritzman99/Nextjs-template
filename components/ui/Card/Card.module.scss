@@ -1,0 +1,35 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  background-color: theme.theme-color('surface');
+  border: 1px solid theme.theme-color('border-default');
+  border-radius: var(--unit-3);
+  overflow: hidden;
+}
+
+.header {
+  padding: var(--unit-4);
+  border-bottom: 1px solid theme.theme-color('border-default');
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: theme.theme-color('text-primary');
+  margin: 0;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: theme.theme-color('text-muted');
+  margin-top: var(--unit-1);
+}
+
+.body {
+  padding: var(--unit-4);
+}
+
+.footer {
+  padding: var(--unit-4);
+  border-top: 1px solid theme.theme-color('border-default');
+}

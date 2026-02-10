@@ -1,0 +1,57 @@
+// _spacing.scss - Utility classes for margin, padding, gap, width, height using --unit-* vars.
+// Numeric: 0-96. Semantic: xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl, 8xl, 9xl.
+
+// Numeric scale: 0 through 96
+@for $i from 0 through 96 {
+  .m-unit-#{$i} { margin: var(--unit-#{$i}); }
+  .mt-unit-#{$i} { margin-top: var(--unit-#{$i}); }
+  .mr-unit-#{$i} { margin-right: var(--unit-#{$i}); }
+  .mb-unit-#{$i} { margin-bottom: var(--unit-#{$i}); }
+  .ml-unit-#{$i} { margin-left: var(--unit-#{$i}); }
+  .mx-unit-#{$i} { margin-left: var(--unit-#{$i}); margin-right: var(--unit-#{$i}); }
+  .my-unit-#{$i} { margin-top: var(--unit-#{$i}); margin-bottom: var(--unit-#{$i}); }
+
+  .p-unit-#{$i} { padding: var(--unit-#{$i}); }
+  .pt-unit-#{$i} { padding-top: var(--unit-#{$i}); }
+  .pr-unit-#{$i} { padding-right: var(--unit-#{$i}); }
+  .pb-unit-#{$i} { padding-bottom: var(--unit-#{$i}); }
+  .pl-unit-#{$i} { padding-left: var(--unit-#{$i}); }
+  .px-unit-#{$i} { padding-left: var(--unit-#{$i}); padding-right: var(--unit-#{$i}); }
+  .py-unit-#{$i} { padding-top: var(--unit-#{$i}); padding-bottom: var(--unit-#{$i}); }
+
+  .gap-unit-#{$i} { gap: var(--unit-#{$i}); }
+  .w-unit-#{$i} { width: var(--unit-#{$i}); }
+  .h-unit-#{$i} { height: var(--unit-#{$i}); }
+  .min-w-unit-#{$i} { min-width: var(--unit-#{$i}); }
+  .min-h-unit-#{$i} { min-height: var(--unit-#{$i}); }
+  .max-w-unit-#{$i} { max-width: var(--unit-#{$i}); }
+  .max-h-unit-#{$i} { max-height: var(--unit-#{$i}); }
+}
+
+// Semantic scale
+$semantic: (xs, sm, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl, 8xl, 9xl);
+@each $u in $semantic {
+  .m-unit-#{$u} { margin: var(--unit-#{$u}); }
+  .mt-unit-#{$u} { margin-top: var(--unit-#{$u}); }
+  .mr-unit-#{$u} { margin-right: var(--unit-#{$u}); }
+  .mb-unit-#{$u} { margin-bottom: var(--unit-#{$u}); }
+  .ml-unit-#{$u} { margin-left: var(--unit-#{$u}); }
+  .mx-unit-#{$u} { margin-left: var(--unit-#{$u}); margin-right: var(--unit-#{$u}); }
+  .my-unit-#{$u} { margin-top: var(--unit-#{$u}); margin-bottom: var(--unit-#{$u}); }
+
+  .p-unit-#{$u} { padding: var(--unit-#{$u}); }
+  .pt-unit-#{$u} { padding-top: var(--unit-#{$u}); }
+  .pr-unit-#{$u} { padding-right: var(--unit-#{$u}); }
+  .pb-unit-#{$u} { padding-bottom: var(--unit-#{$u}); }
+  .pl-unit-#{$u} { padding-left: var(--unit-#{$u}); }
+  .px-unit-#{$u} { padding-left: var(--unit-#{$u}); padding-right: var(--unit-#{$u}); }
+  .py-unit-#{$u} { padding-top: var(--unit-#{$u}); padding-bottom: var(--unit-#{$u}); }
+
+  .gap-unit-#{$u} { gap: var(--unit-#{$u}); }
+  .w-unit-#{$u} { width: var(--unit-#{$u}); }
+  .h-unit-#{$u} { height: var(--unit-#{$u}); }
+  .min-w-unit-#{$u} { min-width: var(--unit-#{$u}); }
+  .min-h-unit-#{$u} { min-height: var(--unit-#{$u}); }
+  .max-w-unit-#{$u} { max-width: var(--unit-#{$u}); }
+  .max-h-unit-#{$u} { max-height: var(--unit-#{$u}); }
+}

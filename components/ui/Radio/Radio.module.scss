@@ -1,0 +1,65 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  cursor: pointer;
+  user-select: none;
+
+  &:has(input:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  position: absolute;
+  width: var(--unit-4);
+  height: var(--unit-4);
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.dot {
+  flex-shrink: 0;
+  width: var(--unit-4);
+  height: var(--unit-4);
+  border: 2px solid theme.theme-color('border-default');
+  border-radius: 50%;
+  background-color: theme.theme-color('surface');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+
+  .wrapper:hover:not(:has(input:disabled)) & {
+    border-color: theme.theme-color('border-focus');
+  }
+
+  .input:focus-visible + & {
+    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+  }
+
+  .input:checked + & {
+    border-color: theme.theme-color('primary');
+  }
+}
+
+.inner {
+  width: var(--unit-2);
+  height: var(--unit-2);
+  border-radius: 50%;
+  background-color: theme.theme-color('primary');
+  transform: scale(0);
+  transition: transform 0.15s;
+  .input:checked + .dot & {
+    transform: scale(1);
+  }
+}
+
+.label {
+  font-size: 1rem;
+  color: theme.theme-color('text-primary');
+}

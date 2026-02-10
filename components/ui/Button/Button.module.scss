@@ -1,0 +1,126 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--unit-2);
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s;
+  text-decoration: none;
+  font-family: inherit;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+  }
+}
+
+// Sizes
+.sm {
+  padding: var(--unit-1) var(--unit-2);
+  font-size: 0.875rem;
+  min-height: var(--unit-6);
+}
+.md {
+  padding: var(--unit-2) var(--unit-4);
+  font-size: 1rem;
+  min-height: var(--unit-8);
+}
+.lg {
+  padding: var(--unit-3) var(--unit-6);
+  font-size: 1.125rem;
+  min-height: var(--unit-10);
+}
+
+// Radius
+.radiusNone {
+  border-radius: 0;
+}
+.radiusSm {
+  border-radius: var(--unit-1);
+}
+.radiusMd {
+  border-radius: var(--unit-2);
+}
+.radiusLg {
+  border-radius: var(--unit-3);
+}
+.radiusFull {
+  border-radius: 9999px;
+}
+
+// Colors + variants: solid
+.colorPrimary { background-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-color'); }
+.colorSecondary { background-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-color'); }
+.colorSuccess { background-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-color'); }
+.colorInfo { background-color: theme.theme-color('btn-info-bg'); color: theme.theme-color('btn-info-color'); }
+.colorWarning { background-color: theme.theme-color('btn-warning-bg'); color: theme.theme-color('btn-warning-color'); }
+.colorDanger { background-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-color'); }
+
+.root.colorPrimary:hover:not(:disabled) { opacity: 0.9; }
+.root.colorSecondary:hover:not(:disabled) { opacity: 0.9; }
+.root.colorSuccess:hover:not(:disabled) { opacity: 0.9; }
+.root.colorInfo:hover:not(:disabled) { opacity: 0.9; }
+.root.colorWarning:hover:not(:disabled) { opacity: 0.9; }
+.root.colorDanger:hover:not(:disabled) { opacity: 0.9; }
+
+// Outline
+.outline {
+  background-color: transparent;
+}
+.outline.colorPrimary { border: 2px solid theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-bg'); }
+.outline.colorPrimary:hover:not(:disabled) { background-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-color'); }
+.outline.colorSecondary { border: 2px solid theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-bg'); }
+.outline.colorSecondary:hover:not(:disabled) { background-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-color'); }
+.outline.colorSuccess { border: 2px solid theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-bg'); }
+.outline.colorSuccess:hover:not(:disabled) { background-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-color'); }
+.outline.colorInfo { border: 2px solid theme.theme-color('btn-info-bg'); color: theme.theme-color('btn-info-bg'); }
+.outline.colorInfo:hover:not(:disabled) { background-color: theme.theme-color('btn-info-bg'); color: theme.theme-color('btn-info-color'); }
+.outline.colorWarning { border: 2px solid theme.theme-color('btn-warning-bg'); color: theme.theme-color('btn-warning-color'); }
+.outline.colorWarning:hover:not(:disabled) { background-color: theme.theme-color('btn-warning-bg'); color: theme.theme-color('btn-warning-color'); }
+.outline.colorDanger { border: 2px solid theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-bg'); }
+.outline.colorDanger:hover:not(:disabled) { background-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-color'); }
+
+// Ghost
+.ghost {
+  background-color: transparent;
+  border: 2px solid transparent;
+}
+.ghost.colorPrimary { color: theme.theme-color('btn-primary-bg'); }
+.ghost.colorPrimary:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+.ghost.colorSecondary { color: theme.theme-color('btn-secondary-bg'); }
+.ghost.colorSecondary:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+.ghost.colorSuccess { color: theme.theme-color('btn-success-bg'); }
+.ghost.colorSuccess:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+.ghost.colorInfo { color: theme.theme-color('btn-info-bg'); }
+.ghost.colorInfo:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+.ghost.colorWarning { color: theme.theme-color('btn-warning-bg'); }
+.ghost.colorWarning:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+.ghost.colorDanger { color: theme.theme-color('btn-danger-bg'); }
+.ghost.colorDanger:hover:not(:disabled) { background-color: theme.theme-color('hover-overlay'); }
+
+// Link
+.link {
+  background-color: transparent;
+  border: none;
+}
+.link.colorPrimary { color: theme.theme-color('btn-primary-bg'); }
+.link.colorPrimary:hover:not(:disabled) { text-decoration: underline; }
+.link.colorSecondary { color: theme.theme-color('btn-secondary-bg'); }
+.link.colorSecondary:hover:not(:disabled) { text-decoration: underline; }
+.link.colorSuccess { color: theme.theme-color('btn-success-bg'); }
+.link.colorSuccess:hover:not(:disabled) { text-decoration: underline; }
+.link.colorInfo { color: theme.theme-color('btn-info-bg'); }
+.link.colorInfo:hover:not(:disabled) { text-decoration: underline; }
+.link.colorWarning { color: theme.theme-color('btn-warning-color'); }
+.link.colorWarning:hover:not(:disabled) { text-decoration: underline; }
+.link.colorDanger { color: theme.theme-color('btn-danger-bg'); }
+.link.colorDanger:hover:not(:disabled) { text-decoration: underline; }
