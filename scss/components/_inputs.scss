@@ -1,0 +1,32 @@
+@use "../abstracts/variables" as *;
+@use "../abstracts/theme-variables" as theme;
+
+// text inputs styles for Game Night Companion
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+input[type="url"],
+select,
+textarea {
+  background-color: theme.theme-color('surface');
+  border: 1px solid theme.theme-color('border-default');
+  color: theme.theme-color('text-primary');
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: theme.theme-color('border-focus');
+    box-shadow: 0 0 0 2px theme.theme-color('focus-ring');
+    outline: none;
+  }
+
+  &::placeholder {
+    color: theme.theme-color('text-muted');
+  }
+}

@@ -1,0 +1,60 @@
+// _light.scss
+// Light theme color definitions
+
+$light-theme: (
+  // Background colors
+  'bg-primary': #F8F9FA,
+  'bg-secondary': #FFFFFF,
+  'bg-gradient-start': #F8F9FA,
+  'bg-gradient-end': #FFFFFF,
+  
+  // Surface colors
+  'surface': #FFFFFF,
+  'surface-secondary': #F5F5F5,
+  'surface-elevated': #FFFFFF,
+  'surface-hover': #E5E7EB,
+  
+  // Text colors
+  'text-primary': #1B2431,
+  'text-secondary': rgba(27, 36, 49, 0.9),
+  'text-muted': rgba(27, 36, 49, 0.6),
+  'text-subtle': rgba(27, 36, 49, 0.4),
+  'text-inverse': #FFFFFF,
+  
+  // Border colors
+  'border-default': #E5E7EB,
+  'border-subtle': rgba(229, 231, 235, 0.5),
+  'border-focus': #2852b3,
+  
+  // Semantic colors (slightly adjusted for light mode)
+  'primary': #2852b3,
+  'primary-hover': #1e3d8a,
+  'secondary': #6B7280,
+  'success': #4e9e1c,
+  'info': #035A68,
+  'warning': #FEC53D,
+  'danger': #E22B40,
+  
+  // Interactive states
+  'hover-overlay': rgba(0, 0, 0, 0.05),
+  'focus-ring': rgba(40, 82, 179, 0.2),
+  
+  // Navigation
+  'nav-bg': #FFFFFF,
+  'nav-gradient-start': #FFFFFF,
+  'nav-gradient-end': #F8F9FA,
+  
+  // Button colors
+  'btn-primary-bg': #2852b3,
+  'btn-primary-color': #FFFFFF,
+  'btn-secondary-bg': #6B7280,
+  'btn-secondary-color': #FFFFFF,
+  'btn-success-bg': #4e9e1c,
+  'btn-success-color': #FFFFFF,
+  'btn-info-bg': #035A68,
+  'btn-info-color': #FFFFFF,
+  'btn-warning-bg': #FEC53D,
+  'btn-warning-color': #1B2431,
+  'btn-danger-bg': #E22B40,
+  'btn-danger-color': #FFFFFF,
+);

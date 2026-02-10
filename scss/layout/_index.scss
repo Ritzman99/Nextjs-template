@@ -1,0 +1,15 @@
+@use '../abstracts/theme-variables' as *;
+
+.diagonal-bg {
+  // fallback
+  background-color: theme-color('bg-primary');
+
+  // smooth diagonal gradient (theme-aware)
+  background-image: linear-gradient(135deg, theme-color('bg-gradient-start') 0%, theme-color('bg-gradient-end') 100%);
+
+  // other useful defaults
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  color: theme-color('text-primary');
+}

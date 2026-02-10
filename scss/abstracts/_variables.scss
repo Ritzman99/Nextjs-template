@@ -1,0 +1,32 @@
+// _variables.scss
+
+//colors
+// Primary Colors
+$primary-color: #2852b3;
+$secondary-color: #273142;
+$primary-lighter-color: #4880FF;
+$success-color: #4e9e1c;
+$info-color: #035A68;
+$warning-color: #FEC53D;
+$danger-color: #E22B40;
+$light-color: #F8F9FA;
+$dark-color: #1B2431;
+
+// Text Colors   
+$body-color: #FFFFFF;
+$text-light: #FFFFFF;
+$text-dark: #1B2431;
+
+// Button Colors   
+$btn-primary-bg: $primary-color;
+$btn-primary-color: $text-light;
+$btn-secondary-bg: #4B5668;
+$btn-secondary-color: $text-light;
+$btn-success-bg: $success-color;
+$btn-success-color: $text-light;
+$btn-info-bg: $info-color;
+$btn-info-color: $text-light;
+$btn-warning-bg: $warning-color;
+$btn-warning-color: $text-dark;
+$btn-danger-bg: $danger-color;
+$btn-danger-color: $text-light;

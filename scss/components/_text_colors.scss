@@ -1,0 +1,137 @@
+// _text_colors.scss
+@use '../abstracts/variables' as *;
+@use '../abstracts/theme-variables' as theme;
+
+// Base text color classes using defined variables (backward compatibility)
+.text-light {
+  color: $text-light !important;
+}
+
+.text-dark {
+  color: $text-dark !important;
+}
+
+// Theme-aware text body (preferred)
+.text-body {
+  color: theme.theme-color('text-primary') !important;
+}
+
+// Semantic text colors using the color palette
+.text-primary {
+  color: $primary-color !important;
+}
+
+.text-secondary {
+  color: $secondary-color !important;
+}
+
+.text-success {
+  color: $success-color !important;
+}
+
+.text-info {
+  color: $info-color !important;
+}
+
+.text-warning {
+  color: $warning-color !important;
+}
+
+.text-danger {
+  color: $danger-color !important;
+}
+
+// Muted text variations
+.text-muted {
+  color: theme.theme-color('text-muted') !important;
+}
+
+.text-muted-dark {
+  color: rgba($text-dark, 0.6) !important;
+}
+
+// border colors
+.border-primary {
+  border-color: $primary-color !important;
+}
+.border-secondary {
+  border-color: $secondary-color !important;
+}
+.border-success {
+  border-color: $success-color !important;
+}
+.border-info {
+  border-color: $info-color !important;
+}
+
+// Background color classes for text contrast
+@mixin bg-pair($name, $bg, $text) {
+  .bg-#{$name} {
+    background-color: $bg;
+  }
+
+  .bg-#{$name}-theme {
+    background-color: $bg;
+    color: $text;
+  }
+}
+
+// Note: .bg-primary and .bg-secondary are defined in utilities/_colors.scss
+// to use theme-aware bg-primary and bg-secondary tokens
+
+// Legacy semantic background classes (using static variables for semantic colors)
+@include bg-pair("primary-lighter", $primary-lighter-color, $text-light);
+@include bg-pair("success", $success-color, $text-light);
+@include bg-pair("info", $info-color, $text-light);
+@include bg-pair("warning", $warning-color, $text-dark);
+@include bg-pair("danger", $danger-color, $text-light);
+@include bg-pair("light", $light-color, $text-dark);
+@include bg-pair("dark", $dark-color, $text-light); // your existing dark class
+
+
+// Text decoration utilities
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+
+.text-decoration-line-through {
+  text-decoration: line-through !important;
+}
+
+// Text weight utilities
+.fw-light {
+  font-weight: 300 !important;
+}
+
+.fw-normal {
+  font-weight: 400 !important;
+}
+
+.fw-medium {
+  font-weight: 500 !important;
+}
+
+.fw-semibold {
+  font-weight: 600 !important;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+// Text opacity utilities
+.text-opacity-75 {
+  opacity: 0.75 !important;
+}
+
+.text-opacity-50 {
+  opacity: 0.5 !important;
+}
+
+.text-opacity-25 {
+  opacity: 0.25 !important;
+}

@@ -1,0 +1,282 @@
+// _colors.scss
+// Theme-aware utility classes to replace Tailwind color patterns
+@use '../abstracts/theme-variables' as *;
+
+// Background utilities
+.bg-surface {
+  background-color: theme-color('surface');
+}
+
+.bg-surface-secondary {
+  background-color: theme-color('surface-secondary');
+}
+
+.bg-surface-elevated {
+  background-color: theme-color('surface-elevated');
+}
+
+.bg-primary-bg {
+  background-color: theme-color('bg-primary');
+}
+
+.bg-secondary-bg {
+  background-color: theme-color('bg-secondary');
+}
+
+// Theme-aware bg-primary and bg-secondary (for Tailwind compatibility)
+.bg-primary {
+  background-color: theme-color('bg-primary') !important;
+}
+
+.bg-secondary {
+  background-color: theme-color('bg-secondary') !important;
+}
+
+// Text utilities
+.text-body {
+  color: theme-color('text-primary');
+}
+
+.text-muted {
+  color: theme-color('text-muted');
+}
+
+.text-subtle {
+  color: theme-color('text-subtle');
+}
+
+.text-secondary-text {
+  color: theme-color('text-secondary');
+}
+
+.text-inverse {
+  color: theme-color('text-inverse');
+}
+
+// Border utilities
+.border-default {
+  border-color: theme-color('border-default');
+}
+
+.border-subtle {
+  border-color: theme-color('border-subtle');
+}
+
+.border-focus {
+  border-color: theme-color('border-focus');
+}
+
+// Left border color using theme primary
+.border-l-primary {
+  border-left-color: theme-color('primary');
+}
+
+// Hover utilities
+.hover-bg-surface:hover {
+  background-color: theme-color('surface-hover');
+}
+
+.hover-overlay:hover {
+  background-color: theme-color('hover-overlay');
+}
+
+// Common patterns to replace Tailwind classes
+// bg-gray-* replacements
+.bg-gray-50 {
+  background-color: theme-color('surface-secondary');
+}
+
+.bg-gray-100 {
+  background-color: theme-color('surface-hover');
+}
+
+.bg-gray-200 {
+  background-color: theme-color('border-default');
+}
+
+.bg-gray-300 {
+  background-color: theme-color('border-default');
+}
+
+.bg-gray-400 {
+  background-color: theme-color('border-default');
+}
+
+.bg-gray-500 {
+  background-color: theme-color('surface-secondary');
+}
+
+.bg-gray-600 {
+  background-color: theme-color('surface-secondary');
+}
+
+.bg-gray-700 {
+  background-color: theme-color('surface');
+}
+
+.bg-gray-800 {
+  background-color: theme-color('surface');
+}
+
+.bg-gray-900 {
+  background-color: theme-color('bg-primary');
+}
+
+// text-gray-* replacements
+.text-gray-100 {
+  color: theme-color('text-subtle');
+}
+
+.text-gray-200 {
+  color: theme-color('text-muted');
+}
+
+.text-gray-300 {
+  color: theme-color('text-muted');
+}
+
+.text-gray-400 {
+  color: theme-color('text-muted');
+}
+
+.text-gray-500 {
+  color: theme-color('text-muted');
+}
+
+.text-gray-600 {
+  color: theme-color('text-secondary');
+}
+
+.text-gray-700 {
+  color: theme-color('text-primary');
+}
+
+.text-gray-800 {
+  color: theme-color('text-primary');
+}
+
+.text-gray-900 {
+  color: theme-color('text-primary');
+}
+
+// border-gray-* replacements
+.border-gray-200 {
+  border-color: theme-color('border-subtle');
+}
+
+.border-gray-300 {
+  border-color: theme-color('border-default');
+}
+
+.border-gray-400 {
+  border-color: theme-color('border-default');
+}
+
+.border-gray-500 {
+  border-color: theme-color('border-default');
+}
+
+.border-gray-600 {
+  border-color: theme-color('border-default');
+}
+
+.border-gray-700 {
+  border-color: theme-color('border-default');
+}
+
+// White/black replacements
+.bg-white {
+  background-color: theme-color('surface');
+}
+
+.text-white {
+  color: theme-color('text-primary');
+}
+
+.bg-black {
+  background-color: theme-color('bg-primary');
+}
+
+.text-black {
+  color: theme-color('text-primary');
+}
+
+// Blue color replacements (for primary actions)
+.bg-blue-50 {
+  background-color: rgba(40, 82, 179, 0.1);
+}
+
+.bg-blue-100 {
+  background-color: rgba(40, 82, 179, 0.15);
+}
+
+.bg-blue-500 {
+  background-color: theme-color('primary');
+}
+
+.bg-blue-600 {
+  background-color: theme-color('primary');
+}
+
+.bg-blue-700 {
+  background-color: theme-color('primary-hover');
+}
+
+.bg-blue-800 {
+  background-color: theme-color('primary-hover');
+}
+
+.text-blue-600 {
+  color: theme-color('primary');
+}
+
+.text-blue-700 {
+  color: theme-color('primary-hover');
+}
+
+.border-blue-200 {
+  border-color: rgba(40, 82, 179, 0.3);
+}
+
+// Red color replacements (for danger/delete)
+.bg-red-50 {
+  background-color: rgba(226, 43, 64, 0.1);
+}
+
+.bg-red-500 {
+  background-color: theme-color('danger');
+}
+
+.bg-red-600 {
+  background-color: theme-color('danger');
+}
+
+.bg-red-700 {
+  background-color: #c91e32;
+}
+
+.text-red-500 {
+  color: theme-color('danger');
+}
+
+.text-red-600 {
+  color: theme-color('danger');
+}
+
+// Green color replacements
+.bg-green-500 {
+  background-color: theme-color('success');
+}
+
+.bg-green-600 {
+  background-color: theme-color('success');
+}
+
+.bg-green-700 {
+  background-color: #3d7a15;
+}
+
+// Yellow color replacements
+.text-yellow-400 {
+  color: theme-color('warning');
+}

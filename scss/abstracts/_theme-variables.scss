@@ -1,0 +1,76 @@
+// _theme-variables.scss
+// Theme variable system using SASS maps and CSS custom properties
+
+// Theme color token definitions
+// These will be mapped to CSS custom properties based on the active theme
+
+// Base color tokens that will be used across themes
+$theme-tokens: (
+  // Background colors
+  'bg-primary': null,
+  'bg-secondary': null,
+  'bg-gradient-start': null,
+  'bg-gradient-end': null,
+  
+  // Surface colors (cards, panels, etc.)
+  'surface': null,
+  'surface-secondary': null,
+  'surface-elevated': null,
+  'surface-hover': null,
+  
+  // Text colors
+  'text-primary': null,
+  'text-secondary': null,
+  'text-muted': null,
+  'text-subtle': null,
+  'text-inverse': null,
+  
+  // Border colors
+  'border-default': null,
+  'border-subtle': null,
+  'border-focus': null,
+  
+  // Semantic colors (these may stay consistent or adapt)
+  'primary': null,
+  'primary-hover': null,
+  'secondary': null,
+  'success': null,
+  'info': null,
+  'warning': null,
+  'danger': null,
+  
+  // Interactive states
+  'hover-overlay': null,
+  'focus-ring': null,
+  
+  // Special cases
+  'nav-bg': null,
+  'nav-gradient-start': null,
+  'nav-gradient-end': null,
+  
+  // Button colors
+  'btn-primary-bg': null,
+  'btn-primary-color': null,
+  'btn-secondary-bg': null,
+  'btn-secondary-color': null,
+  'btn-success-bg': null,
+  'btn-success-color': null,
+  'btn-info-bg': null,
+  'btn-info-color': null,
+  'btn-warning-bg': null,
+  'btn-warning-color': null,
+  'btn-danger-bg': null,
+  'btn-danger-color': null,
+);
+
+// Function to get theme color
+@function theme-color($token) {
+  @return var(--theme-#{$token});
+}
+
+// Mixin to set CSS custom properties from a theme map
+@mixin apply-theme($theme-map) {
+  @each $key, $value in $theme-map {
+    --theme-#{$key}: #{$value};
+  }
+}

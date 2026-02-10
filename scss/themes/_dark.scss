@@ -1,0 +1,60 @@
+// _dark.scss
+// Dark theme color definitions (preserving current design)
+
+$dark-theme: (
+  // Background colors
+  'bg-primary': #1B2431,
+  'bg-secondary': #0E141C,
+  'bg-gradient-start': #1B2431,
+  'bg-gradient-end': #0E141C,
+  
+  // Surface colors
+  'surface': #1B2431,
+  'surface-secondary': #273142,
+  'surface-elevated': #2D3A4F,
+  'surface-hover': #354052,
+  
+  // Text colors
+  'text-primary': #FFFFFF,
+  'text-secondary': rgba(255, 255, 255, 0.9),
+  'text-muted': rgba(255, 255, 255, 0.6),
+  'text-subtle': rgba(255, 255, 255, 0.4),
+  'text-inverse': #1B2431,
+  
+  // Border colors
+  'border-default': #4B5668,
+  'border-subtle': rgba(75, 86, 104, 0.5),
+  'border-focus': #4880FF,
+  
+  // Semantic colors (preserving existing)
+  'primary': #2852b3,
+  'primary-hover': #4880FF,
+  'secondary': #273142,
+  'success': #4e9e1c,
+  'info': #035A68,
+  'warning': #FEC53D,
+  'danger': #E22B40,
+  
+  // Interactive states
+  'hover-overlay': rgba(255, 255, 255, 0.1),
+  'focus-ring': rgba(40, 82, 179, 0.25),
+  
+  // Navigation
+  'nav-bg': #1B2431,
+  'nav-gradient-start': #1B2431,
+  'nav-gradient-end': #0E141C,
+  
+  // Button colors
+  'btn-primary-bg': #2852b3,
+  'btn-primary-color': #FFFFFF,
+  'btn-secondary-bg': #4B5668,
+  'btn-secondary-color': #FFFFFF,
+  'btn-success-bg': #4e9e1c,
+  'btn-success-color': #FFFFFF,
+  'btn-info-bg': #035A68,
+  'btn-info-color': #FFFFFF,
+  'btn-warning-bg': #FEC53D,
+  'btn-warning-color': #1B2431,
+  'btn-danger-bg': #E22B40,
+  'btn-danger-color': #FFFFFF,
+);

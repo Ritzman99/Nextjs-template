@@ -1,0 +1,34 @@
+// _index.scss - Theme system
+@use '../abstracts/theme-variables' as *;
+@use 'dark' as dark;
+@use 'light' as light;
+// @use 'catan' as catan; // Removed for alpha
+
+// Default to dark theme
+:root {
+  @include apply-theme(dark.$dark-theme);
+}
+
+// Light theme
+[data-theme='light'] {
+  @include apply-theme(light.$light-theme);
+}
+
+// Dark theme (explicit)
+[data-theme='dark'] {
+  @include apply-theme(dark.$dark-theme);
+}
+
+// Ensure theme applies to html element for proper inheritance
+html {
+  color-scheme: dark; // Default
+  
+  &[data-theme='light'] {
+    color-scheme: light;
+  }
+  
+  &[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+}

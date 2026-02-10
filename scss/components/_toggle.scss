@@ -1,0 +1,101 @@
+@use "../abstracts/variables" as *;
+
+// Toggle Switch Component
+// Used with a hidden checkbox input and a visible toggle div
+// Structure:
+// <label className="toggle-wrapper">
+//   <input type="checkbox" className="toggle-input" />
+//   <div className="toggle-switch"></div>
+// </label>
+
+.toggle-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  // Disabled state for wrapper
+  &:has(.toggle-input:disabled) {
+    cursor: not-allowed;
+  }
+}
+
+.toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+
+  // Peer selector - when this input is focused, style the toggle-switch
+  &:focus ~ .toggle-switch {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba($primary-color, 0.2);
+  }
+
+  // When checked, style the toggle-switch
+  &:checked ~ .toggle-switch {
+    background-color: $primary-color;
+
+    &::after {
+      transform: translateX(100%);
+      border-color: $body-color;
+    }
+  }
+
+  // Disabled state
+  &:disabled ~ .toggle-switch {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.toggle-switch {
+  position: relative;
+  width: 2.75rem; // w-11 (44px)
+  height: 1.5rem; // h-6 (24px)
+  background-color: #e5e7eb; // bg-gray-200
+  border-radius: 9999px; // rounded-full
+  transition: all 0.3s ease;
+
+  // Toggle circle (after pseudo-element)
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.25rem; // w-5 (20px)
+    height: 1.25rem; // h-5 (20px)
+    background-color: $body-color; // white
+    border: 1px solid #d1d5db; // border-gray-300
+    border-radius: 9999px; // rounded-full
+    transition: all 0.3s ease;
+  }
+
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    background-color: #374151; // darker gray for dark mode
+
+    &::after {
+      border-color: #4b5563; // darker border for dark mode
+    }
+  }
+}
+
+// Dark mode class support (if using class-based dark mode)
+.dark .toggle-switch {
+  background-color: #374151;
+
+  &::after {
+    border-color: #4b5563;
+  }
+}
+
