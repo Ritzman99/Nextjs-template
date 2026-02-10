@@ -1,0 +1,69 @@
+@use 'abstracts/theme-variables' as theme;
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--unit-4);
+  padding: var(--unit-3) var(--unit-6);
+  background-color: theme.theme-color('content1');
+  border-bottom: 1px solid theme.theme-color('divider');
+  min-height: var(--unit-12);
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover {
+    color: theme.theme-color('primary');
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px theme.theme-color('focus');
+    border-radius: var(--unit-1);
+  }
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: block;
+}
+
+.link {
+  display: block;
+  padding: var(--unit-2) var(--unit-3);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: theme.theme-color('default-500');
+  text-decoration: none;
+  border-radius: var(--unit-1);
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    color: theme.theme-color('foreground');
+    background-color: theme.theme-color('content2');
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px theme.theme-color('focus');
+  }
+}
+
+.linkActive {
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content2');
+}

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
+import { TopNav } from "@/components/ui";
 import "./globals.scss";
 
 export const metadata: Metadata = {
   title: "Next.js App",
   description: "Next.js template project",
 };
+
+const topNavItems = [
+  { href: "/", label: "Home" },
+  { href: "/docs", label: "Components" },
+];
 
 export default function RootLayout({
   children,
@@ -13,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="root">{children}</body>
+      <body className="root">
+        <TopNav brand="Next.js Template" items={topNavItems} />
+        {children}
+      </body>
     </html>
   );
 }
