@@ -59,7 +59,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   ref
 ) {
   const classNames = [
-    styles.root,
+    styles.wrapper,
     colorMap[color],
     sizeMap[size],
     radiusMap[radius],

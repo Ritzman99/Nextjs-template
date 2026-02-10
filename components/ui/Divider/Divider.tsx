@@ -25,7 +25,7 @@ export function Divider({
   }
   return (
     <hr
-      className={`${styles.root} ${orientation === 'horizontal' ? styles.horizontal : styles.vertical} ${className}`.trim()}
+      className={`${styles.wrapper} ${orientation === 'horizontal' ? styles.horizontal : styles.vertical} ${className}`.trim()}
       role="separator"
       {...rest}
     />

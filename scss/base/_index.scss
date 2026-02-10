@@ -5,11 +5,8 @@ body {
   color: var(--theme-foreground);
   background-color: var(--theme-background);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-// Root layout class: full viewport height and font smoothing
-.root {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }

@@ -21,7 +21,7 @@ export function Card({
   ...rest
 }: CardProps) {
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       {(header ?? title ?? description) && (
         <div className={styles.header}>
           {header ?? (

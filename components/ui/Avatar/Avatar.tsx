@@ -42,7 +42,7 @@ export function Avatar({
       : (alt ? getInitials(alt) : '?');
 
   return (
-    <span className={`${styles.root} ${sizeMap[size]} ${className}`.trim()} {...rest}>
+    <span className={`${styles.wrapper} ${sizeMap[size]} ${className}`.trim()} {...rest}>
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element -- Avatar supports external URLs and optional sizing; next/image requires known dimensions
         <img src={src} alt={alt} className={styles.img} />

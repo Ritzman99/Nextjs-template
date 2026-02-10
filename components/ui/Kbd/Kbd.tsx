@@ -7,7 +7,7 @@ export type KbdProps = HTMLAttributes<HTMLElement>;
 
 export function Kbd({ className = '', children, ...rest }: KbdProps) {
   return (
-    <kbd className={`${styles.root} ${className}`.trim()} {...rest}>
+    <kbd className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       {children}
     </kbd>
   );

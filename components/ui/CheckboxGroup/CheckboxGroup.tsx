@@ -38,7 +38,7 @@ export function CheckboxGroup({
 
   return (
     <div
-      className={`${styles.root} ${layout === 'horizontal' ? styles.horizontal : ''} ${className}`.trim()}
+      className={`${styles.wrapper} ${layout === 'horizontal' ? styles.horizontal : ''} ${className}`.trim()}
       role="group"
       aria-labelledby={label ? undefined : undefined}
       {...rest}

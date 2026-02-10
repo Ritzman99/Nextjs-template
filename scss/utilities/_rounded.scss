@@ -1,0 +1,18 @@
+// _rounded.scss - Border radius utilities using unit scale
+// sm, md, lg follow unit standard; full = 50%
+
+.rounded-sm {
+  border-radius: var(--unit-1);
+}
+
+.rounded-md {
+  border-radius: var(--unit-2);
+}
+
+.rounded-lg {
+  border-radius: var(--unit-3);
+}
+
+.rounded-full {
+  border-radius: 50%;
+}

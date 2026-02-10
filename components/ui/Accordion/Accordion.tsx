@@ -39,7 +39,7 @@ export function Accordion({
   };
 
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       {items.map((item) => {
         const isOpen = openIds.has(item.id);
         return (

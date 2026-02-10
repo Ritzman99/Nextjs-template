@@ -1,6 +1,6 @@
 @use 'abstracts/theme-variables' as theme;
 
-.root {
+.wrapper {
   border: none;
   background-color: theme.theme-color('divider');
 }

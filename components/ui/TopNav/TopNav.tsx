@@ -21,7 +21,7 @@ export function TopNav({ brand = 'App', items }: TopNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.root} aria-label="Main navigation">
+    <nav className={styles.wrapper} aria-label="Main navigation">
       <Link href="/" className={styles.brand}>
         {brand}
       </Link>

@@ -26,7 +26,7 @@ export function Tabs({
   const activeItem = items.find((t) => t.id === activeId) ?? items[0];
 
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       <ul className={styles.list} role="tablist">
         {items.map((tab) => (
           <li key={tab.id} role="presentation">

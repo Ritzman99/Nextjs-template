@@ -33,7 +33,7 @@ export function Chip({
   className = '',
   ...rest
 }: ChipProps) {
-  const classNames = [styles.root, colorMap[color], variantMap[variant]].join(' ');
+  const classNames = [styles.wrapper, colorMap[color], variantMap[variant]].join(' ');
   return (
     <span className={`${classNames} ${className}`.trim()} {...rest}>
       {label}

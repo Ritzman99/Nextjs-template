@@ -32,7 +32,7 @@ export function AvatarGroup({
   const overflowCount = max != null && total > max ? total - max : 0;
 
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       {list.slice(0, show).map((item, i) => (
         <span key={i} className={styles.avatar}>
           {typeof item === 'object' && item !== null && 'src' in item ? (

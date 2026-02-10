@@ -1,5 +1,6 @@
 @use 'themes'; // Load themes first to establish CSS variables
 @use 'abstracts/spacing'; // 4px unit scale (--unit-0 through --unit-96, --unit-xs through --unit-9xl)
+@use 'abstracts/breakpoints'; // 6 breakpoints + mixin, --bp-xs through --bp-2xl
 @use 'base';
 @use 'layout';
 @use 'utilities'; 

@@ -16,7 +16,7 @@ export function ButtonGroup({
   ...rest
 }: ButtonGroupProps) {
   const classNames = [
-    styles.root,
+    styles.wrapper,
     orientation === 'horizontal' ? styles.horizontal : styles.vertical,
     attached ? styles.attached : styles.gap,
   ].join(' ');

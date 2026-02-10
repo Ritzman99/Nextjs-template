@@ -1,6 +1,6 @@
 @use 'abstracts/theme-variables' as theme;
 
-.root {
+.wrapper {
   display: flex;
   align-items: flex-start;
   gap: var(--unit-3);

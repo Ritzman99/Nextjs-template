@@ -1,6 +1,6 @@
 @use 'abstracts/theme-variables' as theme;
 
-.root {
+.wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -64,11 +64,11 @@
 .colorWarning { background-color: theme.theme-color('warning'); color: theme.theme-color('foreground'); }
 .colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); }
 
-.root.colorPrimary:hover:not(:disabled) { opacity: 0.9; }
-.root.colorSecondary:hover:not(:disabled) { opacity: 0.9; }
-.root.colorSuccess:hover:not(:disabled) { opacity: 0.9; }
-.root.colorWarning:hover:not(:disabled) { opacity: 0.9; }
-.root.colorDanger:hover:not(:disabled) { opacity: 0.9; }
+.wrapper.colorPrimary:hover:not(:disabled) { opacity: 0.9; }
+.wrapper.colorSecondary:hover:not(:disabled) { opacity: 0.9; }
+.wrapper.colorSuccess:hover:not(:disabled) { opacity: 0.9; }
+.wrapper.colorWarning:hover:not(:disabled) { opacity: 0.9; }
+.wrapper.colorDanger:hover:not(:disabled) { opacity: 0.9; }
 
 // Outline
 .outline {

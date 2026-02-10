@@ -1,0 +1,29 @@
+// _breakpoints.scss - 6 breakpoints (min-width, mobile-first): 1536px down to 376px
+
+@use 'sass:map';
+
+$breakpoints: (
+  '2xl': 1536px,
+  'xl': 1280px,
+  'lg': 1024px,
+  'md': 768px,
+  'sm': 640px,
+  'xs': 376px,
+);
+
+@mixin breakpoint($name) {
+  @if map.has-key($breakpoints, $name) {
+    @media (min-width: map.get($breakpoints, $name)) {
+      @content;
+    }
+  } @else {
+    @error "Unknown breakpoint: #{$name}. Use one of #{map.keys($breakpoints)}";
+  }
+}
+
+// Optional: CSS custom properties for JS or @container / @media in other stylesheets
+:root {
+  @each $name, $value in $breakpoints {
+    --bp-#{$name}: #{$value};
+  }
+}

@@ -51,7 +51,7 @@ export function Calendar({
   };
 
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       <div className={styles.header}>
         <span className={styles.monthYear}>{format(view, 'MMMM yyyy')}</span>
         <div className={styles.nav}>

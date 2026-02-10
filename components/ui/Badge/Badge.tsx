@@ -44,7 +44,7 @@ export function Badge({
   ...rest
 }: BadgeProps) {
   const classNames = [
-    styles.root,
+    styles.wrapper,
     colorMap[color],
     sizeMap[size],
     variantMap[variant],

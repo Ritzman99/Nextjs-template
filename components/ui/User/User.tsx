@@ -20,7 +20,7 @@ export function User({
   ...rest
 }: UserProps) {
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       <span className={styles.avatar}>
         {typeof avatar === 'string' || avatar == null ? (
           <Avatar src={typeof avatar === 'string' ? avatar : undefined} fallback={name} size={size} />

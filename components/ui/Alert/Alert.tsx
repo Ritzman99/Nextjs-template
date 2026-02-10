@@ -37,7 +37,7 @@ export function Alert({
   children,
   ...rest
 }: AlertProps) {
-  const classNames = [styles.root, colorMap[color], variantMap[variant]].join(' ');
+  const classNames = [styles.wrapper, colorMap[color], variantMap[variant]].join(' ');
   return (
     <div className={`${classNames} ${className}`.trim()} role="alert" {...rest}>
       {icon != null && <span aria-hidden>{icon}</span>}

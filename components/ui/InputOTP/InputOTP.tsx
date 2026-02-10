@@ -60,7 +60,7 @@ export function InputOTP({
   const digits = value.split('').concat(Array(length).fill('')).slice(0, length);
 
   return (
-    <div className={`${styles.root} ${className}`.trim()}>
+    <div className={`${styles.wrapper} ${className}`.trim()}>
       {Array.from({ length }, (_, i) => (
         <input
           key={i}

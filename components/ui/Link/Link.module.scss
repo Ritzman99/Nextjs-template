@@ -1,6 +1,6 @@
 @use 'abstracts/theme-variables' as theme;
 
-.root {
+.wrapper {
   font-family: inherit;
   cursor: pointer;
   transition: color 0.2s, opacity 0.2s;

@@ -27,7 +27,7 @@ export function Table<T extends Record<string, unknown>>({
   className = '',
   ...rest
 }: TableProps<T>) {
-  const classNames = [styles.root, striped ? styles.striped : '', bordered ? styles.bordered : ''].filter(Boolean).join(' ');
+  const classNames = [styles.wrapper, striped ? styles.striped : '', bordered ? styles.bordered : ''].filter(Boolean).join(' ');
 
   if (children != null) {
     return (

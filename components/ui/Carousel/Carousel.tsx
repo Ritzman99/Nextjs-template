@@ -42,7 +42,7 @@ export function Carousel({
   const goTo = (i: number) => setIndex(i);
 
   return (
-    <div className={`${styles.root} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
       <div ref={ref} className={styles.viewport}>
         {Array.isArray(children)
           ? children.map((child, i) => (

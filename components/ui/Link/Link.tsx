@@ -36,7 +36,7 @@ export function Link({
   children,
   ...rest
 }: LinkProps) {
-  const classNames = [styles.root, variantMap[variant], colorMap[color]].join(' ');
+  const classNames = [styles.wrapper, variantMap[variant], colorMap[color]].join(' ');
   const combinedClassName = `${classNames} ${className}`.trim();
 
   if (external) {

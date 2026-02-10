@@ -30,6 +30,6 @@ export function Spinner({
   className = '',
   ...rest
 }: SpinnerProps) {
-  const classNames = [styles.root, sizeMap[size], colorMap[color]].join(' ');
+  const classNames = [styles.wrapper, sizeMap[size], colorMap[color]].join(' ');
   return <span className={`${classNames} ${className}`.trim()} role="status" aria-label="Loading" {...rest} />;
 }
