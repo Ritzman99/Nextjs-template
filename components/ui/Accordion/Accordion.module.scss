@@ -1,8 +1,6 @@
 @use 'abstracts/theme-variables' as theme;
 
 .wrapper {
-  border: 1px solid theme.theme-color('divider');
-  border-radius: var(--unit-2);
   overflow: hidden;
 }
 
@@ -41,9 +39,12 @@
 
 .icon {
   flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: theme.theme-color('foreground');
   transition: transform 0.2s;
   .trigger[aria-expanded="true"] & {
-    transform: rotate(180deg);
+    transform: rotate(90deg);
   }
 }
 
@@ -55,4 +56,67 @@
 
 .contentInner {
   padding-top: 0;
+}
+
+// --- Style modifiers ---
+
+.styleDefault {
+  border: 1px solid theme.theme-color('divider');
+  border-radius: 0;
+}
+
+.styleShadow {
+  border: none;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+
+  .item {
+    border-bottom: none;
+    border-radius: var(--unit-2);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.12), 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+  }
+
+  .trigger {
+    border-radius: var(--unit-2);
+  }
+}
+
+.styleBordered {
+  border: none;
+  overflow: visible;
+
+  .item {
+    border-bottom: none;
+    border: 1px solid theme.theme-color('divider');
+    border-radius: var(--unit-2);
+    margin-bottom: var(--unit-2);
+    overflow: hidden;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .trigger {
+    border-radius: var(--unit-2);
+  }
+}
+
+.styleSplitted {
+  border: none;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-4);
+
+  .item {
+    border-bottom: none;
+  }
+
+  .trigger {
+    border-radius: 9999px;
+  }
 }

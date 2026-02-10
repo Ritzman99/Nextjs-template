@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { TopNav } from "@/components/ui";
+import { TopNav } from "@/components/layout";
+import styles from "./layout.module.scss";
 import "./globals.scss";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TopNav brand="Next.js Template" items={topNavItems} />
-        {children}
+        <div className={styles.contentWrap}>{children}</div>
       </body>
     </html>
   );

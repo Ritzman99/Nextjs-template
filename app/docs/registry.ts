@@ -54,6 +54,62 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
           ],
         },
       },
+      {
+        title: 'Default',
+        code: `<Accordion style="default" items={[
+  { id: '1', title: 'Title', content: 'Content.' },
+  { id: '2', title: 'Title', content: 'Content.' },
+]} />`,
+        props: {
+          style: 'default',
+          items: [
+            { id: '1', title: 'Title', content: 'Content.' },
+            { id: '2', title: 'Title', content: 'Content.' },
+          ],
+        },
+      },
+      {
+        title: 'Shadow',
+        code: `<Accordion style="shadow" items={[
+  { id: '1', title: 'Title', content: 'Content.' },
+  { id: '2', title: 'Title', content: 'Content.' },
+]} />`,
+        props: {
+          style: 'shadow',
+          items: [
+            { id: '1', title: 'Title', content: 'Content.' },
+            { id: '2', title: 'Title', content: 'Content.' },
+          ],
+        },
+      },
+      {
+        title: 'Bordered',
+        code: `<Accordion style="bordered" items={[
+  { id: '1', title: 'Title', content: 'Content.' },
+  { id: '2', title: 'Title', content: 'Content.' },
+]} />`,
+        props: {
+          style: 'bordered',
+          items: [
+            { id: '1', title: 'Title', content: 'Content.' },
+            { id: '2', title: 'Title', content: 'Content.' },
+          ],
+        },
+      },
+      {
+        title: 'Splitted',
+        code: `<Accordion style="splitted" items={[
+  { id: '1', title: 'Title', content: 'Content.' },
+  { id: '2', title: 'Title', content: 'Content.' },
+]} />`,
+        props: {
+          style: 'splitted',
+          items: [
+            { id: '1', title: 'Title', content: 'Content.' },
+            { id: '2', title: 'Title', content: 'Content.' },
+          ],
+        },
+      },
     ],
   },
   {

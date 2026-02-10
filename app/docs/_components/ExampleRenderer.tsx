@@ -21,9 +21,9 @@ import {
   Progress,
   Spinner,
   Table,
-  TopNav,
   User,
 } from '@/components/ui';
+import { TopNav } from '@/components/layout';
 import type { DocVariant } from '../registry';
 
 // Components that need wrapper or different API for docs (e.g. Tabs with items/value)

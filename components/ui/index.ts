@@ -26,7 +26,6 @@ export { Spinner } from './Spinner';
 export { Switch } from './Switch';
 export { Table } from './Table';
 export { Tabs } from './Tabs';
-export { TopNav } from './TopNav';
 export { Tooltip } from './Tooltip';
 export { User } from './User';
 export { ToastProvider, useToast } from './Toast';

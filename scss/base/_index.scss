@@ -1,5 +1,11 @@
 // Base styles (body and root layout)
 // Theme CSS vars (--theme-*) are set in scss/themes
+// Layout vars for fixed nav/sidebar offsets
+
+:root {
+  --top-nav-height: 3.5rem;
+  --sidebar-width: 260px;
+}
 
 body {
   color: var(--theme-foreground);

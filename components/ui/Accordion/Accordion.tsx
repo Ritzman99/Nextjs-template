@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import type { HTMLAttributes } from 'react';
 import styles from './Accordion.module.scss';
@@ -10,16 +11,27 @@ export interface AccordionItem {
   content: React.ReactNode;
 }
 
+export type AccordionStyle = 'default' | 'shadow' | 'bordered' | 'splitted';
+
 export interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
   items: AccordionItem[];
   allowMultiple?: boolean;
   defaultOpen?: string | string[];
+  style?: AccordionStyle;
 }
+
+const styleMap: Record<AccordionStyle, string> = {
+  default: styles.styleDefault,
+  shadow: styles.styleShadow,
+  bordered: styles.styleBordered,
+  splitted: styles.styleSplitted,
+};
 
 export function Accordion({
   items,
   allowMultiple = false,
   defaultOpen,
+  style = 'default',
   className = '',
   ...rest
 }: AccordionProps) {
@@ -39,7 +51,7 @@ export function Accordion({
   };
 
   return (
-    <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${styleMap[style]} ${className}`.trim()} {...rest}>
       {items.map((item) => {
         const isOpen = openIds.has(item.id);
         return (
@@ -53,7 +65,7 @@ export function Accordion({
               onClick={() => toggle(item.id)}
             >
               {item.title}
-              <span className={styles.icon} aria-hidden>▼</span>
+              <ChevronRight className={styles.icon} aria-hidden />
             </button>
             <div
               id={`accordion-content-${item.id}`}
