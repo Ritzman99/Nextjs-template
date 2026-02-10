@@ -17,7 +17,7 @@ export interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
   items: AccordionItem[];
   allowMultiple?: boolean;
   defaultOpen?: string | string[];
-  style?: AccordionStyle;
+  variant?: AccordionStyle;
 }
 
 const styleMap: Record<AccordionStyle, string> = {
@@ -31,7 +31,7 @@ export function Accordion({
   items,
   allowMultiple = false,
   defaultOpen,
-  style = 'default',
+  variant = 'default',
   className = '',
   ...rest
 }: AccordionProps) {
@@ -51,7 +51,7 @@ export function Accordion({
   };
 
   return (
-    <div className={`${styles.wrapper} ${styleMap[style]} ${className}`.trim()} {...rest}>
+    <div className={`${styles.wrapper} ${styleMap[variant]} ${className}`.trim()} {...rest}>
       {items.map((item) => {
         const isOpen = openIds.has(item.id);
         return (

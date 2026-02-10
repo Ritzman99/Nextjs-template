@@ -56,12 +56,12 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
       },
       {
         title: 'Default',
-        code: `<Accordion style="default" items={[
+        code: `<Accordion variant="default" items={[
   { id: '1', title: 'Title', content: 'Content.' },
   { id: '2', title: 'Title', content: 'Content.' },
 ]} />`,
         props: {
-          style: 'default',
+          variant: 'default',
           items: [
             { id: '1', title: 'Title', content: 'Content.' },
             { id: '2', title: 'Title', content: 'Content.' },
@@ -70,12 +70,12 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
       },
       {
         title: 'Shadow',
-        code: `<Accordion style="shadow" items={[
+        code: `<Accordion variant="shadow" items={[
   { id: '1', title: 'Title', content: 'Content.' },
   { id: '2', title: 'Title', content: 'Content.' },
 ]} />`,
         props: {
-          style: 'shadow',
+          variant: 'shadow',
           items: [
             { id: '1', title: 'Title', content: 'Content.' },
             { id: '2', title: 'Title', content: 'Content.' },
@@ -84,12 +84,12 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
       },
       {
         title: 'Bordered',
-        code: `<Accordion style="bordered" items={[
+        code: `<Accordion variant="bordered" items={[
   { id: '1', title: 'Title', content: 'Content.' },
   { id: '2', title: 'Title', content: 'Content.' },
 ]} />`,
         props: {
-          style: 'bordered',
+          variant: 'bordered',
           items: [
             { id: '1', title: 'Title', content: 'Content.' },
             { id: '2', title: 'Title', content: 'Content.' },
@@ -98,12 +98,12 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
       },
       {
         title: 'Splitted',
-        code: `<Accordion style="splitted" items={[
+        code: `<Accordion variant="splitted" items={[
   { id: '1', title: 'Title', content: 'Content.' },
   { id: '2', title: 'Title', content: 'Content.' },
 ]} />`,
         props: {
-          style: 'splitted',
+          variant: 'splitted',
           items: [
             { id: '1', title: 'Title', content: 'Content.' },
             { id: '2', title: 'Title', content: 'Content.' },
