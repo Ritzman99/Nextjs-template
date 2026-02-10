@@ -4,10 +4,10 @@
   padding: var(--unit-1) var(--unit-2);
   font-size: 0.875em;
   font-family: ui-monospace, monospace;
-  background-color: theme.theme-color('surface-secondary');
-  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('content2');
+  border: 1px solid theme.theme-color('divider');
   border-radius: var(--unit-1);
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
 }
 
 .block {
@@ -15,10 +15,10 @@
   padding: var(--unit-4);
   font-size: 0.875rem;
   font-family: ui-monospace, monospace;
-  background-color: theme.theme-color('surface-secondary');
-  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('content2');
+  border: 1px solid theme.theme-color('divider');
   border-radius: var(--unit-2);
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
   overflow-x: auto;
   white-space: pre;
 }

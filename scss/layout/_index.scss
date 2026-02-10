@@ -2,14 +2,14 @@
 
 .diagonal-bg {
   // fallback
-  background-color: theme-color('bg-primary');
+  background-color: theme-color('background');
 
   // smooth diagonal gradient (theme-aware)
-  background-image: linear-gradient(135deg, theme-color('bg-gradient-start') 0%, theme-color('bg-gradient-end') 100%);
+  background-image: linear-gradient(135deg, theme-color('content1') 0%, theme-color('content2') 100%);
 
   // other useful defaults
   background-repeat: no-repeat;
   background-size: cover;
 
-  color: theme-color('text-primary');
+  color: theme-color('foreground');
 }

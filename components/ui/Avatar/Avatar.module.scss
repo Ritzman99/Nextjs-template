@@ -6,8 +6,8 @@
   justify-content: center;
   border-radius: 50%;
   overflow: hidden;
-  background-color: theme.theme-color('surface-secondary');
-  color: theme.theme-color('text-primary');
+  background-color: theme.theme-color('content2');
+  color: theme.theme-color('foreground');
   font-weight: 600;
   flex-shrink: 0;
 }

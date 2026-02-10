@@ -39,7 +39,7 @@
   width: var(--unit-2);
   height: var(--unit-2);
   border-radius: 50%;
-  background-color: theme.theme-color('border-default');
+  background-color: theme.theme-color('divider');
   border: none;
   padding: 0;
   cursor: pointer;
@@ -56,8 +56,8 @@
   width: var(--unit-8);
   height: var(--unit-8);
   border-radius: 50%;
-  background-color: theme.theme-color('surface');
-  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('content1');
+  border: 1px solid theme.theme-color('divider');
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -65,7 +65,7 @@
   z-index: 1;
   transition: background-color 0.2s, border-color 0.2s;
   &:hover {
-    background-color: theme.theme-color('surface-hover');
+    background-color: theme.theme-color('content3');
   }
 }
 

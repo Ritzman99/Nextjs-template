@@ -9,7 +9,7 @@
 .track {
   position: relative;
   height: var(--unit-2);
-  background-color: theme.theme-color('border-default');
+  background-color: theme.theme-color('divider');
   border-radius: 9999px;
   cursor: pointer;
 }
@@ -47,7 +47,7 @@
   width: var(--unit-4);
   height: var(--unit-4);
   background-color: theme.theme-color('primary');
-  border: 2px solid theme.theme-color('surface');
+  border: 2px solid theme.theme-color('content1');
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -55,15 +55,15 @@
 }
 
 .wrapper:focus-within .thumb {
-  box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+  box-shadow: 0 0 0 3px theme.theme-color('focus');
 }
 
 .label {
   font-size: 0.875rem;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
 }
 
 .valueLabel {
   font-size: 0.875rem;
-  color: theme.theme-color('text-muted');
+  color: theme.theme-color('default-400');
 }

@@ -9,7 +9,7 @@
 .label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
 }
 
 .select {
@@ -18,9 +18,9 @@
   padding-right: var(--unit-8);
   font-size: 1rem;
   font-family: inherit;
-  color: theme.theme-color('text-primary');
-  background-color: theme.theme-color('surface');
-  border: 2px solid theme.theme-color('border-default');
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content1');
+  border: 2px solid theme.theme-color('divider');
   border-radius: var(--unit-2);
   min-height: var(--unit-8);
   cursor: pointer;
@@ -32,8 +32,8 @@
 
   &:focus {
     outline: none;
-    border-color: theme.theme-color('border-focus');
-    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+    border-color: theme.theme-color('focus');
+    box-shadow: 0 0 0 3px theme.theme-color('focus');
   }
 
   &:disabled {

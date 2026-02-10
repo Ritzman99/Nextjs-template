@@ -3,7 +3,7 @@
 import type { HTMLAttributes } from 'react';
 import styles from './Badge.module.scss';
 
-export type BadgeColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
+export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 export type BadgeVariant = 'solid' | 'outline' | 'soft';
 
@@ -18,7 +18,6 @@ const colorMap: Record<BadgeColor, string> = {
   primary: styles.colorPrimary,
   secondary: styles.colorSecondary,
   success: styles.colorSuccess,
-  info: styles.colorInfo,
   warning: styles.colorWarning,
   danger: styles.colorDanger,
 };

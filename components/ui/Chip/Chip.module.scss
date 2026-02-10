@@ -11,15 +11,15 @@
   border: 1px solid transparent;
 }
 
-.solid.colorPrimary { background-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-color'); }
-.solid.colorSecondary { background-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-color'); }
-.solid.colorSuccess { background-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-color'); }
-.solid.colorDanger { background-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-color'); }
+.solid.colorPrimary { background-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); }
+.solid.colorSecondary { background-color: theme.theme-color('secondary'); color: theme.theme-color('foreground'); }
+.solid.colorSuccess { background-color: theme.theme-color('success'); color: theme.theme-color('foreground'); }
+.solid.colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); }
 
-.outline.colorPrimary { background-color: transparent; border-color: theme.theme-color('btn-primary-bg'); color: theme.theme-color('btn-primary-bg'); }
-.outline.colorSecondary { background-color: transparent; border-color: theme.theme-color('btn-secondary-bg'); color: theme.theme-color('btn-secondary-bg'); }
-.outline.colorSuccess { background-color: transparent; border-color: theme.theme-color('btn-success-bg'); color: theme.theme-color('btn-success-bg'); }
-.outline.colorDanger { background-color: transparent; border-color: theme.theme-color('btn-danger-bg'); color: theme.theme-color('btn-danger-bg'); }
+.outline.colorPrimary { background-color: transparent; border-color: theme.theme-color('primary'); color: theme.theme-color('primary'); }
+.outline.colorSecondary { background-color: transparent; border-color: theme.theme-color('secondary'); color: theme.theme-color('secondary'); }
+.outline.colorSuccess { background-color: transparent; border-color: theme.theme-color('success'); color: theme.theme-color('success'); }
+.outline.colorDanger { background-color: transparent; border-color: theme.theme-color('danger'); color: theme.theme-color('danger'); }
 
 .remove {
   padding: 0;

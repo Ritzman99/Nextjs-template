@@ -14,8 +14,8 @@
   z-index: 50;
   padding: var(--unit-2) var(--unit-3);
   font-size: 0.875rem;
-  color: theme.theme-color('text-inverse');
-  background-color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content2');
   border-radius: var(--unit-2);
   white-space: nowrap;
   pointer-events: none;

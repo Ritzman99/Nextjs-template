@@ -3,7 +3,7 @@
 import type { HTMLAttributes } from 'react';
 import styles from './Alert.module.scss';
 
-export type AlertColor = 'success' | 'info' | 'warning' | 'danger';
+export type AlertColor = 'primary' | 'success' | 'warning' | 'danger';
 export type AlertVariant = 'solid' | 'outline' | 'soft';
 
 export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
@@ -15,8 +15,8 @@ export interface AlertProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const colorMap: Record<AlertColor, string> = {
+  primary: styles.colorPrimary,
   success: styles.colorSuccess,
-  info: styles.colorInfo,
   warning: styles.colorWarning,
   danger: styles.colorDanger,
 };
@@ -28,7 +28,7 @@ const variantMap: Record<AlertVariant, string> = {
 };
 
 export function Alert({
-  color = 'info',
+  color = 'primary',
   variant = 'soft',
   icon,
   dismissible = false,

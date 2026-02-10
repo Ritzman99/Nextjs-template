@@ -7,28 +7,28 @@
 }
 
 .head {
-  background-color: theme.theme-color('surface-secondary');
-  color: theme.theme-color('text-secondary');
+  background-color: theme.theme-color('content2');
+  color: theme.theme-color('default-500');
 }
 
 .th {
   padding: var(--unit-2) var(--unit-4);
   text-align: left;
   font-weight: 600;
-  border-bottom: 2px solid theme.theme-color('border-default');
+  border-bottom: 2px solid theme.theme-color('divider');
 }
 
 .td {
   padding: var(--unit-2) var(--unit-4);
-  border-bottom: 1px solid theme.theme-color('border-default');
-  color: theme.theme-color('text-primary');
+  border-bottom: 1px solid theme.theme-color('divider');
+  color: theme.theme-color('foreground');
 }
 
 .striped .tbody tr:nth-child(even) {
-  background-color: theme.theme-color('surface-secondary');
+  background-color: theme.theme-color('content2');
 }
 
 .bordered .th,
 .bordered .td {
-  border: 1px solid theme.theme-color('border-default');
+  border: 1px solid theme.theme-color('divider');
 }

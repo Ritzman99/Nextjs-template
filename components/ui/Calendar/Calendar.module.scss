@@ -2,8 +2,8 @@
 
 .root {
   padding: var(--unit-4);
-  background-color: theme.theme-color('surface');
-  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('content1');
+  border: 1px solid theme.theme-color('divider');
   border-radius: var(--unit-3);
 }
 
@@ -17,7 +17,7 @@
 .monthYear {
   font-size: 1rem;
   font-weight: 600;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
 }
 
 .nav {
@@ -28,13 +28,13 @@
 .navButton {
   padding: var(--unit-1) var(--unit-2);
   font-size: 0.875rem;
-  background-color: theme.theme-color('surface-secondary');
-  border: 1px solid theme.theme-color('border-default');
+  background-color: theme.theme-color('content2');
+  border: 1px solid theme.theme-color('divider');
   border-radius: var(--unit-1);
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
   cursor: pointer;
   &:hover {
-    background-color: theme.theme-color('surface-hover');
+    background-color: theme.theme-color('content3');
   }
 }
 
@@ -47,7 +47,7 @@
 .weekday {
   font-size: 0.75rem;
   font-weight: 600;
-  color: theme.theme-color('text-muted');
+  color: theme.theme-color('default-400');
   text-align: center;
   padding: var(--unit-1);
 }
@@ -60,22 +60,22 @@
   font-size: 0.875rem;
   border-radius: var(--unit-1);
   cursor: pointer;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
   background: none;
   border: none;
   padding: 0;
 
   &:hover:not(.outside):not(.selected) {
-    background-color: theme.theme-color('surface-hover');
+    background-color: theme.theme-color('content3');
   }
 
   &.selected {
     background-color: theme.theme-color('primary');
-    color: theme.theme-color('btn-primary-color');
+    color: theme.theme-color('foreground');
   }
 
   &.outside {
-    color: theme.theme-color('text-muted');
+    color: theme.theme-color('default-400');
     opacity: 0.5;
   }
 

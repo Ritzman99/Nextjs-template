@@ -19,13 +19,13 @@
 .name {
   font-size: 1rem;
   font-weight: 600;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
   margin: 0;
 }
 
 .description {
   font-size: 0.875rem;
-  color: theme.theme-color('text-muted');
+  color: theme.theme-color('default-400');
   margin: 0;
   margin-top: var(--unit-1);
 }

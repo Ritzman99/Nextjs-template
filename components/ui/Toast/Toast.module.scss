@@ -18,9 +18,9 @@
   border-radius: var(--unit-2);
   font-size: 0.875rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid theme.theme-color('border-default');
-  background-color: theme.theme-color('surface');
-  color: theme.theme-color('text-primary');
+  border: 1px solid theme.theme-color('divider');
+  background-color: theme.theme-color('content1');
+  color: theme.theme-color('foreground');
   animation: slideIn 0.2s ease;
 }
 
@@ -38,4 +38,4 @@
 .success { border-left: 4px solid theme.theme-color('success'); }
 .error { border-left: 4px solid theme.theme-color('danger'); }
 .warning { border-left: 4px solid theme.theme-color('warning'); }
-.info { border-left: 4px solid theme.theme-color('info'); }
+.primary { border-left: 4px solid theme.theme-color('primary'); }

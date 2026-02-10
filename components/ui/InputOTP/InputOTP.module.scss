@@ -14,15 +14,15 @@
   font-size: 1.5rem;
   font-family: ui-monospace, monospace;
   text-align: center;
-  color: theme.theme-color('text-primary');
-  background-color: theme.theme-color('surface');
-  border: 2px solid theme.theme-color('border-default');
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content1');
+  border: 2px solid theme.theme-color('divider');
   border-radius: var(--unit-2);
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &:focus {
     outline: none;
-    border-color: theme.theme-color('border-focus');
-    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+    border-color: theme.theme-color('focus');
+    box-shadow: 0 0 0 3px theme.theme-color('focus');
   }
 }

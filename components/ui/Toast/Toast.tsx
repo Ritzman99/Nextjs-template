@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useState } from 'react';
 import styles from './Toast.module.scss';
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'default';
+export type ToastType = 'success' | 'error' | 'warning' | 'primary' | 'default';
 
 export interface ToastItem {
   id: string;
@@ -72,7 +72,7 @@ export function useToast() {
       success: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'success', duration }),
       error: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'error', duration }),
       warning: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'warning', duration }),
-      info: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'info', duration }),
+      primary: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'primary', duration }),
       default: (message: React.ReactNode, duration?: number) => ctx.add({ message, type: 'default', duration }),
     },
     remove: ctx.remove,

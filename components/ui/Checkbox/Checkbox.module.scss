@@ -26,20 +26,20 @@
   flex-shrink: 0;
   width: var(--unit-4);
   height: var(--unit-4);
-  border: 2px solid theme.theme-color('border-default');
+  border: 2px solid theme.theme-color('divider');
   border-radius: var(--unit-1);
-  background-color: theme.theme-color('surface');
+  background-color: theme.theme-color('content1');
   display: flex;
   align-items: center;
   justify-content: center;
   transition: border-color 0.2s, background-color 0.2s;
 
   .wrapper:hover:not(:has(input:disabled)) & {
-    border-color: theme.theme-color('border-focus');
+    border-color: theme.theme-color('focus');
   }
 
   .input:focus-visible + & {
-    box-shadow: 0 0 0 3px theme.theme-color('focus-ring');
+    box-shadow: 0 0 0 3px theme.theme-color('focus');
   }
 
   .input:checked + &,
@@ -52,7 +52,7 @@
 .check {
   width: var(--unit-2);
   height: var(--unit-3);
-  border: solid theme.theme-color('btn-primary-color');
+  border: solid theme.theme-color('foreground');
   border-width: 0 2px 2px 0;
   transform: rotate(45deg) translateY(-1px);
   opacity: 0;
@@ -64,10 +64,10 @@
 .indeterminate {
   width: var(--unit-2);
   height: 2px;
-  background-color: theme.theme-color('btn-primary-color');
+  background-color: theme.theme-color('foreground');
 }
 
 .label {
   font-size: 1rem;
-  color: theme.theme-color('text-primary');
+  color: theme.theme-color('foreground');
 }

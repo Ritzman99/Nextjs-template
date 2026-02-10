@@ -9,7 +9,7 @@
 .track {
   width: 100%;
   height: var(--unit-2);
-  background-color: theme.theme-color('border-default');
+  background-color: theme.theme-color('divider');
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -31,5 +31,5 @@
 
 .label {
   font-size: 0.875rem;
-  color: theme.theme-color('text-muted');
+  color: theme.theme-color('default-400');
 }

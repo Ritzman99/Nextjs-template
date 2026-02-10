@@ -3,7 +3,7 @@
 .root {
   display: inline-block;
   border-style: solid;
-  border-color: theme.theme-color('border-subtle');
+  border-color: theme.theme-color('divider');
   border-top-color: theme.theme-color('primary');
   border-radius: 50%;
   animation: spin 0.8s linear infinite;

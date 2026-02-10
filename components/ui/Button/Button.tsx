@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 import styles from './Button.module.scss';
 
-export type ButtonColor = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger';
+export type ButtonColor = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonRadius = 'none' | 'sm' | 'md' | 'lg' | 'full';
 export type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
@@ -20,7 +20,6 @@ const colorMap: Record<ButtonColor, string> = {
   primary: styles.colorPrimary,
   secondary: styles.colorSecondary,
   success: styles.colorSuccess,
-  info: styles.colorInfo,
   warning: styles.colorWarning,
   danger: styles.colorDanger,
 };

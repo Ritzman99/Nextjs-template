@@ -1,76 +1,65 @@
 // _theme-variables.scss
-// Theme variable system using SASS maps and CSS custom properties
+// Theme variable system: apply-theme mixin + theme-color function
+// Works with scss/themes/_dark.scss and _light.scss
+@use 'sass:map';
 
-// Theme color token definitions
-// These will be mapped to CSS custom properties based on the active theme
-
-// Base color tokens that will be used across themes
-$theme-tokens: (
-  // Background colors
-  'bg-primary': null,
-  'bg-secondary': null,
-  'bg-gradient-start': null,
-  'bg-gradient-end': null,
-  
-  // Surface colors (cards, panels, etc.)
-  'surface': null,
-  'surface-secondary': null,
-  'surface-elevated': null,
-  'surface-hover': null,
-  
-  // Text colors
-  'text-primary': null,
-  'text-secondary': null,
-  'text-muted': null,
-  'text-subtle': null,
-  'text-inverse': null,
-  
-  // Border colors
-  'border-default': null,
-  'border-subtle': null,
-  'border-focus': null,
-  
-  // Semantic colors (these may stay consistent or adapt)
-  'primary': null,
-  'primary-hover': null,
-  'secondary': null,
-  'success': null,
-  'info': null,
-  'warning': null,
-  'danger': null,
-  
-  // Interactive states
-  'hover-overlay': null,
-  'focus-ring': null,
-  
-  // Special cases
-  'nav-bg': null,
-  'nav-gradient-start': null,
-  'nav-gradient-end': null,
-  
-  // Button colors
-  'btn-primary-bg': null,
-  'btn-primary-color': null,
-  'btn-secondary-bg': null,
-  'btn-secondary-color': null,
-  'btn-success-bg': null,
-  'btn-success-color': null,
-  'btn-info-bg': null,
-  'btn-info-color': null,
-  'btn-warning-bg': null,
-  'btn-warning-color': null,
-  'btn-danger-bg': null,
-  'btn-danger-color': null,
-);
-
-// Function to get theme color
-@function theme-color($token) {
-  @return var(--theme-#{$token});
-}
-
-// Mixin to set CSS custom properties from a theme map
+/// Emits CSS custom properties from a theme map.
+/// Each map key becomes --theme-{key}
 @mixin apply-theme($theme-map) {
   @each $key, $value in $theme-map {
     --theme-#{$key}: #{$value};
   }
+}
+
+/// Maps semantic/legacy names to --theme-* CSS variables.
+/// Use only new theme names in components; aliases support migration.
+@function theme-color($key) {
+  $alias-map: (
+    // Layout
+    'background': 'background',
+    'bg-primary': 'background',
+    'foreground': 'foreground',
+    'text-primary': 'foreground',
+    'divider': 'divider',
+    'focus': 'focus',
+    'border-default': 'divider',
+    'border-focus': 'focus',
+    'focus-ring': 'focus',
+    'border-subtle': 'divider',
+
+    // Content / surfaces
+    'surface': 'content1',
+    'surface-secondary': 'content2',
+    'surface-hover': 'content3',
+    'hover-overlay': 'content3',
+
+    // Text
+    'text-secondary': 'default-500',
+    'text-muted': 'default-400',
+    'text-inverse': 'foreground',
+
+    // Semantic colors (btn-* → base color; text uses foreground)
+    'btn-primary-bg': 'primary',
+    'btn-primary-color': 'foreground',
+    'btn-secondary-bg': 'secondary',
+    'btn-secondary-color': 'foreground',
+    'btn-success-bg': 'success',
+    'btn-success-color': 'foreground',
+    'btn-warning-bg': 'warning',
+    'btn-warning-color': 'foreground',
+    'btn-danger-bg': 'danger',
+    'btn-danger-color': 'foreground',
+
+    // Gradients / hover
+    'primary-hover': 'primary-400',
+    'bg-gradient-start': 'content1',
+    'bg-gradient-end': 'content2',
+  );
+
+  $resolved: $key;
+  @if map.has-key($alias-map, $key) {
+    $resolved: map.get($alias-map, $key);
+  }
+
+  @return var(--theme-#{$resolved});
 }

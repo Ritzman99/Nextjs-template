@@ -2,7 +2,7 @@
 
 .root {
   border: none;
-  background-color: theme.theme-color('border-default');
+  background-color: theme.theme-color('divider');
 }
 
 .horizontal {
@@ -29,12 +29,12 @@
 .wrapper .line {
   flex: 1;
   height: 1px;
-  background-color: theme.theme-color('border-default');
+  background-color: theme.theme-color('divider');
   border: none;
 }
 
 .label {
   font-size: 0.875rem;
-  color: theme.theme-color('text-muted');
+  color: theme.theme-color('default-400');
   white-space: nowrap;
 }
