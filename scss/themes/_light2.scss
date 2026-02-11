@@ -1,0 +1,83 @@
+// _light2.scss
+// Light theme variant: same palette as dark2 with dark/light roles flipped
+
+$light2-theme: (
+  // Layout colors (flipped)
+  'background': #FFFFFF,
+  'foreground': #0f1419,
+  'divider': #0f141926,
+  'focus': #f59e0b,
+
+  // Content colors (flipped)
+  'content1': #FFFFFF,
+  'content2': #f9fafb,
+  'content3': #f3f4f6,
+  'content4': #e5e7eb,
+
+  // Base colors
+  'default': #d1d5db,
+  'primary': #f59e0b,
+  'secondary': #0d9488,
+  'success': #22c55e,
+  'warning': #eab308,
+  'danger': #ef4444,
+
+  // Default (scale reversed)
+  'default-50': #f9fafb,
+  'default-100': #f3f4f6,
+  'default-200': #e5e7eb,
+  'default-300': #d1d5db,
+  'default-400': #9ca3af,
+  'default-500': #6b6b75,
+  'default-600': #4e4e56,
+  'default-700': #3a3a40,
+  'default-800': #242428,
+  'default-900': #16161a,
+
+  // Primary (amber, scale reversed)
+  'primary-50': #fffbeb,
+  'primary-100': #fef3c7,
+  'primary-200': #fde68a,
+  'primary-300': #fcd34d,
+  'primary-400': #fbbf24,
+  'primary-500': #f59e0b,
+  'primary-600': #b45309,
+  'primary-700': #783f0a,
+  'primary-800': #422d0a,
+  'primary-900': #1c1912,
+
+  // Secondary (teal, scale reversed)
+  'secondary-50': #ccfbf1,
+  'secondary-100': #99f6e4,
+  'secondary-200': #5eead4,
+  'secondary-300': #2dd4bf,
+  'secondary-400': #14b8a6,
+  'secondary-500': #0d9488,
+  'secondary-600': #115e59,
+  'secondary-700': #0f4c4a,
+  'secondary-800': #042f2e,
+
+  // Warning (scale reversed)
+  'warning-50': #fefce8,
+  'warning-100': #fef9c3,
+  'warning-200': #fef08a,
+  'warning-300': #fde047,
+  'warning-400': #facc15,
+  'warning-500': #eab308,
+  'warning-600': #b45309,
+  'warning-700': #783f0a,
+  'warning-800': #422d0a,
+  'warning-900': #1c1912,
+
+  // Danger (scale reversed)
+  'danger-50': #fef2f2,
+  'danger-100': #fee2e2,
+  'danger-200': #fecaca,
+  'danger-300': #fca5a5,
+  'danger-400': #f87171,
+  'danger-500': #ef4444,
+  'danger-600': #dc2626,
+  'danger-700': #b91c1c,
+  'danger-800': #7f1d1d,
+  'danger-900': #450a0a,
+);

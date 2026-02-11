@@ -1,0 +1,83 @@
+// _dark2.scss
+// Dark theme variant: distinct palette (amber primary, teal secondary)
+
+$dark2-theme: (
+  // Layout colors
+  'background': #0c0c0e,
+  'foreground': #e8e8ec,
+  'divider': #ffffff22,
+  'focus': #f59e0b,
+
+  // Content colors
+  'content1': #16161a,
+  'content2': #242428,
+  'content3': #3a3a40,
+  'content4': #4e4e56,
+
+  // Base colors
+  'default': #3a3a40,
+  'primary': #f59e0b,
+  'secondary': #14b8a6,
+  'success': #22c55e,
+  'warning': #eab308,
+  'danger': #ef4444,
+
+  // Default
+  'default-50': #16161a,
+  'default-100': #242428,
+  'default-200': #3a3a40,
+  'default-300': #4e4e56,
+  'default-400': #6b6b75,
+  'default-500': #9ca3af,
+  'default-600': #d1d5db,
+  'default-700': #e5e7eb,
+  'default-800': #f3f4f6,
+  'default-900': #f9fafb,
+
+  // Primary (amber)
+  'primary-50': #1c1912,
+  'primary-100': #422d0a,
+  'primary-200': #783f0a,
+  'primary-300': #b45309,
+  'primary-400': #f59e0b,
+  'primary-500': #fbbf24,
+  'primary-600': #fcd34d,
+  'primary-700': #fde68a,
+  'primary-800': #fef3c7,
+  'primary-900': #fffbeb,
+
+  // Secondary (teal)
+  'secondary-50': #042f2e,
+  'secondary-100': #0f4c4a,
+  'secondary-200': #115e59,
+  'secondary-300': #0d9488,
+  'secondary-400': #14b8a6,
+  'secondary-500': #2dd4bf,
+  'secondary-600': #5eead4,
+  'secondary-700': #99f6e4,
+  'secondary-800': #ccfbf1,
+
+  // Warning
+  'warning-50': #1c1912,
+  'warning-100': #422d0a,
+  'warning-200': #783f0a,
+  'warning-300': #b45309,
+  'warning-400': #eab308,
+  'warning-500': #facc15,
+  'warning-600': #fde047,
+  'warning-700': #fef08a,
+  'warning-800': #fef9c3,
+  'warning-900': #fefce8,
+
+  // Danger
+  'danger-50': #450a0a,
+  'danger-100': #7f1d1d,
+  'danger-200': #b91c1c,
+  'danger-300': #dc2626,
+  'danger-400': #ef4444,
+  'danger-500': #f87171,
+  'danger-600': #fca5a5,
+  'danger-700': #fecaca,
+  'danger-800': #fee2e2,
+  'danger-900': #fef2f2,
+);

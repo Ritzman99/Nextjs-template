@@ -6,6 +6,7 @@ import { signOut, useSession } from 'next-auth/react';
 import type { ReactNode } from 'react';
 import { User as UserComponent } from '@/components/ui/User';
 import { Button } from '@/components/ui/Button';
+import { ThemeSelect } from '@/components/ThemeSelect';
 import styles from './TopNav.module.scss';
 
 export interface TopNavItem {
@@ -44,6 +45,11 @@ export function TopNav({ brand = 'App', items }: TopNavProps) {
             </li>
           );
         })}
+        <li className={styles.item}>
+          <div className={styles.themeSelectWrap}>
+            <ThemeSelect />
+          </div>
+        </li>
         {status === 'loading' ? (
           <li className={styles.item}>
             <span className={styles.link}>...</span>

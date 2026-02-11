@@ -73,6 +73,26 @@
   background-color: theme.theme-color('content2');
 }
 
+.themeSelectWrap {
+  display: flex;
+  align-items: center;
+
+  select {
+    font-size: 0.9375rem;
+    padding: var(--unit-1) var(--unit-2);
+    border-radius: var(--unit-1);
+    border: 1px solid theme.theme-color('divider');
+    background-color: theme.theme-color('content2');
+    color: theme.theme-color('foreground');
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px theme.theme-color('focus');
+    }
+  }
+}
+
 .userBlock {
   display: flex;
   align-items: center;
