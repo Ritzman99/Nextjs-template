@@ -4,6 +4,8 @@
 @use 'light' as light;
 @use 'dark2' as dark2;
 @use 'light2' as light2;
+@use 'dark3' as dark3;
+@use 'light3' as light3;
 // @use 'catan' as catan; // Removed for alpha
 
 // Default to dark theme
@@ -31,6 +33,16 @@
   @include apply-theme(light2.$light2-theme);
 }
 
+// Dark3 theme
+[data-theme='dark3'] {
+  @include apply-theme(dark3.$dark3-theme);
+}
+
+// Light3 theme
+[data-theme='light3'] {
+  @include apply-theme(light3.$light3-theme);
+}
+
 // Ensure theme applies to html element for proper inheritance
 html {
   color-scheme: dark; // Default
@@ -48,6 +60,14 @@ html {
   }
 
   &[data-theme='light2'] {
+    color-scheme: light;
+  }
+
+  &[data-theme='dark3'] {
+    color-scheme: dark;
+  }
+
+  &[data-theme='light3'] {
     color-scheme: light;
   }
 }

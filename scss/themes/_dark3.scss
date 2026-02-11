@@ -1,0 +1,96 @@
+// _dark3.scss
+// Wild theme: deep violet base, coral primary, lime secondary.
+// Danger red, warning yellow, success green kept standard.
+
+$dark3-theme: (
+  // Layout colors
+  'background': #0d0618,
+  'foreground': #f0abfc,
+  'divider': #a78bfa44,
+  'focus': #ff6b6b,
+
+  // Content colors (violet steps)
+  'content1': #1e0a35,
+  'content2': #2d1b4e,
+  'content3': #3d2a6b,
+  'content4': #4c3d82,
+
+  // Base colors
+  'default': #6b4a9e,
+  'primary': #ff6b6b,
+  'secondary': #a3e635,
+  'success': #17c964,
+  'warning': #f5a524,
+  'danger': #f31260,
+
+  // Default (mauve/violet scale)
+  'default-50': #1e0a35,
+  'default-100': #2d1b4e,
+  'default-200': #3d2a6b,
+  'default-300': #4c3d82,
+  'default-400': #6b4a9e,
+  'default-500': #a78bfa,
+  'default-600': #c4b5fd,
+  'default-700': #ddd6fe,
+  'default-800': #ede9fe,
+  'default-900': #f5f3ff,
+
+  // Primary (coral)
+  'primary-50': #3d0a0a,
+  'primary-100': #7f1515,
+  'primary-200': #c41f1f,
+  'primary-300': #f03d3d,
+  'primary-400': #ff6b6b,
+  'primary-500': #ff8787,
+  'primary-600': #ffa3a3,
+  'primary-700': #ffbfbf,
+  'primary-800': #ffdbdb,
+  'primary-900': #fff5f5,
+
+  // Secondary (lime)
+  'secondary-50': #1a2e05,
+  'secondary-100': #2d4d0a,
+  'secondary-200': #406b0f,
+  'secondary-300': #5c8c14,
+  'secondary-400': #84cc19,
+  'secondary-500': #a3e635,
+  'secondary-600': #bef264,
+  'secondary-700': #d9f99d,
+  'secondary-800': #ecfccb,
+
+  // Success (standard green)
+  'success-50': #052e14,
+  'success-100': #0a5c28,
+  'success-200': #0f8a3c,
+  'success-300': #14b850,
+  'success-400': #17c964,
+  'success-500': #4ade80,
+  'success-600': #74e99a,
+  'success-700': #9ef4b4,
+  'success-800': #c9ffce,
+  'success-900': #dcfce7,
+
+  // Warning (standard yellow)
+  'warning-50': #312107,
+  'warning-100': #62420e,
+  'warning-200': #936316,
+  'warning-300': #c4841d,
+  'warning-400': #f5a524,
+  'warning-500': #f7b750,
+  'warning-600': #f9c97c,
+  'warning-700': #fbdba7,
+  'warning-800': #fdedd3,
+  'warning-900': #fefce8,
+
+  // Danger (standard red)
+  'danger-50': #310413,
+  'danger-100': #610726,
+  'danger-200': #920b3a,
+  'danger-300': #c20e4d,
+  'danger-400': #f31260,
+  'danger-500': #f54180,
+  'danger-600': #f871a0,
+  'danger-700': #faa0bf,
+  'danger-800': #fdd0df,
+  'danger-900': #fee7ef,
+);

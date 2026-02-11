@@ -1,8 +1,8 @@
-export type ThemeId = 'dark' | 'light' | 'dark2' | 'light2';
+export type ThemeId = 'dark' | 'light' | 'dark2' | 'light2' | 'dark3' | 'light3';
 
 export const THEME_STORAGE_KEY = 'app-theme';
 
-export const THEME_IDS: ThemeId[] = ['dark', 'light', 'dark2', 'light2'];
+export const THEME_IDS: ThemeId[] = ['dark', 'light', 'dark2', 'light2', 'dark3', 'light3'];
 
 export const DEFAULT_THEME: ThemeId = 'dark';
 

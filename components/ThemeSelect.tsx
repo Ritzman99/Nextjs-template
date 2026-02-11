@@ -8,6 +8,8 @@ const THEME_LABELS: Record<ThemeId, string> = {
   light: 'Light',
   dark2: 'Dark 2',
   light2: 'Light 2',
+  dark3: 'Dark 3',
+  light3: 'Light 3',
 };
 
 export function ThemeSelect() {

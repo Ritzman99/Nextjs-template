@@ -1,0 +1,96 @@
+// _light3.scss
+// Wild theme: same palette as dark3 with light/dark roles flipped.
+// Danger red, warning yellow, success green kept standard.
+
+$light3-theme: (
+  // Layout colors (flipped)
+  'background': #fdf4ff,
+  'foreground': #3b0764,
+  'divider': #6b21a833,
+  'focus': #ff6b6b,
+
+  // Content colors (flipped)
+  'content1': #faf5ff,
+  'content2': #f5f3ff,
+  'content3': #ede9fe,
+  'content4': #ddd6fe,
+
+  // Base colors
+  'default': #c4b5fd,
+  'primary': #e03d3d,
+  'secondary': #65a30d,
+  'success': #17c964,
+  'warning': #f5a524,
+  'danger': #f31260,
+
+  // Default (mauve/violet scale reversed)
+  'default-50': #f5f3ff,
+  'default-100': #ede9fe,
+  'default-200': #ddd6fe,
+  'default-300': #c4b5fd,
+  'default-400': #a78bfa,
+  'default-500': #6b4a9e,
+  'default-600': #4c3d82,
+  'default-700': #3d2a6b,
+  'default-800': #2d1b4e,
+  'default-900': #1e0a35,
+
+  // Primary (coral, scale reversed)
+  'primary-50': #fff5f5,
+  'primary-100': #ffdbdb,
+  'primary-200': #ffbfbf,
+  'primary-300': #ffa3a3,
+  'primary-400': #ff8787,
+  'primary-500': #ff6b6b,
+  'primary-600': #f03d3d,
+  'primary-700': #c41f1f,
+  'primary-800': #7f1515,
+  'primary-900': #3d0a0a,
+
+  // Secondary (lime, scale reversed)
+  'secondary-50': #ecfccb,
+  'secondary-100': #d9f99d,
+  'secondary-200': #bef264,
+  'secondary-300': #a3e635,
+  'secondary-400': #84cc19,
+  'secondary-500': #5c8c14,
+  'secondary-600': #406b0f,
+  'secondary-700': #2d4d0a,
+  'secondary-800': #1a2e05,
+
+  // Success (standard green, scale reversed)
+  'success-50': #dcfce7,
+  'success-100': #c9ffce,
+  'success-200': #9ef4b4,
+  'success-300': #74e99a,
+  'success-400': #4ade80,
+  'success-500': #17c964,
+  'success-600': #14b850,
+  'success-700': #0f8a3c,
+  'success-800': #0a5c28,
+  'success-900': #052e14,
+
+  // Warning (standard yellow, scale reversed)
+  'warning-50': #fefce8,
+  'warning-100': #fdedd3,
+  'warning-200': #fbdba7,
+  'warning-300': #f9c97c,
+  'warning-400': #f7b750,
+  'warning-500': #f5a524,
+  'warning-600': #c4841d,
+  'warning-700': #936316,
+  'warning-800': #62420e,
+  'warning-900': #312107,
+
+  // Danger (standard red, scale reversed)
+  'danger-50': #fee7ef,
+  'danger-100': #fdd0df,
+  'danger-200': #faa0bf,
+  'danger-300': #f871a0,
+  'danger-400': #f54180,
+  'danger-500': #f31260,
+  'danger-600': #c20e4d,
+  'danger-700': #920b3a,
+  'danger-800': #610726,
+  'danger-900': #310413,
+);
