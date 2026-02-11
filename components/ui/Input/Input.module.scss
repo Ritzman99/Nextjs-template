@@ -13,7 +13,6 @@
 }
 
 .input {
-  width: 100%;
   padding: var(--unit-2) var(--unit-3);
   font-size: 1rem;
   font-family: inherit;
@@ -31,7 +30,7 @@
   &:focus {
     outline: none;
     border-color: theme.theme-color('focus');
-    box-shadow: 0 0 0 3px theme.theme-color('focus');
+    box-shadow: 0 0 0 1px theme.theme-color('focus');
   }
 
   &:disabled {

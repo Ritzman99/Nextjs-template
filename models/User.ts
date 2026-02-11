@@ -20,6 +20,8 @@ export interface IUser {
   state?: string;
   timezone?: string;
   avatar?: string;
+  /** S3 object key for avatar (e.g. avatars/userId/uuid.jpg). Use this instead of avatar for uploads. */
+  avatarKey?: string;
 }
 
 const userSchema = new Schema<IUser>(
@@ -42,6 +44,7 @@ const userSchema = new Schema<IUser>(
     state: { type: String },
     timezone: { type: String },
     avatar: { type: String },
+    avatarKey: { type: String },
   },
   { timestamps: true, collection: 'user_profiles' }
 );

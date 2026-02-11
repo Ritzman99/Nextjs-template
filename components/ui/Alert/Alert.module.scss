@@ -1,3 +1,4 @@
+@use 'sass:string';
 @use 'abstracts/theme-variables' as theme;
 
 .wrapper {
@@ -31,7 +32,7 @@
   color: theme.theme-color('secondary-400');
 }
 .solid.colorSuccess {
-  background-color: unquote('color-mix(in srgb, ' + theme.theme-color('success') + ' 22%, ' + theme.theme-color('background') + ')');
+  background-color: string.unquote('color-mix(in srgb, ' + theme.theme-color('success') + ' 22%, ' + theme.theme-color('background') + ')');
   color: theme.theme-color('success');
 }
 .solid.colorWarning {

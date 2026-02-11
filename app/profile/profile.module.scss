@@ -49,3 +49,69 @@
 .submit {
   margin-top: var(--unit-2);
 }
+
+.success {
+  margin: 0 0 var(--unit-3);
+  padding: var(--unit-2);
+  font-size: 0.875rem;
+  color: theme.theme-color('success');
+  background-color: theme.theme-color('content2');
+  border-radius: var(--unit-1);
+}
+
+.section {
+  margin-top: var(--unit-6);
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.sectionTitle {
+  margin: 0 0 var(--unit-3);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+}
+
+.sectionTitleDanger {
+  @extend .sectionTitle;
+  color: theme.theme-color('danger');
+}
+
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-4);
+}
+
+.avatarActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+}
+
+.fileInput {
+  display: none;
+}
+
+.dangerText {
+  margin: 0 0 var(--unit-3);
+  font-size: 0.875rem;
+  color: theme.theme-color('default-600');
+}
+
+.deleteConfirm {
+  margin-top: var(--unit-2);
+}
+
+.deleteConfirmText {
+  margin: 0 0 var(--unit-2);
+  font-size: 0.875rem;
+  color: theme.theme-color('foreground');
+}
+
+.deleteActions {
+  display: flex;
+  gap: var(--unit-2);
+}

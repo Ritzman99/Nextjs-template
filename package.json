@@ -11,7 +11,8 @@
     "seed": "node scripts/seedBoardGames.js",
     "seed:ts": "npx ts-node --loader ts-node/esm scripts/seedRedDragonInn.ts",
     "seed:tools": "node scripts/seedTools.cjs",
-    "seed:alpha-news": "node scripts/seedAlphaFeatureChannel.cjs && node scripts/seedAlphaFeatureArticles.cjs"
+    "seed:alpha-news": "node scripts/seedAlphaFeatureChannel.cjs && node scripts/seedAlphaFeatureArticles.cjs",
+    "seed:admin": "node scripts/seedAdmin.cjs"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.10.0",

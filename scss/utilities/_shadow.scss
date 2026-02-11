@@ -1,6 +1,8 @@
 // _shadow.scss - Box shadow utilities: neutral sm–2xl + 6 base colors × 5 sizes
 // Uses --theme-* for colored shadows (theme-aware). Colored shadows use color-mix for alpha.
 
+@use 'sass:list';
+
 $shadow-sizes: (
   'sm': (0 1px 2px 0 rgb(0 0 0 / 0.05)),
   'md': (0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)),
@@ -30,10 +32,10 @@ $shadow-colors: ('default', 'primary', 'secondary', 'success', 'warning', 'dange
 // Colored shadows (theme-aware via var(--theme-*))
 @each $color in $shadow-colors {
   @each $size, $params in $shadow-colored {
-    $x: nth($params, 1);
-    $y: nth($params, 2);
-    $blur: nth($params, 3);
-    $spread: nth($params, 4);
+    $x: list.nth($params, 1);
+    $y: list.nth($params, 2);
+    $blur: list.nth($params, 3);
+    $spread: list.nth($params, 4);
     .shadow-#{$color}-#{$size} {
       box-shadow: #{$x} #{$y} #{$blur} #{$spread} color-mix(in srgb, var(--theme-#{$color}) 25%, transparent);
     }

@@ -23,6 +23,6 @@
   &:focus {
     outline: none;
     border-color: theme.theme-color('focus');
-    box-shadow: 0 0 0 3px theme.theme-color('focus');
+    box-shadow: 0 0 0 1px theme.theme-color('focus');
   }
 }
