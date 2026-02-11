@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Accordion,
   Alert,
@@ -81,6 +81,41 @@ function getComponent(slug: string): React.ComponentType<Record<string, unknown>
   return COMPONENT_MAP[slug] ?? null;
 }
 
+/** Wrapper so the dismissible alert example actually hides when dismissed, with a "Show again" action. */
+function DismissibleAlertDemo({
+  children,
+  ...alertProps
+}: Record<string, unknown> & { children?: ReactNode }) {
+  const [visible, setVisible] = useState(true);
+  if (!visible) {
+    return (
+      <p style={{ fontSize: '0.875rem', color: 'var(--theme-default-500)' }}>
+        Alert dismissed.{' '}
+        <button
+          type="button"
+          onClick={() => setVisible(true)}
+          style={{
+            textDecoration: 'underline',
+            cursor: 'pointer',
+            background: 'none',
+            border: 'none',
+            color: 'inherit',
+            font: 'inherit',
+            padding: 0,
+          }}
+        >
+          Show again
+        </button>
+      </p>
+    );
+  }
+  return (
+    <Alert {...(alertProps as object)} dismissible onDismiss={() => setVisible(false)}>
+      {children}
+    </Alert>
+  );
+}
+
 interface ExampleRendererProps {
   slug: string;
   props?: Record<string, unknown>;
@@ -151,13 +186,9 @@ export function ExampleRenderer({ slug, props: propsIn = {} }: ExampleRendererPr
   }
   if (slug === 'alert' && propsIn.dismissible) {
     return (
-      <Alert
-        {...(rest as object)}
-        dismissible
-        onDismiss={() => {}}
-      >
+      <DismissibleAlertDemo {...(rest as object)}>
         {resolvedChildren}
-      </Alert>
+      </DismissibleAlertDemo>
     );
   }
   if (slug === 'toast') {

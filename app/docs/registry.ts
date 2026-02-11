@@ -123,6 +123,12 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
         props: { color: 'primary', children: 'A simple primary alert.' },
       },
       {
+        title: 'With sub content',
+        description: 'Use subContent for secondary text below the main message.',
+        code: `<Alert color="primary" subContent="You will get a reply soon.">Email sent.</Alert>`,
+        props: { color: 'primary', children: 'Email sent.', subContent: 'You will get a reply soon.' },
+      },
+      {
         title: 'With dismiss',
         description: 'Use dismissible and onDismiss for closeable alerts.',
         code: `<Alert color="warning" dismissible onDismiss={() => {}}>Dismiss me.</Alert>`,
@@ -136,8 +142,10 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
       { label: 'Danger', props: { color: 'danger', children: 'Danger' } },
     ],
     propsTable: [
-      { name: 'color', type: "'primary' | 'success' | 'warning' | 'danger'", default: "'primary'", description: 'Alert color.' },
+      { name: 'color', type: "'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'", default: "'primary'", description: 'Alert color.' },
       { name: 'variant', type: "'solid' | 'outline' | 'soft'", default: "'soft'", description: 'Visual style.' },
+      { name: 'icon', type: 'ReactNode', default: '-', description: 'Optional leading icon.' },
+      { name: 'subContent', type: 'ReactNode', default: '-', description: 'Optional secondary content below the main message.' },
       { name: 'dismissible', type: 'boolean', default: 'false', description: 'Show dismiss button.' },
       { name: 'onDismiss', type: '() => void', default: '-', description: 'Called when dismiss is clicked.' },
     ],

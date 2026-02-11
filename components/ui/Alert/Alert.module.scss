@@ -4,29 +4,114 @@
   display: flex;
   align-items: flex-start;
   gap: var(--unit-3);
-  padding: var(--unit-4);
+  padding: var(--unit-3);
   border-radius: var(--unit-2);
+  margin-bottom: var(--unit-2);
   border: 1px solid transparent;
+  width: 100%;    
+  align-items: center;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.solid.colorPrimary { background-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); }
-.solid.colorSuccess { background-color: theme.theme-color('success'); color: theme.theme-color('foreground'); }
-.solid.colorWarning { background-color: theme.theme-color('warning'); color: theme.theme-color('foreground'); }
-.solid.colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); }
+// Solid variant: dark background, light text (design system)
+.solid.colorDefault {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('default-600');
+}
+.solid.colorPrimary {
+  background-color: theme.theme-color('primary-100');
+  color: theme.theme-color('primary-400');
+}
+.solid.colorSecondary {
+  background-color: theme.theme-color('secondary-100');
+  color: theme.theme-color('secondary-400');
+}
+.solid.colorSuccess {
+  background-color: unquote('color-mix(in srgb, ' + theme.theme-color('success') + ' 22%, ' + theme.theme-color('background') + ')');
+  color: theme.theme-color('success');
+}
+.solid.colorWarning {
+  background-color: theme.theme-color('warning-100');
+  color: theme.theme-color('warning-400');
+}
+.solid.colorDanger {
+  background-color: theme.theme-color('danger-100');
+  color: theme.theme-color('danger-400');
+}
 
-.outline.colorPrimary { background-color: transparent; border-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); }
-.outline.colorSuccess { background-color: transparent; border-color: theme.theme-color('success'); color: theme.theme-color('foreground'); }
-.outline.colorWarning { background-color: transparent; border-color: theme.theme-color('warning'); color: theme.theme-color('foreground'); }
-.outline.colorDanger { background-color: transparent; border-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); }
+// Outline variant
+.outline.colorDefault {
+  background-color: transparent;
+  border-color: theme.theme-color('divider');
+  color: theme.theme-color('foreground');
+}
+.outline.colorPrimary {
+  background-color: transparent;
+  border-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-400');
+}
+.outline.colorSecondary {
+  background-color: transparent;
+  border-color: theme.theme-color('secondary');
+  color: theme.theme-color('secondary-400');
+}
+.outline.colorSuccess {
+  background-color: transparent;
+  border-color: theme.theme-color('success');
+  color: theme.theme-color('success');
+}
+.outline.colorWarning {
+  background-color: transparent;
+  border-color: theme.theme-color('warning');
+  color: theme.theme-color('warning-400');
+}
+.outline.colorDanger {
+  background-color: transparent;
+  border-color: theme.theme-color('danger');
+  color: theme.theme-color('danger-400');
+}
 
-.soft.colorPrimary { background-color: theme.theme-color('content3'); color: theme.theme-color('primary'); }
-.soft.colorSuccess { background-color: theme.theme-color('content3'); color: theme.theme-color('success'); }
-.soft.colorWarning { background-color: theme.theme-color('content3'); color: theme.theme-color('warning'); }
-.soft.colorDanger { background-color: theme.theme-color('content3'); color: theme.theme-color('danger'); }
+// Soft variant (subtle tinted background)
+.soft.colorDefault {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('default-600');
+}
+.soft.colorPrimary {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('primary');
+}
+.soft.colorSecondary {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('secondary');
+}
+.soft.colorSuccess {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('success');
+}
+.soft.colorWarning {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('warning');
+}
+.soft.colorDanger {
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('danger');
+}
 
 .content {
   flex: 1;
+  min-width: 0;
   font-size: 0.875rem;
+  line-height: 1.4;
+  color: inherit;
+}
+
+.subContent {
+  margin-top: var(--unit-1);
+  opacity: 0.9;
+  font-size: 0.8125rem;
 }
 
 .dismiss {
@@ -35,10 +120,18 @@
   background: none;
   border: none;
   cursor: pointer;
+  color: inherit;
   opacity: 0.8;
-  font-size: 1rem;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   &:hover {
     opacity: 1;
   }
+}
+
+.dismissIcon {
+  display: block;
 }

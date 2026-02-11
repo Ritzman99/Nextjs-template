@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { Info, CheckCircle, TriangleAlert, AlertCircle } from 'lucide-react';
 import { Button, Badge, Alert, Input, Checkbox, Select, Switch, Slider, NumberInput } from '@/components/ui';
 import { Tabs } from '@/components/ui/Tabs';
 import { DocPreview } from './DocPreview';
@@ -28,9 +29,13 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
   const [badgeDot, setBadgeDot] = useState(false);
   const [badgeChildren, setBadgeChildren] = useState('Badge');
 
-  const [alertColor, setAlertColor] = useState<'primary' | 'success' | 'warning' | 'danger'>('primary');
+  const [alertColor, setAlertColor] = useState<'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'>('primary');
   const [alertVariant, setAlertVariant] = useState<'solid' | 'outline' | 'soft'>('soft');
   const [alertChildren, setAlertChildren] = useState('This is an alert message.');
+  const [alertSubContent, setAlertSubContent] = useState('');
+  const [alertIcon, setAlertIcon] = useState<'none' | 'info' | 'check' | 'warning' | 'danger'>('none');
+  const [alertDismissible, setAlertDismissible] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(true);
 
   const [inputLabel, setInputLabel] = useState('');
   const [inputPlaceholder, setInputPlaceholder] = useState('Placeholder');
@@ -76,7 +81,24 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       return `<Badge ${attrs.join(' ')}>\n  ${JSON.stringify(badgeChildren)}\n</Badge>`;
     }
     if (slug === 'alert') {
-      const attrs = [`color="${alertColor}"`, `variant="${alertVariant}"`].filter(Boolean);
+      const iconCode =
+        alertIcon === 'info'
+          ? 'icon={<Info />}'
+          : alertIcon === 'check'
+            ? 'icon={<CheckCircle />}'
+            : alertIcon === 'warning'
+              ? 'icon={<TriangleAlert />}'
+              : alertIcon === 'danger'
+                ? 'icon={<AlertCircle />}'
+                : null;
+      const attrs = [
+        `color="${alertColor}"`,
+        `variant="${alertVariant}"`,
+        iconCode,
+        alertSubContent && `subContent=${JSON.stringify(alertSubContent)}`,
+        alertDismissible && 'dismissible',
+        alertDismissible && 'onDismiss={() => setVisible(false)}',
+      ].filter(Boolean);
       return `<Alert ${attrs.join(' ')}>\n  ${JSON.stringify(alertChildren)}\n</Alert>`;
     }
     if (slug === 'input') {
@@ -120,6 +142,9 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
     alertColor,
     alertVariant,
     alertChildren,
+    alertSubContent,
+    alertIcon,
+    alertDismissible,
     inputLabel,
     inputPlaceholder,
     inputError,
@@ -250,13 +275,28 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
           <Control label="Color">
             <select
               value={alertColor}
-              onChange={(e) => setAlertColor(e.target.value as 'primary' | 'success' | 'warning' | 'danger')}
+              onChange={(e) => setAlertColor(e.target.value as 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger')}
               aria-label="Color"
             >
+              <option value="default">default</option>
               <option value="primary">primary</option>
+              <option value="secondary">secondary</option>
               <option value="success">success</option>
               <option value="warning">warning</option>
               <option value="danger">danger</option>
+            </select>
+          </Control>
+          <Control label="Icon">
+            <select
+              value={alertIcon}
+              onChange={(e) => setAlertIcon(e.target.value as 'none' | 'info' | 'check' | 'warning' | 'danger')}
+              aria-label="Icon"
+            >
+              <option value="none">None</option>
+              <option value="info">Info</option>
+              <option value="check">Check circle</option>
+              <option value="warning">Warning triangle</option>
+              <option value="danger">Alert circle</option>
             </select>
           </Control>
           <Control label="Message">
@@ -265,6 +305,27 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
               value={alertChildren}
               onChange={(e) => setAlertChildren(e.target.value)}
               aria-label="Alert message"
+            />
+          </Control>
+          <Control label="Sub content">
+            <input
+              type="text"
+              value={alertSubContent}
+              onChange={(e) => setAlertSubContent(e.target.value)}
+              placeholder="Optional secondary text"
+              aria-label="Sub content"
+            />
+          </Control>
+          <Control label="Dismissible">
+            <input
+              type="checkbox"
+              checked={alertDismissible}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setAlertDismissible(checked);
+                if (checked) setAlertVisible(true);
+              }}
+              aria-label="Dismissible"
             />
           </Control>
         </>
@@ -404,8 +465,45 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
           {badgeChildren}
         </Badge>
       )}
-      {slug === 'alert' && (
-        <Alert color={alertColor} variant={alertVariant}>
+      {slug === 'alert' && alertDismissible && !alertVisible && (
+        <p style={{ fontSize: '0.875rem', color: 'var(--theme-default-500)' }}>
+          Alert dismissed.{' '}
+          <button
+            type="button"
+            onClick={() => setAlertVisible(true)}
+            style={{
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              background: 'none',
+              border: 'none',
+              color: 'inherit',
+              font: 'inherit',
+              padding: 0,
+            }}
+          >
+            Show again
+          </button>
+        </p>
+      )}
+      {slug === 'alert' && (!alertDismissible || alertVisible) && (
+        <Alert
+          color={alertColor}
+          variant={alertVariant}
+          icon={
+            alertIcon === 'info' ? (
+              <Info size={20} />
+            ) : alertIcon === 'check' ? (
+              <CheckCircle size={20} />
+            ) : alertIcon === 'warning' ? (
+              <TriangleAlert size={20} />
+            ) : alertIcon === 'danger' ? (
+              <AlertCircle size={20} />
+            ) : undefined
+          }
+          subContent={alertSubContent || undefined}
+          dismissible={alertDismissible}
+          onDismiss={alertDismissible ? () => setAlertVisible(false) : undefined}
+        >
           {alertChildren}
         </Alert>
       )}
