@@ -70,4 +70,8 @@ html {
   &[data-theme='light3'] {
     color-scheme: light;
   }
+
+  &[data-theme='custom'] {
+    color-scheme: dark;
+  }
 }

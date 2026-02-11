@@ -1,7 +1,11 @@
 'use client';
 
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { THEME_IDS, type ThemeId } from '@/lib/theme';
+import {
+  getStoredCustomTheme,
+  PRESET_THEME_IDS,
+  type ThemeId,
+} from '@/lib/theme';
 
 const THEME_LABELS: Record<ThemeId, string> = {
   dark: 'Dark',
@@ -10,10 +14,17 @@ const THEME_LABELS: Record<ThemeId, string> = {
   light2: 'Light 2',
   dark3: 'Dark 3',
   light3: 'Light 3',
+  custom: 'Custom',
 };
 
 export function ThemeSelect() {
   const { theme, setTheme } = useTheme();
+  const customTheme = getStoredCustomTheme();
+  const hasCustomTheme =
+    customTheme && Object.keys(customTheme).length > 0;
+  const options = hasCustomTheme || theme === 'custom'
+    ? [...PRESET_THEME_IDS, 'custom']
+    : PRESET_THEME_IDS;
 
   return (
     <select
@@ -21,9 +32,9 @@ export function ThemeSelect() {
       onChange={(e) => setTheme(e.target.value as ThemeId)}
       aria-label="Select theme"
     >
-      {THEME_IDS.map((id) => (
+      {options.map((id) => (
         <option key={id} value={id}>
-          {THEME_LABELS[id]}
+          {THEME_LABELS[id as ThemeId]}
         </option>
       ))}
     </select>

@@ -7,7 +7,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const region = process.env.AWS_REGION ?? 'us-east-1';
-const bucket = process.env.S3_BUCKET ?? '';
+const bucket = process.env.AWS_S3_BUCKET ?? process.env.S3_BUCKET ?? '';
 
 const s3 = new S3Client({
   region,
@@ -26,6 +26,22 @@ export function isS3Configured(): boolean {
       process.env.AWS_SECRET_ACCESS_KEY &&
       bucket
   );
+}
+
+/** Returns which S3 env vars are set (for logging only; never log secret values). */
+export function getS3ConfigStatus(): {
+  AWS_ACCESS_KEY_ID: boolean;
+  AWS_SECRET_ACCESS_KEY: boolean;
+  S3_BUCKET: boolean;
+  AWS_REGION: string;
+} {
+  const bucketSet = Boolean(process.env.AWS_S3_BUCKET ?? process.env.S3_BUCKET);
+  return {
+    AWS_ACCESS_KEY_ID: Boolean(process.env.AWS_ACCESS_KEY_ID),
+    AWS_SECRET_ACCESS_KEY: Boolean(process.env.AWS_SECRET_ACCESS_KEY),
+    S3_BUCKET: bucketSet,
+    AWS_REGION: process.env.AWS_REGION ?? 'us-east-1 (default)',
+  };
 }
 
 export async function uploadAvatar(

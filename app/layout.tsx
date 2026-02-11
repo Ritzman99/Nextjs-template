@@ -18,7 +18,7 @@ const topNavItems = [
 const themeInitScript = `
 (function() {
   var key = 'app-theme';
-  var valid = ['dark','light','dark2','light2','dark3','light3'];
+  var valid = ['dark','light','dark2','light2','dark3','light3','custom'];
   try {
     var v = localStorage.getItem(key);
     if (v && valid.indexOf(v) !== -1) document.documentElement.setAttribute('data-theme', v);

@@ -5,10 +5,14 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { ButtonGroup } from '@/components/ui/ButtonGroup';
 import { Select } from '@/components/ui/Select';
 import { Avatar } from '@/components/ui/Avatar';
+import { ThemeBuilder } from '@/components/ThemeBuilder';
 import type { User } from '@/types/user';
 import styles from './profile.module.scss';
+
+type ProfileTab = 'details' | 'security' | 'theme';
 
 const GENDER_OPTIONS = [
   { value: '', label: 'Prefer not to say' },
@@ -30,6 +34,7 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<ProfileTab>('details');
 
   // Change password state
   const [currentPassword, setCurrentPassword] = useState('');
@@ -254,223 +259,305 @@ export default function ProfilePage() {
           </p>
         )}
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Profile</h2>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.avatarRow}>
-              <Avatar
-                src={user.avatar}
-                alt={user.name ?? 'Avatar'}
-                fallback={user.name ?? user.email ?? '?'}
-                size="lg"
-              />
-              <div className={styles.avatarActions}>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept={ACCEPT_IMAGE}
-                  onChange={handleAvatarChange}
-                  className={styles.fileInput}
-                  disabled={uploading}
-                />
-                <Button
-                  type="button"
-                  color="secondary"
-                  size="sm"
-                  disabled={uploading}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  {uploading ? 'Uploading...' : 'Change photo'}
-                </Button>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <Input
-                label="First name"
-                value={user.firstName ?? ''}
-                onChange={(e) =>
-                  setUser((u) => (u ? { ...u, firstName: e.target.value } : u))
-                }
-                disabled={saving}
-              />
-              <Input
-                label="Last name"
-                value={user.lastName ?? ''}
-                onChange={(e) =>
-                  setUser((u) => (u ? { ...u, lastName: e.target.value } : u))
-                }
-                disabled={saving}
-              />
-            </div>
-            <Input
-              label="Display name"
-              value={user.name ?? ''}
-              onChange={(e) =>
-                setUser((u) => (u ? { ...u, name: e.target.value } : u))
-              }
-              disabled={saving}
-            />
-            <Input
-              label="Email"
-              type="email"
-              value={user.email ?? ''}
-              onChange={(e) =>
-                setUser((u) => (u ? { ...u, email: e.target.value } : u))
-              }
-              disabled={saving}
-            />
-            <Select
-              label="Gender"
-              options={GENDER_OPTIONS}
-              value={user.gender ?? ''}
-              onChange={(value) =>
-                setUser((u) => (u ? { ...u, gender: value || null } : u))
-              }
-              disabled={saving}
-            />
-            <Input
-              label="Username"
-              value={user.username ?? ''}
-              onChange={(e) =>
-                setUser((u) => (u ? { ...u, username: e.target.value } : u))
-              }
-              disabled={saving}
-            />
-            <Input
-              label="Address"
-              value={user.address ?? ''}
-              onChange={(e) =>
-                setUser((u) => (u ? { ...u, address: e.target.value } : u))
-              }
-              disabled={saving}
-            />
-            <div className={styles.row}>
-              <Input
-                label="Age"
-                type="number"
-                min={0}
-                max={150}
-                value={user.age ?? ''}
-                onChange={(e) => {
-                  const v = e.target.value;
-                  const n = v === '' ? null : parseInt(v, 10);
-                  setUser((u) =>
-                    u ? { ...u, age: Number.isNaN(n) ? null : n } : u
-                  );
-                }}
-                disabled={saving}
-              />
-              <Input
-                label="Region"
-                value={user.region ?? ''}
-                onChange={(e) =>
-                  setUser((u) => (u ? { ...u, region: e.target.value } : u))
-                }
-                disabled={saving}
-              />
-            </div>
-            <div className={styles.row}>
-              <Input
-                label="State"
-                value={user.state ?? ''}
-                onChange={(e) =>
-                  setUser((u) => (u ? { ...u, state: e.target.value } : u))
-                }
-                disabled={saving}
-              />
-              <Input
-                label="Timezone"
-                value={user.timezone ?? ''}
-                onChange={(e) =>
-                  setUser((u) => (u ? { ...u, timezone: e.target.value } : u))
-                }
-                disabled={saving}
-                placeholder="e.g. America/New_York"
-              />
-            </div>
-            <Button type="submit" disabled={saving} className={styles.submit}>
-              {saving ? 'Saving...' : 'Save profile'}
-            </Button>
-          </form>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Security</h2>
-          <form onSubmit={handleChangePassword} className={styles.form}>
-            {passwordError && (
-              <p className={styles.error} role="alert">
-                {passwordError}
-              </p>
-            )}
-            {passwordSuccess && (
-              <p className={styles.success} role="status">
-                Password updated successfully.
-              </p>
-            )}
-            <Input
-              label="Current password"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              disabled={changingPassword}
-            />
-            <Input
-              label="New password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              disabled={changingPassword}
-            />
-            <Input
-              label="Confirm new password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              disabled={changingPassword}
-            />
-            <Button type="submit" disabled={changingPassword}>
-              {changingPassword ? 'Changing...' : 'Change password'}
-            </Button>
-          </form>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitleDanger}>Danger zone</h2>
-          <p className={styles.dangerText}>
-            Deleting your account will permanently remove your data. This action
-            cannot be undone.
-          </p>
-          {!showDeleteConfirm ? (
-            <Button
-              color="danger"
-              onClick={() => setShowDeleteConfirm(true)}
+        <div className={styles.profileLayout}>
+          <nav className={styles.navColumn} aria-label="Profile sections">
+            <ButtonGroup
+              orientation="vertical"
+              attached
+              variant="outline"
+              color="default"
             >
-              Delete account
-            </Button>
-          ) : (
-            <div className={styles.deleteConfirm}>
-              <p className={styles.deleteConfirmText}>
-                Are you sure? This cannot be undone.
-              </p>
-              <div className={styles.deleteActions}>
-<Button
-              color="secondary"
-              onClick={() => setShowDeleteConfirm(false)}
-                  disabled={deleting}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  color="danger"
-                  onClick={handleDeleteAccount}
-                  disabled={deleting}
-                >
-                  {deleting ? 'Deleting...' : 'Yes, delete my account'}
-                </Button>
-              </div>
-            </div>
-          )}
-        </section>
+              <Button
+                variant={activeTab === 'details' ? 'solid' : 'outline'}
+                color={activeTab === 'details' ? 'primary' : 'default'}
+                onClick={() => setActiveTab('details')}
+              >
+                Details
+              </Button>
+              <Button
+                variant={activeTab === 'security' ? 'solid' : 'outline'}
+                color={activeTab === 'security' ? 'primary' : 'default'}
+                onClick={() => setActiveTab('security')}
+              >
+                Security
+              </Button>
+              <Button
+                variant={activeTab === 'theme' ? 'solid' : 'outline'}
+                color={activeTab === 'theme' ? 'primary' : 'default'}
+                onClick={() => setActiveTab('theme')}
+              >
+                Theme
+              </Button>
+            </ButtonGroup>
+          </nav>
+
+          <div className={styles.contentColumn}>
+            {activeTab === 'details' && (
+              <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>Details</h2>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                  <div className={styles.avatarRow}>
+                    <Avatar
+                      src={user.avatar}
+                      alt={user.name ?? 'Avatar'}
+                      fallback={user.name ?? user.email ?? '?'}
+                      size="lg"
+                    />
+                    <div className={styles.avatarActions}>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept={ACCEPT_IMAGE}
+                        onChange={handleAvatarChange}
+                        className={styles.fileInput}
+                        disabled={uploading}
+                      />
+                      <Button
+                        type="button"
+                        color="secondary"
+                        size="sm"
+                        disabled={uploading}
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        {uploading ? 'Uploading...' : 'Change photo'}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className={styles.row}>
+                    <Input
+                      label="First name"
+                      value={user.firstName ?? ''}
+                      onChange={(e) =>
+                        setUser((u) =>
+                          u ? { ...u, firstName: e.target.value } : u
+                        )
+                      }
+                      disabled={saving}
+                    />
+                    <Input
+                      label="Last name"
+                      value={user.lastName ?? ''}
+                      onChange={(e) =>
+                        setUser((u) =>
+                          u ? { ...u, lastName: e.target.value } : u
+                        )
+                      }
+                      disabled={saving}
+                    />
+                  </div>
+                  <Input
+                    label="Display name"
+                    value={user.name ?? ''}
+                    onChange={(e) =>
+                      setUser((u) => (u ? { ...u, name: e.target.value } : u))
+                    }
+                    disabled={saving}
+                  />
+                  <Input
+                    label="Email"
+                    type="email"
+                    value={user.email ?? ''}
+                    onChange={(e) =>
+                      setUser((u) =>
+                        u ? { ...u, email: e.target.value } : u
+                      )
+                    }
+                    disabled={saving}
+                  />
+                  <Select
+                    label="Gender"
+                    options={GENDER_OPTIONS}
+                    value={user.gender ?? ''}
+                    onChange={(value) =>
+                      setUser((u) =>
+                        u ? { ...u, gender: value || null } : u
+                      )
+                    }
+                    disabled={saving}
+                  />
+                  <Input
+                    label="Username"
+                    value={user.username ?? ''}
+                    onChange={(e) =>
+                      setUser((u) =>
+                        u ? { ...u, username: e.target.value } : u
+                      )
+                    }
+                    disabled={saving}
+                  />
+                  <Input
+                    label="Address"
+                    value={user.address ?? ''}
+                    onChange={(e) =>
+                      setUser((u) =>
+                        u ? { ...u, address: e.target.value } : u
+                      )
+                    }
+                    disabled={saving}
+                  />
+                  <div className={styles.row}>
+                    <Input
+                      label="Age"
+                      type="number"
+                      min={0}
+                      max={150}
+                      value={user.age ?? ''}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        const n = v === '' ? null : parseInt(v, 10);
+                        setUser((u) =>
+                          u
+                            ? { ...u, age: Number.isNaN(n) ? null : n }
+                            : u
+                        );
+                      }}
+                      disabled={saving}
+                    />
+                    <Input
+                      label="Region"
+                      value={user.region ?? ''}
+                      onChange={(e) =>
+                        setUser((u) =>
+                          u ? { ...u, region: e.target.value } : u
+                        )
+                      }
+                      disabled={saving}
+                    />
+                  </div>
+                  <div className={styles.row}>
+                    <Input
+                      label="State"
+                      value={user.state ?? ''}
+                      onChange={(e) =>
+                        setUser((u) =>
+                          u ? { ...u, state: e.target.value } : u
+                        )
+                      }
+                      disabled={saving}
+                    />
+                    <Input
+                      label="Timezone"
+                      value={user.timezone ?? ''}
+                      onChange={(e) =>
+                        setUser((u) =>
+                          u ? { ...u, timezone: e.target.value } : u
+                        )
+                      }
+                      disabled={saving}
+                      placeholder="e.g. America/New_York"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={saving}
+                    className={styles.submit}
+                  >
+                    {saving ? 'Saving...' : 'Save profile'}
+                  </Button>
+                </form>
+              </section>
+            )}
+
+            {activeTab === 'security' && (
+              <>
+                <section className={styles.section}>
+                  <h2 className={styles.sectionTitle}>Security</h2>
+                  <form
+                    onSubmit={handleChangePassword}
+                    className={styles.form}
+                  >
+                    {passwordError && (
+                      <p className={styles.error} role="alert">
+                        {passwordError}
+                      </p>
+                    )}
+                    {passwordSuccess && (
+                      <p className={styles.success} role="status">
+                        Password updated successfully.
+                      </p>
+                    )}
+                    <Input
+                      label="Current password"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      disabled={changingPassword}
+                    />
+                    <Input
+                      label="New password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      disabled={changingPassword}
+                    />
+                    <Input
+                      label="Confirm new password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      disabled={changingPassword}
+                    />
+                    <Button
+                      type="submit"
+                      disabled={changingPassword}
+                    >
+                      {changingPassword
+                        ? 'Changing...'
+                        : 'Change password'}
+                    </Button>
+                  </form>
+                </section>
+
+                <section className={styles.section}>
+                  <h2 className={styles.sectionTitleDanger}>Danger zone</h2>
+                  <p className={styles.dangerText}>
+                    Deleting your account will permanently remove your data.
+                    This action cannot be undone.
+                  </p>
+                  {!showDeleteConfirm ? (
+                    <Button
+                      color="danger"
+                      onClick={() => setShowDeleteConfirm(true)}
+                    >
+                      Delete account
+                    </Button>
+                  ) : (
+                    <div className={styles.deleteConfirm}>
+                      <p className={styles.deleteConfirmText}>
+                        Are you sure? This cannot be undone.
+                      </p>
+                      <div className={styles.deleteActions}>
+                        <Button
+                          color="secondary"
+                          onClick={() => setShowDeleteConfirm(false)}
+                          disabled={deleting}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          color="danger"
+                          onClick={handleDeleteAccount}
+                          disabled={deleting}
+                        >
+                          {deleting
+                            ? 'Deleting...'
+                            : 'Yes, delete my account'}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </>
+            )}
+
+            {activeTab === 'theme' && (
+              <section className={styles.section}>
+                <h2 className={styles.sectionTitle}>Theme</h2>
+                <ThemeBuilder />
+              </section>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,90 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-4);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  flex-wrap: wrap;
+}
+
+.label {
+  flex: 1 1 8rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
+}
+
+.colorCell {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-1);
+}
+
+.colorInput {
+  width: 2.25rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-1);
+  background: theme.theme-color('content1');
+  cursor: pointer;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 2px;
+  }
+}
+
+.hexInput {
+  width: 6.5rem;
+  font-size: 0.75rem;
+  font-family: ui-monospace, monospace;
+  padding: var(--unit-1) var(--unit-2);
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content1');
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-1);
+
+  &:focus {
+    outline: none;
+    border-color: theme.theme-color('focus');
+    box-shadow: 0 0 0 1px theme.theme-color('focus');
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-2);
+  margin-top: var(--unit-2);
+}
+
+.presetRow {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-3);
+  flex-wrap: wrap;
+}
+
+.presetLabel {
+  font-size: 0.875rem;
+  color: theme.theme-color('foreground');
+}

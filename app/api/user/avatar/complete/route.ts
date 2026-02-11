@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
 import { authOptions } from '@/lib/auth';
-import { isS3Configured, deleteAvatar, getAvatarSignedUrl } from '@/lib/s3';
+import { isS3Configured, getS3ConfigStatus, deleteAvatar, getAvatarSignedUrl } from '@/lib/s3';
 import type { User } from '@/types/user';
 import type { IUser } from '@/models/User';
 
@@ -59,6 +59,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   if (!isS3Configured()) {
+    const status = getS3ConfigStatus();
+    const missing = Object.entries(status)
+      .filter(([k, v]) => k !== 'AWS_REGION' && v === false)
+      .map(([k]) => k);
+    console.warn('[avatar/complete] S3 not configured. Status:', {
+      ...status,
+      missing: missing.length ? missing : 'none (check bucket/keys are non-empty)',
+    });
     return NextResponse.json(
       { error: 'File upload is not configured.' },
       { status: 503 }
