@@ -58,12 +58,14 @@
 }
 
 // Colors + variants: solid
+.colorDefault { background-color: theme.theme-color('default'); color: theme.theme-color('foreground'); }
 .colorPrimary { background-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); }
 .colorSecondary { background-color: theme.theme-color('secondary'); color: theme.theme-color('foreground'); }
 .colorSuccess { background-color: theme.theme-color('success'); color: theme.theme-color('foreground'); }
 .colorWarning { background-color: theme.theme-color('warning'); color: theme.theme-color('foreground'); }
 .colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); }
 
+.wrapper.colorDefault:hover:not(:disabled) { opacity: 0.9; }
 .wrapper.colorPrimary:hover:not(:disabled) { opacity: 0.9; }
 .wrapper.colorSecondary:hover:not(:disabled) { opacity: 0.9; }
 .wrapper.colorSuccess:hover:not(:disabled) { opacity: 0.9; }
@@ -74,6 +76,8 @@
 .outline {
   background-color: transparent;
 }
+.outline.colorDefault { border: 2px solid theme.theme-color('default'); color: theme.theme-color('default'); }
+.outline.colorDefault:hover:not(:disabled) { background-color: theme.theme-color('default'); color: theme.theme-color('foreground'); }
 .outline.colorPrimary { border: 2px solid theme.theme-color('primary'); color: theme.theme-color('primary'); }
 .outline.colorPrimary:hover:not(:disabled) { background-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); }
 .outline.colorSecondary { border: 2px solid theme.theme-color('secondary'); color: theme.theme-color('secondary'); }
@@ -90,6 +94,8 @@
   background-color: transparent;
   border: 2px solid transparent;
 }
+.ghost.colorDefault { color: theme.theme-color('default'); }
+.ghost.colorDefault:hover:not(:disabled) { background-color: theme.theme-color('content3'); }
 .ghost.colorPrimary { color: theme.theme-color('primary'); }
 .ghost.colorPrimary:hover:not(:disabled) { background-color: theme.theme-color('content3'); }
 .ghost.colorSecondary { color: theme.theme-color('secondary'); }
@@ -101,11 +107,30 @@
 .ghost.colorDanger { color: theme.theme-color('danger'); }
 .ghost.colorDanger:hover:not(:disabled) { background-color: theme.theme-color('content3'); }
 
+// Shadow (solid-like + box-shadow)
+.shadow {
+  border: none;
+}
+.shadow.colorDefault { background-color: theme.theme-color('default'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorDefault:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+.shadow.colorPrimary { background-color: theme.theme-color('primary'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorPrimary:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+.shadow.colorSecondary { background-color: theme.theme-color('secondary'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorSecondary:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+.shadow.colorSuccess { background-color: theme.theme-color('success'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorSuccess:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+.shadow.colorWarning { background-color: theme.theme-color('warning'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorWarning:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+.shadow.colorDanger { background-color: theme.theme-color('danger'); color: theme.theme-color('foreground'); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); }
+.shadow.colorDanger:hover:not(:disabled) { opacity: 0.9; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+
 // Link
 .link {
   background-color: transparent;
   border: none;
 }
+.link.colorDefault { color: theme.theme-color('default'); }
+.link.colorDefault:hover:not(:disabled) { text-decoration: underline; }
 .link.colorPrimary { color: theme.theme-color('primary'); }
 .link.colorPrimary:hover:not(:disabled) { text-decoration: underline; }
 .link.colorSecondary { color: theme.theme-color('secondary'); }

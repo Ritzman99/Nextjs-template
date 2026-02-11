@@ -5,6 +5,7 @@ export { Avatar } from './Avatar';
 export { AvatarGroup } from './AvatarGroup';
 export { Badge } from './Badge';
 export { Button } from './Button';
+export type { ButtonProps, ButtonColor, ButtonSize, ButtonRadius, ButtonVariant } from './Button';
 export { ButtonGroup } from './ButtonGroup';
 export { Calendar } from './Calendar';
 export { Card } from './Card';

@@ -135,13 +135,47 @@ export function ExampleRenderer({ slug, props: propsIn = {} }: ExampleRendererPr
       : undefined;
 
   // Component-specific overrides for doc examples
-  if (slug === 'avatar' && 'name' in propsIn) {
-    return (
-      <Avatar
-        {...(rest as object)}
-        fallback={String((propsIn as { name?: string }).name ?? '')}
-      />
-    );
+  if (slug === 'avatar') {
+    const mode = propsIn._exampleMode as string | undefined;
+    if (mode === 'colors') {
+      const colors = ['default', 'primary', 'secondary', 'success', 'warning', 'danger'] as const;
+      return (
+        <>
+          {colors.map((color) => (
+            <Avatar key={color} color={color} fallback="A" />
+          ))}
+        </>
+      );
+    }
+    if (mode === 'sizes') {
+      const sizes = ['sm', 'md', 'lg'] as const;
+      return (
+        <>
+          {sizes.map((size) => (
+            <Avatar key={size} size={size} fallback="A" />
+          ))}
+        </>
+      );
+    }
+    if (mode === 'radius') {
+      const radii = ['none', 'sm', 'md', 'lg', 'full'] as const;
+      return (
+        <>
+          {radii.map((radius) => (
+            <Avatar key={radius} radius={radius} fallback="A" />
+          ))}
+        </>
+      );
+    }
+    if ('name' in propsIn) {
+      return (
+        <Avatar
+          {...(rest as object)}
+          fallback={String((propsIn as { name?: string }).name ?? '')}
+        />
+      );
+    }
+    return <Avatar {...(rest as object)} />;
   }
   if (slug === 'avatar-group') {
     const items = (propsIn.items ?? propsIn.avatars) as Array<{ name?: string; fallback?: string }> | undefined;
@@ -206,11 +240,74 @@ export function ExampleRenderer({ slug, props: propsIn = {} }: ExampleRendererPr
     );
   }
   if (slug === 'button-group') {
+    const mode = propsIn._exampleMode as string | undefined;
+    const groupProps = {
+      variant: propsIn.variant as 'solid' | 'outline' | 'ghost' | 'shadow' | 'link' | undefined,
+      color: propsIn.color as 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | undefined,
+      size: propsIn.size as 'sm' | 'md' | 'lg' | undefined,
+      radius: propsIn.radius as 'none' | 'sm' | 'md' | 'lg' | 'full' | undefined,
+      orientation: propsIn.orientation as 'horizontal' | 'vertical' | undefined,
+      attached: propsIn.attached as boolean | undefined,
+    };
+    const wrapStyle = { display: 'flex', flexWrap: 'wrap', gap: 'var(--unit-4)', alignItems: 'center' } as const;
+
+    if (mode === 'variants') {
+      const variants = ['solid', 'outline', 'ghost', 'shadow'] as const;
+      const labels: Record<(typeof variants)[number], string> = { solid: 'Solid', outline: 'Outline', ghost: 'Ghost', shadow: 'Shadow' };
+      return (
+        <div style={wrapStyle}>
+          {variants.map((v) => (
+            <ButtonGroup key={v} variant={v} color="primary">
+              <Button>{labels[v]}</Button>
+              <Button>Primary</Button>
+            </ButtonGroup>
+          ))}
+        </div>
+      );
+    }
+    if (mode === 'colors') {
+      const colors = ['default', 'primary', 'secondary', 'success', 'warning', 'danger'] as const;
+      return (
+        <div style={wrapStyle}>
+          {colors.map((c) => (
+            <ButtonGroup key={c} variant="outline" color={c}>
+              <Button>{c.charAt(0).toUpperCase() + c.slice(1)}</Button>
+            </ButtonGroup>
+          ))}
+        </div>
+      );
+    }
+    if (mode === 'radius') {
+      const radii = ['none', 'sm', 'md', 'lg', 'full'] as const;
+      return (
+        <div style={wrapStyle}>
+          {radii.map((r) => (
+            <ButtonGroup key={r} variant="solid" color="primary" radius={r}>
+              <Button>{r === 'none' ? 'None' : r === 'full' ? 'Full' : r}</Button>
+            </ButtonGroup>
+          ))}
+        </div>
+      );
+    }
+    if (mode === 'sizes') {
+      const sizes = ['sm', 'md', 'lg'] as const;
+      return (
+        <div style={wrapStyle}>
+          {sizes.map((s) => (
+            <ButtonGroup key={s} variant="outline" color="primary" size={s}>
+              <Button>{s === 'sm' ? 'Small' : s === 'md' ? 'Medium' : 'Large'}</Button>
+              <Button>Group</Button>
+            </ButtonGroup>
+          ))}
+        </div>
+      );
+    }
+
     return (
-      <ButtonGroup>
-        <Button size="sm">Left</Button>
-        <Button size="sm">Middle</Button>
-        <Button size="sm">Right</Button>
+      <ButtonGroup {...groupProps}>
+        <Button>Left</Button>
+        <Button>Middle</Button>
+        <Button>Right</Button>
       </ButtonGroup>
     );
   }

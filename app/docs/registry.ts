@@ -158,13 +158,42 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
     examples: [
       {
         title: 'With image',
-        code: `<Avatar src="/placeholder.svg" alt="User" />`,
-        props: { src: '/placeholder.svg', alt: 'User' },
+        code: `<Avatar src="/avatar/00012-profile-man.webp" alt="User" />`,
+        props: { src: '/avatar/00012-profile-man.webp', alt: 'User' },
       },
       {
         title: 'Fallback',
         code: `<Avatar name="Jane Doe" />`,
         props: { name: 'Jane Doe' },
+      },
+      {
+        title: 'Colors',
+        description: 'default, primary, secondary, success, warning, danger.',
+        code: `<Avatar color="default" fallback="A" />
+<Avatar color="primary" fallback="A" />
+<Avatar color="secondary" fallback="A" />
+<Avatar color="success" fallback="A" />
+<Avatar color="warning" fallback="A" />
+<Avatar color="danger" fallback="A" />`,
+        props: { _exampleMode: 'colors' },
+      },
+      {
+        title: 'Sizes',
+        description: 'sm, md, lg.',
+        code: `<Avatar size="sm" fallback="A" />
+<Avatar size="md" fallback="A" />
+<Avatar size="lg" fallback="A" />`,
+        props: { _exampleMode: 'sizes' },
+      },
+      {
+        title: 'Radius',
+        description: 'none, sm, md, lg, full.',
+        code: `<Avatar radius="none" fallback="A" />
+<Avatar radius="sm" fallback="A" />
+<Avatar radius="md" fallback="A" />
+<Avatar radius="lg" fallback="A" />
+<Avatar radius="full" fallback="A" />`,
+        props: { _exampleMode: 'radius' },
       },
     ],
   },
@@ -249,17 +278,28 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
         code: `<Button disabled>Disabled</Button>`,
         props: { disabled: true, children: 'Disabled' },
       },
+      {
+        title: 'Shadow',
+        code: `<Button variant="shadow" color="primary">Shadow</Button>`,
+        props: { variant: 'shadow', color: 'primary', children: 'Shadow' },
+      },
+      {
+        title: 'Default color',
+        code: `<Button color="default">Default</Button>`,
+        props: { color: 'default', children: 'Default' },
+      },
     ],
     variants: [
       { label: 'Solid primary', props: { color: 'primary', children: 'Primary' } },
       { label: 'Solid danger', props: { color: 'danger', children: 'Danger' } },
       { label: 'Outline', props: { variant: 'outline', color: 'primary', children: 'Outline' } },
       { label: 'Ghost', props: { variant: 'ghost', color: 'primary', children: 'Ghost' } },
+      { label: 'Shadow', props: { variant: 'shadow', color: 'primary', children: 'Shadow' } },
       { label: 'Link', props: { variant: 'link', color: 'primary', children: 'Link' } },
     ],
     propsTable: [
-      { name: 'color', type: "'primary' | 'secondary' | 'success' | 'warning' | 'danger'", default: "'primary'", description: 'Button color.' },
-      { name: 'variant', type: "'solid' | 'outline' | 'ghost' | 'link'", default: "'solid'", description: 'Visual style.' },
+      { name: 'color', type: "'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'", default: "'primary'", description: 'Button color.' },
+      { name: 'variant', type: "'solid' | 'outline' | 'ghost' | 'shadow' | 'link'", default: "'solid'", description: 'Visual style.' },
       { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
       { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: "'md'", description: 'Border radius.' },
       { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the button.' },
@@ -269,7 +309,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   {
     slug: 'button-group',
     name: 'Button Group',
-    description: 'Group related buttons together.',
+    description: 'Group related buttons together. Pass variant, color, radius, and size to style all child buttons from the group.',
     examples: [
       {
         title: 'Basic',
@@ -280,6 +320,83 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
 </ButtonGroup>`,
         props: { children: 'Button group demo' },
       },
+      {
+        title: 'Variants (solid, outline, ghost, shadow)',
+        code: `<>
+  <ButtonGroup variant="solid" color="primary"><Button>Solid</Button><Button>Primary</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="primary"><Button>Outline</Button><Button>Primary</Button></ButtonGroup>
+  <ButtonGroup variant="ghost" color="primary"><Button>Ghost</Button><Button>Primary</Button></ButtonGroup>
+  <ButtonGroup variant="shadow" color="primary"><Button>Shadow</Button><Button>Primary</Button></ButtonGroup>
+</>`,
+        props: { _exampleMode: 'variants' },
+      },
+      {
+        title: 'Colors (6 base colors)',
+        code: `<>
+  <ButtonGroup variant="outline" color="default"><Button>Default</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="primary"><Button>Primary</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="secondary"><Button>Secondary</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="success"><Button>Success</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="warning"><Button>Warning</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="danger"><Button>Danger</Button></ButtonGroup>
+</>`,
+        props: { _exampleMode: 'colors' },
+      },
+      {
+        title: 'Radius (none, sm, md, lg, full)',
+        code: `<>
+  <ButtonGroup variant="solid" color="primary" radius="none"><Button>None</Button></ButtonGroup>
+  <ButtonGroup variant="solid" color="primary" radius="sm"><Button>Sm</Button></ButtonGroup>
+  <ButtonGroup variant="solid" color="primary" radius="md"><Button>Md</Button></ButtonGroup>
+  <ButtonGroup variant="solid" color="primary" radius="lg"><Button>Lg</Button></ButtonGroup>
+  <ButtonGroup variant="solid" color="primary" radius="full"><Button>Full</Button></ButtonGroup>
+</>`,
+        props: { _exampleMode: 'radius' },
+      },
+      {
+        title: 'Sizes (sm, md, lg)',
+        code: `<>
+  <ButtonGroup variant="outline" color="primary" size="sm"><Button>Small</Button><Button>Group</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="primary" size="md"><Button>Medium</Button><Button>Group</Button></ButtonGroup>
+  <ButtonGroup variant="outline" color="primary" size="lg"><Button>Large</Button><Button>Group</Button></ButtonGroup>
+</>`,
+        props: { _exampleMode: 'sizes' },
+      },
+      {
+        title: 'With group props',
+        code: `<ButtonGroup variant="outline" color="primary" size="md" radius="md">
+  <Button>Left</Button>
+  <Button>Middle</Button>
+  <Button>Right</Button>
+</ButtonGroup>`,
+        props: { variant: 'outline', color: 'primary', size: 'md', radius: 'md', children: 'Button group demo' },
+      },
+      {
+        title: 'Attached (no gap)',
+        code: `<ButtonGroup variant="shadow" color="primary" attached>
+  <Button>One</Button>
+  <Button>Two</Button>
+  <Button>Three</Button>
+</ButtonGroup>`,
+        props: { variant: 'shadow', color: 'primary', attached: true, children: 'Button group demo' },
+      },
+      {
+        title: 'Vertical',
+        code: `<ButtonGroup variant="outline" color="secondary" orientation="vertical">
+  <Button>First</Button>
+  <Button>Second</Button>
+  <Button>Third</Button>
+</ButtonGroup>`,
+        props: { variant: 'outline', color: 'secondary', orientation: 'vertical', children: 'Button group demo' },
+      },
+    ],
+    propsTable: [
+      { name: 'variant', type: "'solid' | 'outline' | 'ghost' | 'shadow' | 'link'", default: '-', description: 'Default variant for child buttons.' },
+      { name: 'color', type: "'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'", default: '-', description: 'Default color for child buttons.' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: '-', description: 'Default size for child buttons.' },
+      { name: 'radius', type: "'none' | 'sm' | 'md' | 'lg' | 'full'", default: '-', description: 'Default radius for child buttons.' },
+      { name: 'orientation', type: "'horizontal' | 'vertical'", default: "'horizontal'", description: 'Layout direction.' },
+      { name: 'attached', type: 'boolean', default: 'false', description: 'Remove gap between buttons.' },
     ],
   },
   {

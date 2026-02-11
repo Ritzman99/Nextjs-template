@@ -8,9 +8,10 @@ import { DocPreview } from './DocPreview';
 import { CodeExample } from './CodeExample';
 import styles from '../docs.module.scss';
 
-type ButtonColor = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
+type ButtonColor = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
-type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'link';
+type ButtonVariant = 'solid' | 'outline' | 'ghost' | 'shadow' | 'link';
+type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
 
 interface PlaygroundSectionProps {
   slug: string;
@@ -24,7 +25,7 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [buttonChildren, setButtonChildren] = useState('Click me');
 
-  const [badgeColor, setBadgeColor] = useState<ButtonColor>('primary');
+  const [badgeColor, setBadgeColor] = useState<BadgeColor>('primary');
   const [badgeVariant, setBadgeVariant] = useState<'solid' | 'outline' | 'soft'>('solid');
   const [badgeDot, setBadgeDot] = useState(false);
   const [badgeChildren, setBadgeChildren] = useState('Badge');
@@ -170,6 +171,7 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
               <option value="solid">solid</option>
               <option value="outline">outline</option>
               <option value="ghost">ghost</option>
+              <option value="shadow">shadow</option>
               <option value="link">link</option>
             </select>
           </Control>
@@ -179,6 +181,7 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
               onChange={(e) => setButtonColor(e.target.value as ButtonColor)}
               aria-label="Color"
             >
+              <option value="default">default</option>
               <option value="primary">primary</option>
               <option value="secondary">secondary</option>
               <option value="success">success</option>
@@ -231,7 +234,7 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
           <Control label="Color">
             <select
               value={badgeColor}
-              onChange={(e) => setBadgeColor(e.target.value as ButtonColor)}
+              onChange={(e) => setBadgeColor(e.target.value as BadgeColor)}
               aria-label="Color"
             >
               <option value="primary">primary</option>

@@ -4,13 +4,26 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   overflow: hidden;
-  background-color: theme.theme-color('content2');
   color: theme.theme-color('foreground');
   font-weight: 600;
   flex-shrink: 0;
 }
+
+// Radius modifiers
+.radiusNone { border-radius: 0; }
+.radiusSm { border-radius: var(--unit-1); }
+.radiusMd { border-radius: var(--unit-2); }
+.radiusLg { border-radius: var(--unit-3); }
+.radiusFull { border-radius: 50%; }
+
+// Color modifiers (base colors)
+.colorDefault { background-color: theme.theme-color('content2'); }
+.colorPrimary { background-color: theme.theme-color('primary'); }
+.colorSecondary { background-color: theme.theme-color('secondary'); }
+.colorSuccess { background-color: theme.theme-color('success'); }
+.colorWarning { background-color: theme.theme-color('warning'); }
+.colorDanger { background-color: theme.theme-color('danger'); }
 
 .img {
   width: 100%;
