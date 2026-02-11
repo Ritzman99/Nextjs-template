@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TopNav } from "@/components/layout";
+import { SessionProvider } from "@/components/providers/SessionProvider";
 import styles from "./layout.module.scss";
 import "./globals.scss";
 
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TopNav brand="Next.js Template" items={topNavItems} />
-        <div className={styles.contentWrap}>{children}</div>
+        <SessionProvider>
+          <TopNav brand="Next.js Template" items={topNavItems} />
+          <div className={styles.contentWrap}>{children}</div>
+        </SessionProvider>
       </body>
     </html>
   );

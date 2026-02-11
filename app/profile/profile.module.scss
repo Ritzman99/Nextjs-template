@@ -1,0 +1,51 @@
+@use 'abstracts/theme-variables' as theme;
+
+.wrapper {
+  padding: var(--unit-6);
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  color: theme.theme-color('default-500');
+}
+
+.card {
+  padding: var(--unit-6);
+  background-color: theme.theme-color('content1');
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+}
+
+.title {
+  margin: 0 0 var(--unit-4);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+}
+
+.error {
+  margin: 0 0 var(--unit-3);
+  padding: var(--unit-2);
+  font-size: 0.875rem;
+  color: theme.theme-color('danger');
+  background-color: theme.theme-color('danger-100');
+  border-radius: var(--unit-1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-3);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--unit-3);
+}
+
+.submit {
+  margin-top: var(--unit-2);
+}

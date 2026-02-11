@@ -72,3 +72,9 @@
   color: theme.theme-color('foreground');
   background-color: theme.theme-color('content2');
 }
+
+.userBlock {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-3);
+}
