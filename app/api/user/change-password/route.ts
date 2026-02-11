@@ -5,6 +5,8 @@ import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
 import { authOptions } from '@/lib/auth';
 
+type ProfileWithPassword = { password?: string };
+
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -35,19 +37,19 @@ export async function POST(request: Request) {
     }
 
     await connect();
-    const profile = await UserModel.findOne({ userId: session.user.id }).lean();
+    const profile = (await UserModel.findOne({ userId: session.user.id }).lean()) as ProfileWithPassword | null;
     if (!profile) {
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
-    const hasPassword = profile.password && typeof profile.password === 'string';
-    if (!hasPassword) {
+    const password = profile.password;
+    if (!password || typeof password !== 'string') {
       return NextResponse.json(
         { error: 'This account uses social login. Password change is not available.' },
         { status: 400 }
       );
     }
 
-    const valid = await compare(currentPassword, profile.password);
+    const valid = await compare(currentPassword, password);
     if (!valid) {
       return NextResponse.json(
         { error: 'Current password is incorrect.' },

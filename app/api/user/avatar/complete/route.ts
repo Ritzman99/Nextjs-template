@@ -81,12 +81,12 @@ export async function POST(request: Request) {
     }
 
     await connect();
-    const profile = await UserModel.findOne({ userId: session.user.id }).lean();
+    const profile = (await UserModel.findOne({ userId: session.user.id }).lean()) as ProfileDoc | null;
     if (!profile) {
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     }
 
-    const oldKey = (profile as ProfileDoc).avatarKey;
+    const oldKey = profile.avatarKey;
     if (oldKey && oldKey !== key) {
       try {
         await deleteAvatar(oldKey);

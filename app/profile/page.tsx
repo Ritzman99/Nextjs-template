@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
@@ -43,7 +43,7 @@ export default function ProfilePage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  async function fetchProfile() {
+  const fetchProfile = useCallback(async () => {
     const res = await fetch('/api/user');
     if (res.status === 401) {
       router.replace('/auth/signin?callbackUrl=/profile');
@@ -52,7 +52,7 @@ export default function ProfilePage() {
     const data = await res.json();
     if (data && !data.error) setUser(data);
     return data;
-  }
+  }, [router]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -73,7 +73,7 @@ export default function ProfilePage() {
     return () => {
       cancelled = true;
     };
-  }, [status, router]);
+  }, [status, router, fetchProfile]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

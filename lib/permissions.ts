@@ -110,7 +110,7 @@ function getContextValue(
   key: string,
   context: PermissionContext & { userId: string }
 ): unknown {
-  if (key in context) return (context as Record<string, unknown>)[key];
+  if (key in context) return (context as unknown as Record<string, unknown>)[key];
   return context.attributes?.[key];
 }
 
