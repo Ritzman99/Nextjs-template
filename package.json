@@ -14,6 +14,7 @@
     "seed:alpha-news": "node scripts/seedAlphaFeatureChannel.cjs && node scripts/seedAlphaFeatureArticles.cjs",
     "seed:admin": "node scripts/seedAdmin.cjs",
     "seed:roles": "node scripts/seedSecurityRoles.cjs",
+    "seed:sections": "node scripts/seedSections.cjs",
     "test:permissions": "node --loader ts-node/esm --test tests/permissions.test.ts"
   },
   "dependencies": {

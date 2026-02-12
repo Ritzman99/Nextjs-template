@@ -24,6 +24,8 @@ export interface TopNavProps {
 export function TopNav({ brand = 'App', items }: TopNavProps) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === 'admin';
+  const navItems = isAdmin ? [...items, { href: '/admin', label: 'Admin' }] : items;
 
   return (
     <nav className={styles.wrapper} aria-label="Main navigation">
@@ -31,7 +33,7 @@ export function TopNav({ brand = 'App', items }: TopNavProps) {
         {brand}
       </Link>
       <ul className={styles.list}>
-        {items.map((item) => {
+        {navItems.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
           return (
             <li key={item.href} className={styles.item}>

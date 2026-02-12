@@ -1,0 +1,147 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  margin-left: var(--sidebar-width);
+  padding: var(--unit-6) var(--unit-8);
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 var(--unit-4);
+  color: theme.theme-color('foreground');
+}
+
+.pageDescription {
+  font-size: 1rem;
+  color: theme.theme-color('default-500');
+  margin: 0 0 var(--unit-8);
+  line-height: 1.5;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: var(--unit-8) 0 var(--unit-3);
+  color: theme.theme-color('foreground');
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--unit-4);
+  margin-top: var(--unit-6);
+}
+
+.card {
+  display: block;
+  padding: var(--unit-4);
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-4);
+  background-color: theme.theme-color('content1');
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: theme.theme-color('default-400');
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 var(--unit-2);
+  color: theme.theme-color('foreground');
+}
+
+.cardDescription {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+  line-height: 1.4;
+}
+
+.forbidden {
+  padding: var(--unit-8);
+  text-align: center;
+  color: theme.theme-color('default-500');
+}
+
+// Tables and forms in admin
+.tableWrap {
+  overflow-x: auto;
+  margin-bottom: var(--unit-6);
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-4);
+}
+
+.formSection {
+  margin-bottom: var(--unit-8);
+}
+
+.formRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-4);
+  margin-bottom: var(--unit-4);
+  max-width: 480px;
+}
+
+.formActions {
+  display: flex;
+  gap: var(--unit-3);
+  margin-top: var(--unit-6);
+}
+
+.permissionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--unit-3);
+  margin-top: var(--unit-2);
+}
+
+.permissionSection {
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  padding: var(--unit-3);
+  background: theme.theme-color('content1');
+}
+
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--unit-2) var(--unit-4);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('primary');
+  border-radius: var(--unit-2);
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: theme.theme-color('primary-hover');
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: var(--unit-4);
+  }
+}
