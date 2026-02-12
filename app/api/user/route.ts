@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import { getServerSession } from 'next-auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
@@ -7,7 +8,35 @@ import { isS3Configured, getAvatarSignedUrl, deleteAvatar } from '@/lib/s3';
 import type { User } from '@/types/user';
 import type { IUser } from '@/models/User';
 
-type ProfileDoc = Pick<IUser, 'userId' | 'email' | 'name' | 'image' | 'avatar' | 'avatarKey' | 'role' | 'firstName' | 'lastName' | 'gender' | 'address' | 'age' | 'username' | 'region' | 'state' | 'timezone'>;
+type ProfileDoc = Pick<
+  IUser,
+  | 'userId'
+  | 'email'
+  | 'name'
+  | 'image'
+  | 'avatar'
+  | 'avatarKey'
+  | 'role'
+  | 'companyId'
+  | 'locationId'
+  | 'teamId'
+  | 'securityRoleId'
+  | 'roleAssignments'
+  | 'firstName'
+  | 'lastName'
+  | 'gender'
+  | 'address'
+  | 'age'
+  | 'username'
+  | 'region'
+  | 'state'
+  | 'timezone'
+>;
+
+function toIdString(value?: { toString(): string } | string | null): string | null {
+  if (!value) return null;
+  return typeof value === 'string' ? value : value.toString();
+}
 
 async function profileToUser(doc: ProfileDoc): Promise<User> {
   const cdnUrl = process.env.NEXT_PUBLIC_AVATAR_CDN_URL;
@@ -23,6 +52,24 @@ async function profileToUser(doc: ProfileDoc): Promise<User> {
     email: doc.email,
     role: doc.role ?? 'user',
     avatar,
+    companyId: toIdString(doc.companyId),
+    locationId: toIdString(doc.locationId),
+    teamId: toIdString(doc.teamId),
+    securityRoleId: toIdString(doc.securityRoleId),
+    roleAssignments: doc.roleAssignments?.flatMap((assignment) => {
+      const securityRoleId = toIdString(assignment.securityRoleId);
+      if (!securityRoleId) return [];
+      return [
+        {
+          securityRoleId,
+          companyId: toIdString(assignment.companyId),
+          locationId: toIdString(assignment.locationId),
+          teamId: toIdString(assignment.teamId),
+          active: assignment.active ?? true,
+          overrides: assignment.overrides ?? undefined,
+        },
+      ];
+    }),
     firstName: doc.firstName ?? null,
     lastName: doc.lastName ?? null,
     gender: doc.gender ?? null,
@@ -69,6 +116,8 @@ const ALLOWED_KEYS = [
   'email',
 ] as const;
 
+const ADMIN_KEYS = ['companyId', 'locationId', 'teamId', 'securityRoleId'] as const;
+
 export async function PATCH(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -77,11 +126,17 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
     const updates: Record<string, unknown> = {};
-    for (const key of ALLOWED_KEYS) {
+    const isAdmin = session.user.role === 'admin';
+    const allowedKeys = isAdmin ? [...ALLOWED_KEYS, ...ADMIN_KEYS] : ALLOWED_KEYS;
+    for (const key of allowedKeys) {
       if (!(key in body)) continue;
       const v = body[key];
       if (v === null || v === undefined) {
         updates[key] = null;
+      } else if (ADMIN_KEYS.includes(key as (typeof ADMIN_KEYS)[number])) {
+        if (typeof v === 'string' && mongoose.isValidObjectId(v)) {
+          updates[key] = new mongoose.Types.ObjectId(v);
+        }
       } else if (key === 'age') {
         const n = typeof v === 'string' ? parseInt(v, 10) : Number(v);
         updates[key] = Number.isNaN(n) ? null : n;

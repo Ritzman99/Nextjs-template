@@ -7,6 +7,10 @@ export interface SessionUser {
   email: string | null;
   role: string;
   avatar: string | null;
+  companyId?: string | null;
+  locationId?: string | null;
+  teamId?: string | null;
+  securityRoleId?: string | null;
 }
 
 /**
@@ -19,6 +23,11 @@ export interface User {
   email: string | null;
   role: string;
   avatar: string | null;
+  companyId?: string | null;
+  locationId?: string | null;
+  teamId?: string | null;
+  securityRoleId?: string | null;
+  roleAssignments?: RoleAssignment[];
 
   firstName?: string | null;
   lastName?: string | null;
@@ -29,4 +38,13 @@ export interface User {
   region?: string | null;
   state?: string | null;
   timezone?: string | null;
+}
+
+export interface RoleAssignment {
+  securityRoleId: string;
+  companyId?: string | null;
+  locationId?: string | null;
+  teamId?: string | null;
+  active?: boolean;
+  overrides?: Record<string, unknown>;
 }

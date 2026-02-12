@@ -72,11 +72,24 @@ export const authOptions: NextAuthOptions = {
         await connect();
         const profile = await UserModel.findOne({ userId: user.id }).lean();
         if (profile) {
-          token.role = (profile as { role?: string }).role ?? 'user';
-          token.avatar = (profile as { avatar?: string; image?: string }).avatar ?? (profile as { image?: string }).image ?? null;
+          const role = (profile as { role?: string }).role ?? 'user';
+          const avatar =
+            (profile as { avatar?: string; image?: string }).avatar ??
+            (profile as { image?: string }).image ??
+            null;
+          token.role = role;
+          token.avatar = avatar;
+          token.companyId = (profile as { companyId?: { toString(): string } | null }).companyId?.toString() ?? null;
+          token.locationId = (profile as { locationId?: { toString(): string } | null }).locationId?.toString() ?? null;
+          token.teamId = (profile as { teamId?: { toString(): string } | null }).teamId?.toString() ?? null;
+          token.securityRoleId = (profile as { securityRoleId?: { toString(): string } | null }).securityRoleId?.toString() ?? null;
         } else {
           token.role = 'user';
           token.avatar = token.picture ?? null;
+          token.companyId = null;
+          token.locationId = null;
+          token.teamId = null;
+          token.securityRoleId = null;
         }
       }
       return token;
@@ -86,6 +99,10 @@ export const authOptions: NextAuthOptions = {
         session.user.id = (token.id ?? token.sub) as string;
         session.user.role = (token.role as string) ?? 'user';
         session.user.avatar = (token.avatar as string | null) ?? (token.picture as string | null) ?? null;
+        session.user.companyId = (token.companyId as string | null) ?? null;
+        session.user.locationId = (token.locationId as string | null) ?? null;
+        session.user.teamId = (token.teamId as string | null) ?? null;
+        session.user.securityRoleId = (token.securityRoleId as string | null) ?? null;
       }
       return session;
     },

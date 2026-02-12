@@ -12,7 +12,9 @@
     "seed:ts": "npx ts-node --loader ts-node/esm scripts/seedRedDragonInn.ts",
     "seed:tools": "node scripts/seedTools.cjs",
     "seed:alpha-news": "node scripts/seedAlphaFeatureChannel.cjs && node scripts/seedAlphaFeatureArticles.cjs",
-    "seed:admin": "node scripts/seedAdmin.cjs"
+    "seed:admin": "node scripts/seedAdmin.cjs",
+    "seed:roles": "node scripts/seedSecurityRoles.cjs",
+    "test:permissions": "node --loader ts-node/esm --test tests/permissions.test.ts"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.10.0",
@@ -33,7 +35,7 @@
     "emoji-picker-react": "^4.17.3",
     "fast-xml-parser": "^5.3.3",
     "lucide-react": "^0.555.0",
-    "mongodb": "^7.1.0",
+    "mongodb": "^6.12.0",
     "mongoose": "^8.17.0",
     "next": "^15.5.2",
     "next-auth": "^4.24.7",
