@@ -1,0 +1,36 @@
+@use 'abstracts/theme-variables' as theme;
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+
+  &[style*='--container-padding'] {
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+}
+
+.sm {
+  max-width: 640px;
+}
+.md {
+  max-width: 768px;
+}
+.lg {
+  max-width: 1024px;
+}
+.xl {
+  max-width: 1280px;
+}
+.full {
+  max-width: 100%;
+}
+
+@for $i from 2 through 8 {
+  .padding#{$i} {
+    padding-left: var(--unit-#{$i});
+    padding-right: var(--unit-#{$i});
+  }
+}

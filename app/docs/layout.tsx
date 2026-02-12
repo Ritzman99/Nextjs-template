@@ -7,17 +7,31 @@ export default function DocsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const sidebarLinks = COMPONENT_DOCS.map((doc) => ({
-    href: `/docs/components/${doc.slug}`,
-    label: doc.name,
-  }));
+  const layoutDocs = COMPONENT_DOCS.filter((doc) => doc.category === 'layout');
+  const componentDocs = COMPONENT_DOCS.filter((doc) => doc.category !== 'layout');
+
+  const groups = [
+    {
+      label: 'Layout',
+      links: layoutDocs.map((doc) => ({
+        href: `/docs/components/${doc.slug}`,
+        label: doc.name,
+      })),
+    },
+    {
+      label: 'Components',
+      links: componentDocs.map((doc) => ({
+        href: `/docs/components/${doc.slug}`,
+        label: doc.name,
+      })),
+    },
+  ].filter((g) => g.links.length > 0);
 
   return (
     <div className={styles.layout}>
       <Sidebar
         overviewLink={{ href: '/docs', label: 'Overview' }}
-        groupLabel="Components"
-        links={sidebarLinks}
+        groups={groups}
         ariaLabel="Component docs"
       />
       <main className={styles.main}>{children}</main>

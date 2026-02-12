@@ -1,0 +1,9 @@
+// Motion tokens for consistent transitions and animations.
+// Overridden in base when prefers-reduced-motion: reduce.
+
+:root {
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-ease: ease-out;
+}

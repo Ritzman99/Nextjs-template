@@ -13,6 +13,7 @@
   padding: var(--unit-3) var(--unit-6);
   background-color: theme.theme-color('content1');
   border-bottom: 1px solid theme.theme-color('divider');
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   min-height: var(--unit-12);
 }
 

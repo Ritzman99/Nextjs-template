@@ -7,6 +7,15 @@
   --sidebar-width: 260px;
 }
 
+// Respect reduced motion: make transitions effectively instant
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0ms;
+    --motion-duration-normal: 0ms;
+    --motion-duration-slow: 0ms;
+  }
+}
+
 body {
   color: var(--theme-foreground);
   background-color: var(--theme-background);

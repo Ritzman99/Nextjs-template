@@ -19,6 +19,14 @@
   gap: var(--unit-2);
 }
 
+.sidebarGroup {
+  margin-top: var(--unit-2);
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
 .sidebarGroupLabel {
   font-size: 0.75rem;
   font-weight: 600;
@@ -27,6 +35,10 @@
   color: theme.theme-color('default-500');
   margin-top: var(--unit-2);
   margin-bottom: var(--unit-1);
+
+  .sidebarGroup:first-of-type & {
+    margin-top: 0;
+  }
 }
 
 .sidebarList {

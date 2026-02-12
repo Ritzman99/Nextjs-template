@@ -1,3 +1,11 @@
+// Optional low-opacity dot pattern (theme-neutral; works in light and dark)
+$dot-pattern-url: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='4' cy='4' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='14' cy='4' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='4' cy='14' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='14' cy='14' r='0.6' fill='black' fill-opacity='0.04'/></svg>");
+
 .contentWrap {
   padding-top: var(--top-nav-height);
+  min-height: 100vh;
+  background-color: var(--theme-content1);
+  background-image: linear-gradient(180deg, var(--theme-content1) 0%, var(--theme-content2) 100%), $dot-pattern-url;
+  background-repeat: no-repeat, repeat;
+  background-size: cover, 24px 24px;
 }

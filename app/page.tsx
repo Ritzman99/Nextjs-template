@@ -2,7 +2,7 @@ import styles from "./page.module.scss";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main className={`${styles.main} diagonal-bg fade-in`}>
       <h1 className={styles.title}>
         Next.js Template
       </h1>

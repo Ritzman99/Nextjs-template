@@ -23,7 +23,15 @@ import {
   Table,
   User,
 } from '@/components/ui';
-import { TopNav } from '@/components/layout';
+import {
+  TopNav,
+  Sidebar,
+  Stack,
+  Cluster,
+  Container,
+  Grid,
+  Split,
+} from '@/components/layout';
 import type { DocVariant } from '../registry';
 
 // Components that need wrapper or different API for docs (e.g. Tabs with items/value)
@@ -73,6 +81,12 @@ const COMPONENT_MAP: Record<string, React.ComponentType<Record<string, unknown>>
   table: asDocComponent(Table),
   tabs: asDocComponent(Tabs),
   'top-nav': asDocComponent(TopNav),
+  sidebar: asDocComponent(Sidebar),
+  stack: asDocComponent(Stack),
+  cluster: asDocComponent(Cluster),
+  container: asDocComponent(Container),
+  grid: asDocComponent(Grid),
+  split: asDocComponent(Split),
   tooltip: asDocComponent(Tooltip),
   user: asDocComponent(User),
 };
@@ -400,6 +414,50 @@ export function ExampleRenderer({ slug, props: propsIn = {} }: ExampleRendererPr
         <Button size="md">Medium</Button>
         <Button size="lg">Large</Button>
       </>
+    );
+  }
+
+  // Layout components: inject demo content when children/slots are empty
+  if (slug === 'stack') {
+    const content = resolvedChildren ?? (
+      <>
+        <span>Item 1</span>
+        <span>Item 2</span>
+        <span>Item 3</span>
+      </>
+    );
+    return <Stack {...(rest as object)}>{content}</Stack>;
+  }
+  if (slug === 'cluster') {
+    const content = resolvedChildren ?? (
+      <>
+        <span>Tag 1</span>
+        <span>Tag 2</span>
+        <span>Tag 3</span>
+      </>
+    );
+    return <Cluster {...(rest as object)}>{content}</Cluster>;
+  }
+  if (slug === 'grid') {
+    const content = resolvedChildren ?? (
+      <>
+        <div style={{ padding: 8, background: 'var(--theme-content2)', borderRadius: 4 }}>1</div>
+        <div style={{ padding: 8, background: 'var(--theme-content2)', borderRadius: 4 }}>2</div>
+        <div style={{ padding: 8, background: 'var(--theme-content2)', borderRadius: 4 }}>3</div>
+      </>
+    );
+    return <Grid {...(rest as object)}>{content}</Grid>;
+  }
+  if (slug === 'split') {
+    const sidebarContent = propsIn.sidebar ?? <aside style={{ padding: 12, background: 'var(--theme-content2)', fontSize: 14 }}>Sidebar</aside>;
+    const mainContent = propsIn.main ?? <main style={{ padding: 12, fontSize: 14 }}>Main content</main>;
+    return (
+      <Split
+        side={(rest.side as 'left' | 'right') ?? 'left'}
+        sideWidth={rest.sideWidth as string | undefined}
+        sidebar={sidebarContent as ReactNode}
+        main={mainContent as ReactNode}
+      />
     );
   }
 

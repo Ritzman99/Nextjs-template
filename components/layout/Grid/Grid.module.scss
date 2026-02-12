@@ -1,0 +1,21 @@
+@use 'abstracts/theme-variables' as theme;
+
+.grid {
+  display: grid;
+  grid-template-columns: var(--grid-columns);
+  min-width: 0;
+
+  &[style*='--grid-gap'] {
+    gap: var(--grid-gap);
+  }
+}
+
+.autoFill {
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-child), 1fr));
+}
+
+@for $i from 1 through 8 {
+  .gap#{$i} {
+    gap: var(--unit-#{$i});
+  }
+}

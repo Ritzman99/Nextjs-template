@@ -1,0 +1,22 @@
+@use 'abstracts/theme-variables' as theme;
+
+.split {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+.side {
+  flex-shrink: 0;
+  width: var(--split-side-width, var(--sidebar-width));
+  min-width: 0;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sideRight {
+  flex-direction: row-reverse;
+}

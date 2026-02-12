@@ -20,7 +20,6 @@
   background-color: theme.theme-color('content1');
   border: 2px solid theme.theme-color('divider');
   border-radius: var(--unit-2);
-  min-height: var(--unit-8);
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &::placeholder {

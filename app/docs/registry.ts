@@ -24,10 +24,14 @@ export interface DocVariant {
   props?: Record<string, unknown>;
 }
 
+export type DocCategory = 'layout' | 'components';
+
 export interface ComponentDoc {
   slug: string;
   name: string;
   description: string;
+  /** When set to 'layout', appears in the Layout section; otherwise Components. */
+  category?: DocCategory;
   examples: DocExample[];
   variants?: DocVariant[];
   propsTable?: PropRow[];
@@ -36,6 +40,170 @@ export interface ComponentDoc {
 }
 
 export const COMPONENT_DOCS: ComponentDoc[] = [
+  // Layout
+  {
+    slug: 'sidebar',
+    name: 'Sidebar',
+    category: 'layout',
+    description: 'Fixed or static sidebar navigation with optional overview link and link groups.',
+    examples: [
+      {
+        title: 'Basic',
+        code: `<Sidebar
+  overviewLink={{ href: '/docs', label: 'Overview' }}
+  groupLabel="Components"
+  links={[
+    { href: '/docs/components/button', label: 'Button' },
+    { href: '/docs/components/card', label: 'Card' },
+  ]}
+/>`,
+        props: {
+          overviewLink: { href: '/docs', label: 'Overview' },
+          groupLabel: 'Components',
+          links: [
+            { href: '/docs/components/button', label: 'Button' },
+            { href: '/docs/components/card', label: 'Card' },
+          ],
+        },
+      },
+    ],
+    propsTable: [
+      { name: 'overviewLink', type: 'SidebarLink | undefined', default: '-', description: 'Optional first link (e.g. Overview).' },
+      { name: 'groupLabel', type: 'string', default: "'Components'", description: 'Label for the link group.' },
+      { name: 'links', type: 'SidebarLink[]', default: '-', description: 'Navigation links: { href, label }.' },
+      { name: 'ariaLabel', type: 'string', default: "'Sidebar navigation'", description: 'Accessible label for the nav.' },
+    ],
+  },
+  {
+    slug: 'stack',
+    name: 'Stack',
+    category: 'layout',
+    description: 'Flex container for vertical or horizontal stacking with consistent gap.',
+    examples: [
+      {
+        title: 'Vertical',
+        code: `<Stack gap={2}>
+  <span>Item 1</span>
+  <span>Item 2</span>
+  <span>Item 3</span>
+</Stack>`,
+        props: { gap: 2, children: null },
+      },
+      {
+        title: 'Horizontal',
+        code: `<Stack direction="row" gap={3} align="center">
+  <span>One</span>
+  <span>Two</span>
+  <span>Three</span>
+</Stack>`,
+        props: { direction: 'row', gap: 3, align: 'center', children: null },
+      },
+    ],
+    propsTable: [
+      { name: 'direction', type: "'row' | 'column'", default: "'column'", description: 'Flex direction.' },
+      { name: 'gap', type: 'number | string', default: '-', description: 'Gap (number → var(--unit-n), or CSS value).' },
+      { name: 'align', type: "'start' | 'center' | 'end' | 'stretch' | 'baseline'", default: '-', description: 'Align items.' },
+      { name: 'justify', type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'", default: '-', description: 'Justify content.' },
+      { name: 'wrap', type: 'boolean', default: 'false', description: 'Allow wrapping.' },
+    ],
+  },
+  {
+    slug: 'cluster',
+    name: 'Cluster',
+    category: 'layout',
+    description: 'Inline flex wrap with gap for tags, chips, or button groups.',
+    examples: [
+      {
+        title: 'Basic',
+        code: `<Cluster gap={2}>
+  <span>Tag 1</span>
+  <span>Tag 2</span>
+  <span>Tag 3</span>
+</Cluster>`,
+        props: { gap: 2, children: null },
+      },
+    ],
+    propsTable: [
+      { name: 'gap', type: 'number | string', default: '2', description: 'Gap between items.' },
+      { name: 'justify', type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly'", default: '-', description: 'Justify content.' },
+    ],
+  },
+  {
+    slug: 'container',
+    name: 'Container',
+    category: 'layout',
+    description: 'Max-width centering with horizontal padding for page content.',
+    examples: [
+      {
+        title: 'Basic',
+        code: `<Container maxWidth="lg">Centered content</Container>`,
+        props: { maxWidth: 'lg', children: 'Centered content' },
+      },
+      {
+        title: 'Sizes',
+        code: `<Container maxWidth="md" padding={4}>Medium width</Container>`,
+        props: { maxWidth: 'md', padding: 4, children: 'Medium width' },
+      },
+    ],
+    propsTable: [
+      { name: 'maxWidth', type: "'sm' | 'md' | 'lg' | 'xl' | 'full'", default: "'lg'", description: 'Max width preset.' },
+      { name: 'padding', type: 'number | string', default: '-', description: 'Horizontal padding.' },
+    ],
+  },
+  {
+    slug: 'grid',
+    name: 'Grid',
+    category: 'layout',
+    description: 'CSS Grid wrapper with configurable columns and gap.',
+    examples: [
+      {
+        title: 'Basic',
+        code: `<Grid columns={3} gap={4}>
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+</Grid>`,
+        props: { columns: 3, gap: 4, children: null },
+      },
+      {
+        title: 'Auto-fill',
+        code: `<Grid minChildWidth="200px" gap={3}>...</Grid>`,
+        props: { minChildWidth: '200px', gap: 3, children: null },
+      },
+    ],
+    propsTable: [
+      { name: 'columns', type: 'number | string', default: '3', description: 'Column count or grid template.' },
+      { name: 'gap', type: 'number | string', default: '4', description: 'Gap between cells.' },
+      { name: 'minChildWidth', type: 'string', default: '-', description: 'Min width per child for auto-fill.' },
+    ],
+  },
+  {
+    slug: 'split',
+    name: 'Split',
+    category: 'layout',
+    description: 'Two-pane layout with optional sidebar and main content area.',
+    examples: [
+      {
+        title: 'Sidebar left',
+        code: `<Split
+  sidebar={<aside>Sidebar</aside>}
+  main={<main>Main content</main>}
+/>`,
+        props: { sidebar: null, main: null },
+      },
+      {
+        title: 'With side width',
+        code: `<Split side="right" sideWidth="240px" sidebar={...} main={...} />`,
+        props: { side: 'right', sideWidth: '240px' },
+      },
+    ],
+    propsTable: [
+      { name: 'side', type: "'left' | 'right'", default: "'left'", description: 'Which side the sidebar is on.' },
+      { name: 'sideWidth', type: 'string', default: 'var(--sidebar-width)', description: 'Width of the sidebar.' },
+      { name: 'sidebar', type: 'ReactNode', default: '-', description: 'Sidebar content.' },
+      { name: 'main', type: 'ReactNode', default: '-', description: 'Main content.' },
+    ],
+  },
   {
     slug: 'accordion',
     name: 'Accordion',
@@ -735,6 +903,7 @@ export const COMPONENT_DOCS: ComponentDoc[] = [
   {
     slug: 'top-nav',
     name: 'Top Nav',
+    category: 'layout',
     description: 'Main navigation bar with brand and links; highlights the active route.',
     examples: [
       {

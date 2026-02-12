@@ -1,0 +1,64 @@
+@use 'abstracts/theme-variables' as theme;
+
+.stack {
+  display: flex;
+  min-width: 0;
+
+  &[style*='--stack-gap'] {
+    gap: var(--stack-gap);
+  }
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+// Numeric gap: --unit-1 through --unit-8 for common use
+@for $i from 1 through 8 {
+  .gap#{$i} {
+    gap: var(--unit-#{$i});
+  }
+}
+
+.alignStart {
+  align-items: flex-start;
+}
+.alignCenter {
+  align-items: center;
+}
+.alignEnd {
+  align-items: flex-end;
+}
+.alignStretch {
+  align-items: stretch;
+}
+.alignBaseline {
+  align-items: baseline;
+}
+
+.justifyStart {
+  justify-content: flex-start;
+}
+.justifyCenter {
+  justify-content: center;
+}
+.justifyEnd {
+  justify-content: flex-end;
+}
+.justifyBetween {
+  justify-content: space-between;
+}
+.justifyAround {
+  justify-content: space-around;
+}
+.justifyEvenly {
+  justify-content: space-evenly;
+}

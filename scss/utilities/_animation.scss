@@ -1,0 +1,35 @@
+// Entrance animation: subtle fade-in. Respects prefers-reduced-motion.
+
+.fade-in {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
+    animation: fadeIn var(--motion-duration-slow) var(--motion-ease) forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    opacity: 1;
+  }
+}
+
+// Optional stagger for list/grid children (e.g. doc overview cards)
+@media (prefers-reduced-motion: no-preference) {
+  @for $i from 1 through 12 {
+    .stagger-children > .fade-in:nth-child(#{$i}) {
+      animation-delay: #{$i * 40}ms;
+    }
+  }
+}

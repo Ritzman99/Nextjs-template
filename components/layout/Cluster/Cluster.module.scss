@@ -1,0 +1,36 @@
+@use 'abstracts/theme-variables' as theme;
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+
+  &[style*='--cluster-gap'] {
+    gap: var(--cluster-gap);
+  }
+}
+
+@for $i from 1 through 8 {
+  .gap#{$i} {
+    gap: var(--unit-#{$i});
+  }
+}
+
+.justifyStart {
+  justify-content: flex-start;
+}
+.justifyCenter {
+  justify-content: center;
+}
+.justifyEnd {
+  justify-content: flex-end;
+}
+.justifyBetween {
+  justify-content: space-between;
+}
+.justifyAround {
+  justify-content: space-around;
+}
+.justifyEvenly {
+  justify-content: space-evenly;
+}
