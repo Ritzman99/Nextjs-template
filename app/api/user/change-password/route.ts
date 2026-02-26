@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/auth';
 import { hash, compare } from 'bcryptjs';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
-import { authOptions } from '@/lib/auth';
 
 type ProfileWithPassword = { password?: string };
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

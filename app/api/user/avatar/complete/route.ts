@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
-import { authOptions } from '@/lib/auth';
 import { isS3Configured, getS3ConfigStatus, deleteAvatar, getAvatarSignedUrl } from '@/lib/s3';
 import type { User } from '@/types/user';
 import type { IUser } from '@/models/User';
@@ -54,7 +53,7 @@ async function profileToUser(doc: ProfileDoc): Promise<User> {
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

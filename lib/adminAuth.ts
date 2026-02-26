@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { getServerSession } from 'next-auth';
+import type { Session } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
 import SecurityRoleModel from '@/models/SecurityRole';
@@ -12,10 +12,10 @@ import { ADMIN_ROLE } from '@/lib/adminConstants';
 export { ADMIN_ROLE };
 
 export async function requireAdmin(): Promise<
-  | { session: NonNullable<Awaited<ReturnType<typeof getServerSession>>>; error: null }
+  | { session: Session; error: null }
   | { session: null; error: NextResponse }
 > {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user) {
     return { session: null, error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
   }
@@ -27,7 +27,7 @@ export async function requireAdmin(): Promise<
 }
 
 export type RequireSectionAccessResult =
-  | { session: NonNullable<Awaited<ReturnType<typeof getServerSession>>>; error: null }
+  | { session: Session; error: null }
   | { session: null; error: NextResponse };
 
 /**
@@ -38,7 +38,7 @@ export async function requireSectionAccess(
   sectionId: SectionId,
   action: string
 ): Promise<RequireSectionAccessResult> {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return { session: null, error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
   }

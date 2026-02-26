@@ -1,21 +1,19 @@
-import type { NextAuthOptions } from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { compare } from 'bcryptjs';
+import authConfig from './auth.config';
 import { clientPromise } from '@/lib/db';
 import connect from '@/lib/mongoose';
 import UserModel, { type IUser } from '@/models/User';
 
-export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(clientPromise) as NextAuthOptions['adapter'],
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  ...authConfig,
+  adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-  pages: {
-    signIn: '/auth/signin',
   },
   providers: [
     Credentials({
@@ -26,9 +24,9 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
         await connect();
-        const profile = await UserModel.findOne({ email: credentials.email }).lean() as (IUser & { _id: { toString(): string } }) | null;
+        const profile = await UserModel.findOne({ email: credentials.email as string }).lean() as (IUser & { _id: { toString(): string } }) | null;
         if (!profile?.password) return null;
-        const ok = await compare(credentials.password, profile.password);
+        const ok = await compare(credentials.password as string, profile.password);
         if (!ok) return null;
         const userId = profile.userId ?? profile._id.toString();
         const name = profile.name ?? (profile.firstName && profile.lastName ? `${profile.firstName} ${profile.lastName}`.trim() : null) ?? profile.email;
@@ -41,8 +39,8 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      clientId: process.env.AUTH_GOOGLE_ID ?? process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? process.env.GOOGLE_CLIENT_SECRET ?? '',
     }),
   ],
   callbacks: {
@@ -107,6 +105,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-};
-
-export const authHandler = NextAuth(authOptions);
+});

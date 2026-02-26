@@ -1,5 +1,5 @@
 // Page-level layout and typography (component module)
-@use 'abstracts/theme-variables' as theme;
+@use '../scss/abstracts/theme-variables' as theme;
 
 .main {
   display: flex;

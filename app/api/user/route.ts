@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
-import { authOptions } from '@/lib/auth';
 import { ADMIN_ROLE } from '@/lib/adminConstants';
 import { isS3Configured, getAvatarSignedUrl, deleteAvatar } from '@/lib/s3';
 import type { User } from '@/types/user';
@@ -84,7 +83,7 @@ async function profileToUser(doc: ProfileDoc): Promise<User> {
 }
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -120,7 +119,7 @@ const ALLOWED_KEYS = [
 const ADMIN_KEYS = ['companyId', 'locationId', 'teamId', 'securityRoleId'] as const;
 
 export async function PATCH(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -166,7 +165,7 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

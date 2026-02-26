@@ -1,4 +1,4 @@
-@use 'abstracts/theme-variables' as theme;
+@use '../../../scss/abstracts/theme-variables' as theme;
 
 .inline {
   padding: var(--unit-1) var(--unit-2);

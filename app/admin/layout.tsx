@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/auth';
 import { Sidebar } from '@/components/layout';
-import { authOptions } from '@/lib/auth';
 import { ADMIN_ROLE } from '@/lib/adminConstants';
 import styles from './admin.module.scss';
 
@@ -39,7 +38,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user) {
     redirect('/auth/signin');
   }

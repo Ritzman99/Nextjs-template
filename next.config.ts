@@ -3,7 +3,8 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   sassOptions: {
-    includePaths: [path.join(process.cwd(), "scss")],
+    // Use forward slashes so Sass resolves paths on all platforms (Turbopack may ignore includePaths)
+    includePaths: [path.join(process.cwd(), "scss").replace(/\\/g, "/")],
   },
 };
 
