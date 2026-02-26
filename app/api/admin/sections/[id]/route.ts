@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import SectionModel from '@/models/Section';
 import SecurityRoleModel from '@/models/SecurityRole';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ISection } from '@/models/Section';
 
 function normalizeSlug(slug: string): string {
@@ -18,7 +18,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'view');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -46,7 +46,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -106,7 +106,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'delete');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {

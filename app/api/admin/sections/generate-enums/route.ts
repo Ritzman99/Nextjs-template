@@ -3,10 +3,10 @@ import path from 'path';
 import fs from 'fs/promises';
 import connect from '@/lib/mongoose';
 import SectionModel from '@/models/Section';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 
 export async function POST() {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'view');
   if (error) return error;
 
   if (process.env.NODE_ENV !== 'development') {

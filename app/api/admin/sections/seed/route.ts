@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connect from '@/lib/mongoose';
 import SectionModel from '@/models/Section';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import { SECTIONS } from '@/lib/sections';
 
 /**
@@ -9,7 +9,7 @@ import { SECTIONS } from '@/lib/sections';
  * Only allowed in development. Use to bootstrap the DB so admin CRUD and Generate Enums work.
  */
 export async function POST() {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'create');
   if (error) return error;
 
   if (process.env.NODE_ENV !== 'development') {

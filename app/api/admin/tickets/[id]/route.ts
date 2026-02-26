@@ -4,7 +4,7 @@ import connect from '@/lib/mongoose';
 import TicketModel from '@/models/Ticket';
 import TicketMessageModel from '@/models/TicketMessage';
 import UserModel from '@/models/User';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 
 async function resolveUserIdToObjectId(id: string | null): Promise<mongoose.Types.ObjectId | null> {
   if (!id || typeof id !== 'string') return null;
@@ -52,7 +52,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('tickets', 'view');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -93,7 +93,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('tickets', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {

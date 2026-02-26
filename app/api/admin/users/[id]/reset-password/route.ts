@@ -3,13 +3,13 @@ import mongoose from 'mongoose';
 import { hash } from 'bcryptjs';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('users', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id) return NextResponse.json({ error: 'Invalid id' }, { status: 400 });

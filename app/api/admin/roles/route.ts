@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connect from '@/lib/mongoose';
 import SecurityRoleModel from '@/models/SecurityRole';
 import SectionModel from '@/models/Section';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import mongoose from 'mongoose';
 
 function toId(value: unknown): mongoose.Types.ObjectId | null {
@@ -11,7 +11,7 @@ function toId(value: unknown): mongoose.Types.ObjectId | null {
 }
 
 export async function GET() {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('roles', 'view');
   if (error) return error;
   try {
     await connect();
@@ -34,7 +34,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('roles', 'create');
   if (error) return error;
   try {
     const body = await request.json();

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import LocationModel from '@/models/Location';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ILocation } from '@/models/Location';
 
 const STATUS_VALUES = ['active', 'inactive', 'archived'] as const;
@@ -21,7 +21,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('locations', 'view');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -59,7 +59,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('locations', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -110,7 +110,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('locations', 'delete');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {

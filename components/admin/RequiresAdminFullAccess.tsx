@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import type { ReactNode } from 'react';
+import { ADMIN_ROLE } from '@/lib/adminConstants';
 
 export interface RequiresAdminFullAccessProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ const defaultFallback = (
  */
 export function RequiresAdminFullAccess({ children, fallback = defaultFallback }: RequiresAdminFullAccessProps) {
   const { data: session, status } = useSession();
-  const isAdmin = (session?.user as { role?: string } | undefined)?.role === 'admin';
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === ADMIN_ROLE;
 
   if (status === 'loading') {
     return null;

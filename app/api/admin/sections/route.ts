@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import SectionModel from '@/models/Section';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ISection } from '@/models/Section';
 
 function normalizeSlug(slug: string): string {
@@ -14,7 +14,7 @@ function isValidSlug(slug: string): boolean {
 }
 
 export async function GET(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'view');
   if (error) return error;
   try {
     const { searchParams } = new URL(request.url);
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('sections', 'create');
   if (error) return error;
   try {
     const body = await request.json();

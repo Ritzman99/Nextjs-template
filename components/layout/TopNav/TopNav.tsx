@@ -7,6 +7,7 @@ import type { ReactNode } from 'react';
 import { User as UserComponent } from '@/components/ui/User';
 import { Button } from '@/components/ui/Button';
 import { ThemeSelect } from '@/components/ThemeSelect';
+import { ADMIN_ROLE } from '@/lib/adminConstants';
 import styles from './TopNav.module.scss';
 
 export interface TopNavItem {
@@ -24,7 +25,7 @@ export interface TopNavProps {
 export function TopNav({ brand = 'App', items }: TopNavProps) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const isAdmin = (session?.user as { role?: string } | undefined)?.role === 'admin';
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === ADMIN_ROLE;
   const navItems = isAdmin ? [...items, { href: '/admin', label: 'Admin' }] : items;
 
   return (

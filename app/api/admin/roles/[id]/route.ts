@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import SecurityRoleModel, { type ISecurityRole } from '@/models/SecurityRole';
 import SectionModel from '@/models/Section';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 
 function toId(value: unknown): mongoose.Types.ObjectId | null {
   if (!value || typeof value !== 'string') return null;
@@ -14,7 +14,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('roles', 'view');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -45,7 +45,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('roles', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -119,7 +119,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('roles', 'delete');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {

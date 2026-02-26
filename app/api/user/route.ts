@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
 import { authOptions } from '@/lib/auth';
+import { ADMIN_ROLE } from '@/lib/adminConstants';
 import { isS3Configured, getAvatarSignedUrl, deleteAvatar } from '@/lib/s3';
 import type { User } from '@/types/user';
 import type { IUser } from '@/models/User';
@@ -126,7 +127,7 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
     const updates: Record<string, unknown> = {};
-    const isAdmin = session.user.role === 'admin';
+    const isAdmin = session.user.role === ADMIN_ROLE;
     const allowedKeys = isAdmin ? [...ALLOWED_KEYS, ...ADMIN_KEYS] : ALLOWED_KEYS;
     for (const key of allowedKeys) {
       if (!(key in body)) continue;

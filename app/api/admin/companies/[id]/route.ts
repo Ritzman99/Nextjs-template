@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import CompanyModel from '@/models/Company';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ICompany } from '@/models/Company';
 
 const STATUS_VALUES = ['active', 'inactive', 'archived'] as const;
@@ -11,7 +11,7 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('companies', 'view');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -39,7 +39,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('companies', 'edit');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {
@@ -83,7 +83,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('companies', 'delete');
   if (error) return error;
   const { id } = await params;
   if (!id || !mongoose.isValidObjectId(id)) {

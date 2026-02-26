@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import TicketModel from '@/models/Ticket';
 import UserModel from '@/models/User';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ITicket } from '@/models/Ticket';
 
 function toSafeTicket(doc: ITicket & { _id: { toString(): string } }) {
@@ -25,7 +25,7 @@ function toSafeTicket(doc: ITicket & { _id: { toString(): string } }) {
 }
 
 export async function GET(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('tickets', 'view');
   if (error) return error;
   try {
     const { searchParams } = new URL(request.url);
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('tickets', 'create');
   if (error) return error;
   try {
     const body = await request.json();

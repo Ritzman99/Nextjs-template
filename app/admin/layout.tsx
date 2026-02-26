@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { Sidebar } from '@/components/layout';
 import { authOptions } from '@/lib/auth';
+import { ADMIN_ROLE } from '@/lib/adminConstants';
 import styles from './admin.module.scss';
 
 const adminSidebarGroups = [
@@ -43,7 +44,7 @@ export default async function AdminLayout({
     redirect('/auth/signin');
   }
   const role = (session.user as { role?: string }).role;
-  if (role !== 'admin') {
+  if (role !== ADMIN_ROLE) {
     return (
       <div className={styles.layout}>
         <div className={styles.main} style={{ marginLeft: 0 }}>

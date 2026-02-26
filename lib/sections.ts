@@ -4,6 +4,7 @@
  */
 export const SECTIONS = [
   { id: 'companies', label: 'Companies', allowedActions: ['view', 'create', 'edit', 'delete', '*'] },
+  { id: 'components', label: 'Components', allowedActions: ['view'] },
   { id: 'locations', label: 'Locations', allowedActions: ['view', 'create', 'edit', 'delete', '*'] },
   { id: 'roles', label: 'Roles', allowedActions: ['view', 'create', 'edit', 'delete', '*'] },
   { id: 'sections', label: 'Sections', allowedActions: ['view', 'create', 'edit', 'delete', '*'] },

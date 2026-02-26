@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import { profileToSafeUser } from '@/lib/adminUserHelpers';
 import type { IUser } from '@/models/User';
 
@@ -32,7 +32,7 @@ type ProfileDoc = Pick<
 >;
 
 export async function GET(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('users', 'view');
   if (error) return error;
   try {
     const { searchParams } = new URL(request.url);

@@ -5,11 +5,23 @@ import Link from 'next/link';
 import { Table, Button } from '@/components/ui';
 import styles from '../admin.module.scss';
 
+/** Display name for the hardcoded system Admin role (bypasses all security). */
+const ADMIN_ROLE_DISPLAY_NAME = 'Admin';
+
 type RoleRow = {
   id: string;
   name: string;
   scopeLevel: string;
   permissionCount: number;
+  isSystem?: boolean;
+};
+
+const ADMIN_SYSTEM_ROW: RoleRow = {
+  id: '__admin__',
+  name: ADMIN_ROLE_DISPLAY_NAME,
+  scopeLevel: 'Global',
+  permissionCount: 0,
+  isSystem: true,
 };
 
 export default function AdminRolesPage() {
@@ -24,7 +36,7 @@ export default function AdminRolesPage() {
       if (!res.ok) return;
       const data = await res.json();
       if (!cancelled) {
-        setRoles(data);
+        setRoles([ADMIN_SYSTEM_ROW, ...data]);
       }
     })().finally(() => {
       if (!cancelled) setLoading(false);
@@ -35,6 +47,7 @@ export default function AdminRolesPage() {
   }, []);
 
   async function handleDelete(id: string, name: string) {
+    if (id === ADMIN_SYSTEM_ROW.id) return;
     if (!confirm(`Delete role "${name}"?`)) return;
     setDeletingId(id);
     try {
@@ -73,25 +86,32 @@ export default function AdminRolesPage() {
           columns={[
             { key: 'name', header: 'Name', accessor: 'name' },
             { key: 'scopeLevel', header: 'Scope', accessor: 'scopeLevel' },
-            { key: 'permissionCount', header: 'Permissions', accessor: 'permissionCount' },
+            {
+              key: 'permissionCount',
+              header: 'Permissions',
+              render: (row) => (row.isSystem ? 'Full access' : row.permissionCount),
+            },
             {
               key: 'actions',
               header: 'Actions',
-              render: (row) => (
-                <>
-                  <Link href={`/admin/roles/${row.id}`} style={{ marginRight: 'var(--unit-2)' }}>Edit</Link>
-                  {' '}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    color="danger"
-                    disabled={deletingId === row.id}
-                    onClick={() => handleDelete(row.id, row.name)}
-                  >
-                    {deletingId === row.id ? 'Deleting…' : 'Delete'}
-                  </Button>
-                </>
-              ),
+              render: (row) =>
+                row.isSystem ? (
+                  <span style={{ fontSize: '0.75rem', color: 'var(--theme-default-600)' }}>System</span>
+                ) : (
+                  <>
+                    <Link href={`/admin/roles/${row.id}`} style={{ marginRight: 'var(--unit-2)' }}>Edit</Link>
+                    {' '}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      color="danger"
+                      disabled={deletingId === row.id}
+                      onClick={() => handleDelete(row.id, row.name)}
+                    >
+                      {deletingId === row.id ? 'Deleting…' : 'Delete'}
+                    </Button>
+                  </>
+                ),
             },
           ]}
         />

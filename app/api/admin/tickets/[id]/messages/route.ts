@@ -4,14 +4,14 @@ import connect from '@/lib/mongoose';
 import TicketModel from '@/models/Ticket';
 import TicketMessageModel from '@/models/TicketMessage';
 import UserModel from '@/models/User';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ITicketMessage } from '@/models/TicketMessage';
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const out = await requireAdmin();
+  const out = await requireSectionAccess('tickets', 'edit');
   if (out.error) return out.error;
   const session = out.session as { user?: { id?: string } } | null;
   const authorUserId = session?.user?.id;

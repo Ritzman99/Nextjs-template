@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import connect from '@/lib/mongoose';
 import LocationModel from '@/models/Location';
-import { requireAdmin } from '@/lib/adminAuth';
+import { requireSectionAccess } from '@/lib/adminAuth';
 import type { ILocation } from '@/models/Location';
 
 const STATUS_VALUES = ['active', 'inactive', 'archived'] as const;
@@ -23,7 +23,7 @@ type PopulatedDoc = Omit<LocationDoc, 'companyId'> & {
 };
 
 export async function GET(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('locations', 'view');
   if (error) return error;
   try {
     const { searchParams } = new URL(request.url);
@@ -82,7 +82,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { error } = await requireAdmin();
+  const { error } = await requireSectionAccess('locations', 'create');
   if (error) return error;
   try {
     const body = await request.json();
