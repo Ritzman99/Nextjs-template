@@ -22,7 +22,7 @@ export async function GET(
     return NextResponse.json({ error: 'Invalid conversation id' }, { status: 400 });
   }
   try {
-    const userObjectId = await getCurrentUserObjectId(session.user.id);
+    const userObjectId = await getCurrentUserObjectId(session.user.id, (session.user as { email?: string | null }).email);
     if (!userObjectId) {
       return NextResponse.json({ error: 'User profile not found' }, { status: 403 });
     }

@@ -1,7 +1,10 @@
 export { InboxSidebar } from './InboxSidebar';
-export { ComposeModal } from './ComposeModal';
+export { InboxSidebarProvider, useInboxSidebar } from './InboxSidebarContext';
+export { InboxSidebarToggle } from './InboxSidebarToggle';
+export { LabelPicker } from './LabelPicker';
+export { ComposeForm } from './ComposeForm';
+export type { SuggestionItem } from './ComposeForm';
 export { ConversationList } from './ConversationList';
 export type { ConversationItem } from './ConversationList';
 export { MessageThread } from './MessageThread';
 export type { MessageItem } from './MessageThread';
-export type { SuggestionItem } from './ComposeModal';

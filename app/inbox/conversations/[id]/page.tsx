@@ -1,20 +1,32 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { ArrowLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui';
-import { MessageThread } from '@/components/inbox';
+import { MessageThread, InboxSidebarToggle, LabelPicker } from '@/components/inbox';
 import type { MessageItem } from '@/components/inbox';
 import styles from '../../inbox.module.scss';
+
+const FOLDER_LABELS: Record<string, string> = {
+  inbox: 'Inbox',
+  sent: 'Sent',
+  starred: 'Starred',
+  draft: 'Draft',
+  trash: 'Trash',
+};
 
 export default function InboxConversationPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const id = params?.id as string | undefined;
+  const folder = searchParams?.get('folder') ?? 'inbox';
+  const backHref = folder === 'inbox' ? '/inbox' : `/inbox?folder=${folder}`;
+  const backLabel = FOLDER_LABELS[folder] ?? 'Inbox';
 
   const [conversation, setConversation] = useState<{
     id: string;
@@ -87,7 +99,7 @@ export default function InboxConversationPage() {
   }
 
   if (!id) {
-    router.replace('/inbox');
+    router.replace(backHref);
     return null;
   }
 
@@ -103,7 +115,7 @@ export default function InboxConversationPage() {
     return (
       <div className={styles.detailPanel}>
         <div className={styles.emptyState}>Conversation not found.</div>
-        <Link href="/inbox">Back to Inbox</Link>
+        <Link href={backHref}>Back to {backLabel}</Link>
       </div>
     );
   }
@@ -111,10 +123,11 @@ export default function InboxConversationPage() {
   return (
     <div className={styles.detailPanel}>
       <header className={styles.detailHeader}>
+        <InboxSidebarToggle />
         <Link
-          href="/inbox"
+          href={backHref}
           className={styles.detailBack}
-          aria-label="Back to Inbox"
+          aria-label={`Back to ${backLabel}`}
         >
           <ArrowLeft size={20} aria-hidden />
         </Link>
@@ -122,20 +135,27 @@ export default function InboxConversationPage() {
           {conversation.subject || '(No subject)'}
         </h1>
         {state && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={toggleStar}
-            disabled={togglingStar}
-            aria-label={state.starred ? 'Unstar' : 'Star'}
-          >
-            <Star
-              size={20}
-              aria-hidden
-              className={state.starred ? styles.starFilled : ''}
+          <>
+            <LabelPicker
+              conversationId={conversation.id}
+              labels={state.labels}
+              onLabelsChange={(labels) => setState((s) => (s ? { ...s, labels } : s))}
             />
-          </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={toggleStar}
+              disabled={togglingStar}
+              aria-label={state.starred ? 'Unstar' : 'Star'}
+            >
+              <Star
+                size={20}
+                aria-hidden
+                className={state.starred ? styles.starFilled : ''}
+              />
+            </Button>
+          </>
         )}
       </header>
       <MessageThread

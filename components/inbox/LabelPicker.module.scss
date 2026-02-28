@@ -1,0 +1,72 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--unit-1);
+  min-width: 160px;
+  padding: var(--unit-2);
+  background: theme.theme-color('content1');
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.popoverTitle {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: theme.theme-color('default-500');
+  margin-bottom: var(--unit-2);
+  padding: 0 var(--unit-2);
+}
+
+.popoverList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.popoverItem {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  width: 100%;
+  padding: var(--unit-2);
+  border: none;
+  background: none;
+  border-radius: var(--unit-1);
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: theme.theme-color('foreground');
+  text-align: left;
+
+  &:hover:not(:disabled) {
+    background-color: theme.theme-color('content2');
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid theme.theme-color('default-400');
+  border-radius: 2px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}

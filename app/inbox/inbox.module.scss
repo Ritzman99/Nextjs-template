@@ -2,7 +2,7 @@
 
 .inboxLayout {
   display: flex;
-  min-height: calc(100vh - var(--top-nav-height, 56px));
+  min-height: calc(100vh - var(--top-nav-height, 56px) - var(--unit-3));
 }
 
 .sidebar {
@@ -262,20 +262,33 @@
   }
 }
 
+// Mobile: overlay for collapsible sidebar (shown when sidebar open)
+.sidebarOverlay {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: var(--top-nav-height, 56px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    cursor: pointer;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebarOverlayVisible {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
 @media (max-width: 768px) {
   .inboxLayout {
     flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    min-width: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: var(--unit-2);
-  }
-
-  .composeBtn {
-    margin: var(--unit-2);
   }
 }

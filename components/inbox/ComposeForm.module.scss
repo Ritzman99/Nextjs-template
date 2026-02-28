@@ -1,0 +1,130 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.formBody {
+  padding: var(--unit-4);
+  overflow-y: auto;
+  flex: 1;
+  min-width: 0;
+}
+
+.formActions {
+  padding: var(--unit-4);
+  border-top: 1px solid theme.theme-color('divider');
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--unit-2);
+}
+
+.error {
+  color: theme.theme-color('danger');
+  font-size: 0.875rem;
+  margin: 0 0 var(--unit-3);
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--unit-1);
+  color: theme.theme-color('foreground');
+}
+
+.recipientInputWrap {
+  margin-bottom: var(--unit-3);
+}
+
+.recipientRow {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.recipientTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-1);
+  margin-top: var(--unit-2);
+}
+
+.recipientTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-1);
+  padding: var(--unit-1) var(--unit-2);
+  border-radius: var(--unit-1);
+  font-size: 0.8125rem;
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('foreground');
+}
+
+.recipientTagRemove {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: theme.theme-color('default-500');
+  line-height: 1;
+
+  &:hover {
+    color: theme.theme-color('foreground');
+  }
+}
+
+.suggestionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 2px;
+  list-style: none;
+  padding: var(--unit-2);
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  background-color: theme.theme-color('content1');
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.suggestionItem {
+  display: block;
+  width: 100%;
+  padding: var(--unit-2) var(--unit-3);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--unit-1);
+  font-size: 0.9375rem;
+  text-align: left;
+  background: none;
+  color: theme.theme-color('foreground');
+
+  &:hover {
+    background-color: theme.theme-color('content2');
+  }
+}
+
+.suggestionsEmpty {
+  margin: 0;
+  padding: var(--unit-2) var(--unit-3);
+  font-size: 0.9375rem;
+  color: theme.theme-color('default-500');
+}
+
+.subjectInput {
+  margin-bottom: var(--unit-3);
+}
+
+.bodyInputWrap {
+  margin-bottom: var(--unit-3);
+}
+
+.bodyInput {
+  margin-top: var(--unit-1);
+}

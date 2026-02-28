@@ -18,6 +18,7 @@ export type SuggestionItem = {
 /**
  * Resolve a single identifier (username or email) to a User or system Contact.
  * Normalizes identifier to lowercase for comparison.
+ * All users are valid recipients (role is not considered; admins can message and be messaged).
  */
 export async function resolveRecipient(
   identifier: string
@@ -30,7 +31,7 @@ export async function resolveRecipient(
 
   const user = await UserModel.findOne({
     $or: [
-      { email: normalized },
+      { email: { $regex: new RegExp(`^${escapeRegex(normalized)}$`, 'i') } },
       { username: { $regex: new RegExp(`^${escapeRegex(normalized)}$`, 'i') } },
     ],
   })
@@ -176,19 +177,34 @@ export async function getSuggestions(
   return results;
 }
 
-/** Resolve session user id (NextAuth) to User profile _id for Mongoose. */
+/**
+ * Resolve session user id (NextAuth) to User profile _id for Mongoose.
+ * Tries _id, then userId, then (if sessionEmail provided) email match so admins
+ * and other users are found even when session.id doesn't match profile.
+ */
 export async function getCurrentUserObjectId(
-  sessionUserId: string
+  sessionUserId: string,
+  sessionEmail?: string | null
 ): Promise<mongoose.Types.ObjectId | null> {
   await connect();
   if (mongoose.isValidObjectId(sessionUserId)) {
     const u = await UserModel.findOne({ _id: new mongoose.Types.ObjectId(sessionUserId) })
       .select('_id')
       .lean();
-    return u ? (u as { _id: mongoose.Types.ObjectId })._id : null;
+    if (u) return (u as { _id: mongoose.Types.ObjectId })._id;
   }
-  const u = await UserModel.findOne({ userId: sessionUserId }).select('_id').lean();
-  return u ? (u as { _id: mongoose.Types.ObjectId })._id : null;
+  const byUserId = await UserModel.findOne({ userId: sessionUserId }).select('_id').lean();
+  if (byUserId) return (byUserId as { _id: mongoose.Types.ObjectId })._id;
+  if (sessionEmail && sessionEmail.trim()) {
+    const normalized = sessionEmail.trim().toLowerCase();
+    const byEmail = await UserModel.findOne({
+      email: { $regex: new RegExp(`^${escapeRegex(normalized)}$`, 'i') },
+    })
+      .select('_id')
+      .lean();
+    if (byEmail) return (byEmail as { _id: mongoose.Types.ObjectId })._id;
+  }
+  return null;
 }
 
 async function getUserObjectId(sessionUserId: string): Promise<mongoose.Types.ObjectId | null> {

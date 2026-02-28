@@ -1,10 +1,44 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { InboxSidebar, ComposeModal } from '@/components/inbox';
+import { InboxSidebar, InboxSidebarProvider, useInboxSidebar } from '@/components/inbox';
 import styles from './inbox.module.scss';
+
+function InboxLayoutContent({ children }: { children: React.ReactNode }) {
+  const { sidebarOpen, setSidebarOpen } = useInboxSidebar();
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSidebarOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarOpen, setSidebarOpen]);
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [sidebarOpen]);
+
+  return (
+    <div className={styles.inboxLayout}>
+      <div
+        className={`${styles.sidebarOverlay} ${sidebarOpen ? styles.sidebarOverlayVisible : ''}`}
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+      />
+      <InboxSidebar />
+      <main className={styles.main}>{children}</main>
+    </div>
+  );
+}
 
 export default function InboxLayout({
   children,
@@ -13,7 +47,6 @@ export default function InboxLayout({
 }) {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [composeOpen, setComposeOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -35,14 +68,8 @@ export default function InboxLayout({
   }
 
   return (
-    <div className={styles.inboxLayout}>
-      <InboxSidebar onCompose={() => setComposeOpen(true)} />
-      <main className={styles.main}>{children}</main>
-      <ComposeModal
-        open={composeOpen}
-        onClose={() => setComposeOpen(false)}
-        onSent={() => window.location.reload()}
-      />
-    </div>
+    <InboxSidebarProvider>
+      <InboxLayoutContent>{children}</InboxLayoutContent>
+    </InboxSidebarProvider>
   );
 }

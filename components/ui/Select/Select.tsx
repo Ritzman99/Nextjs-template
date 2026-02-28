@@ -4,6 +4,13 @@ import type { SelectHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 import styles from './Select.module.scss';
 
+const PASSWORD_MANAGER_IGNORE = {
+  'data-form-type': 'other',
+  'data-1p-ignore': true,
+  'data-lpignore': 'true',
+  'data-bwignore': true,
+} as const;
+
 export interface SelectOption {
   value: string;
   label: string;
@@ -28,11 +35,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
     value,
     id: idProp,
     className = '',
+    autoComplete = 'off',
     ...rest
   },
   ref
 ) {
   const id = idProp ?? `select-${Math.random().toString(36).slice(2, 9)}`;
+  const pmIgnore = autoComplete === 'off' ? PASSWORD_MANAGER_IGNORE : {};
 
   return (
     <div className={styles.wrapper}>
@@ -45,10 +54,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         ref={ref}
         id={id}
         value={value ?? ''}
+        autoComplete={autoComplete}
         className={`${styles.select} ${error ? styles.error : ''} ${className}`.trim()}
         onChange={(e) => onChange?.(e.target.value)}
         aria-invalid={!!error}
         {...rest}
+        {...pmIgnore}
       >
         {placeholder != null && (
           <option value="" disabled>

@@ -30,6 +30,27 @@
 
 .rowUnread {
   background-color: theme.theme-color('content2');
+
+  .sender,
+  .subject {
+    font-weight: 600;
+  }
+}
+
+.unreadDot,
+.unreadDotPlaceholder {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.unreadDot {
+  background-color: theme.theme-color('primary');
+}
+
+.unreadDotPlaceholder {
+  background-color: transparent;
 }
 
 .rowSelected {

@@ -44,16 +44,18 @@ function clearCustomThemeFromDom(): void {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>(() => {
-    const stored = getStoredTheme();
-    return stored ?? DEFAULT_THEME;
-  });
+  // Use DEFAULT_THEME for initial render so server and client match (avoid hydration error).
+  // Sync from localStorage in useEffect after mount.
+  const [theme, setThemeState] = useState<ThemeId>(DEFAULT_THEME);
 
   useEffect(() => {
     const stored = getStoredTheme();
-    if (stored && typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', stored);
-      if (stored === 'custom') applyCustomThemeToDom(getStoredCustomTheme());
+    if (stored) {
+      setThemeState(stored);
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-theme', stored);
+        if (stored === 'custom') applyCustomThemeToDom(getStoredCustomTheme());
+      }
     }
   }, []);
 

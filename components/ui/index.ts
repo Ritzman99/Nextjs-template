@@ -27,6 +27,8 @@ export { Link } from './Link';
 export { NumberInput } from './NumberInput';
 export { Progress } from './Progress';
 export { Radio } from './Radio';
+export { RichTextEditor } from './RichTextEditor';
+export type { RichTextEditorProps } from './RichTextEditor';
 export { Select } from './Select';
 export { Slider } from './Slider';
 export { Spinner } from './Spinner';

@@ -1,0 +1,23 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--unit-2);
+  border: none;
+  background: none;
+  color: theme.theme-color('foreground');
+  cursor: pointer;
+  border-radius: var(--unit-1);
+
+  &:hover {
+    background-color: theme.theme-color('content2');
+  }
+}
+
+@media (max-width: 767px) {
+  .toggle {
+    display: inline-flex;
+  }
+}

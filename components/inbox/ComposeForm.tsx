@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Modal, Form, Button, Input, Textarea } from '@/components/ui';
+import { Form, Button, Input, RichTextEditor } from '@/components/ui';
 import { X } from 'lucide-react';
-import styles from './ComposeModal.module.scss';
+import styles from './ComposeForm.module.scss';
 
 export type SuggestionItem = {
   type: 'user' | 'contact';
@@ -12,13 +12,18 @@ export type SuggestionItem = {
   identifier: string;
 };
 
-export interface ComposeModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSent: () => void;
+export interface ComposeFormProps {
+  onSent: (data: { id: string }) => void;
+  onCancel?: () => void;
 }
 
-export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
+function stripEmptyHtml(html: string): string {
+  const t = html?.trim() ?? '';
+  if (!t || t === '<p></p>' || t === '<p><br></p>') return '';
+  return t;
+}
+
+export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
   const [toInput, setToInput] = useState('');
   const [toList, setToList] = useState<Array<{ id: string; type: 'user' | 'contact'; displayName: string; identifier: string }>>([]);
   const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
@@ -31,18 +36,8 @@ export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!open) {
-      setToInput('');
-      setToList([]);
-      setSubject('');
-      setBody('');
-      setError(null);
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
     fetchSuggestions('');
-  }, [open]);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -68,12 +63,11 @@ export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
   }
 
   useEffect(() => {
-    if (!open) return;
     const t = setTimeout(() => {
       fetchSuggestions(toInput.trim());
     }, 200);
     return () => clearTimeout(t);
-  }, [toInput, open]);
+  }, [toInput]);
 
   function addRecipient(s: SuggestionItem) {
     if (toList.some((r) => r.identifier === s.identifier || (r.type === 'user' && r.id === s.id))) return;
@@ -153,7 +147,7 @@ export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
         body: JSON.stringify({
           to: recipients.map((r) => r.identifier),
           subject: subject.trim() || undefined,
-          body: body.trim() || '',
+          body: stripEmptyHtml(body) || '',
         }),
       });
       const data = await res.json();
@@ -162,99 +156,106 @@ export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
         setSending(false);
         return;
       }
-      onSent();
-      onClose();
+      onSent({ id: data.id });
     } catch {
       setError('Something went wrong.');
     }
     setSending(false);
   }
 
+  const availableSuggestions = suggestions
+    .filter((s) => !toList.some((r) => r.identifier === s.identifier))
+    .slice(0, 8);
+
   return (
-    <Modal open={open} onClose={onClose} title="New message">
-      <Form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.modalBody}>
-            {error && (
-              <p className={styles.error} role="alert">
-                {error}
-              </p>
-            )}
-            <div className={styles.recipientInputWrap}>
-              <div className={styles.recipientRow}>
-                <Input
-                  ref={inputRef}
-                  label="To"
-                  type="text"
-                  placeholder="Enter username or email"
-                  value={toInput}
-                  onChange={(e) => {
-                    setToInput(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => setShowSuggestions(true)}
-                  onKeyDown={handleKeyDown}
-                />
-                {showSuggestions && suggestions.length > 0 && (
-                  <div ref={suggestRef} className={styles.suggestionsList}>
-                    {suggestions
-                      .filter((s) => !toList.some((r) => r.identifier === s.identifier))
-                      .slice(0, 8)
-                      .map((s) => (
-                        <button
-                          key={`${s.type}-${s.id}`}
-                          type="button"
-                          className={styles.suggestionItem}
-                          onClick={() => addRecipient(s)}
-                        >
-                          {s.displayName} ({s.identifier})
-                        </button>
-                      ))}
-                  </div>
+    <Form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.formBody}>
+        {error && (
+          <p className={styles.error} role="alert">
+            {error}
+          </p>
+        )}
+        <div className={styles.recipientInputWrap}>
+          <div className={styles.recipientRow}>
+            <Input
+              ref={inputRef}
+              label="To"
+              type="text"
+              placeholder="Enter username or email"
+              value={toInput}
+              onChange={(e) => {
+                setToInput(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onKeyDown={handleKeyDown}
+            />
+            {showSuggestions && (
+              <div ref={suggestRef} className={styles.suggestionsList}>
+                {availableSuggestions.length > 0 ? (
+                  availableSuggestions.map((s) => (
+                    <button
+                      key={`${s.type}-${s.id}`}
+                      type="button"
+                      className={styles.suggestionItem}
+                      onClick={() => addRecipient(s)}
+                    >
+                      {s.displayName} ({s.identifier})
+                    </button>
+                  ))
+                ) : (
+                  <p className={styles.suggestionsEmpty}>No suggestions</p>
                 )}
               </div>
-              {toList.length > 0 && (
-                <div className={styles.recipientTags}>
-                  {toList.map((r) => (
-                    <span key={r.identifier} className={styles.recipientTag}>
-                      {r.displayName}
-                      <button
-                        type="button"
-                        className={styles.recipientTagRemove}
-                        onClick={() => removeRecipient(r.identifier)}
-                        aria-label={`Remove ${r.displayName}`}
-                      >
-                        <X size={14} />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-            <Input
-              label="Subject"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              placeholder="Subject"
-              className={styles.subjectInput}
-            />
-            <Textarea
-              label="Message"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Write your message..."
-              rows={6}
-              className={styles.bodyInput}
-            />
+            )}
           </div>
-          <div className={styles.modalActions}>
-            <Button type="button" variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" color="primary" disabled={sending}>
-              {sending ? 'Sending...' : 'Send'}
-            </Button>
+          {toList.length > 0 && (
+            <div className={styles.recipientTags}>
+              {toList.map((r) => (
+                <span key={r.identifier} className={styles.recipientTag}>
+                  {r.displayName}
+                  <button
+                    type="button"
+                    className={styles.recipientTagRemove}
+                    onClick={() => removeRecipient(r.identifier)}
+                    aria-label={`Remove ${r.displayName}`}
+                  >
+                    <X size={14} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-      </Form>
-    </Modal>
+        <Input
+          label="Subject"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          placeholder="Subject"
+          className={styles.subjectInput}
+        />
+        <div className={styles.bodyInputWrap}>
+          <span className={styles.label}>Message</span>
+          <RichTextEditor
+            value={body}
+            onChange={setBody}
+            placeholder="Write your message..."
+            disabled={sending}
+            className={styles.bodyInput}
+            minHeight="200px"
+          />
+        </div>
+      </div>
+      <div className={styles.formActions}>
+        {onCancel && (
+          <Button type="button" variant="ghost" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
+        <Button type="submit" color="primary" disabled={sending}>
+          {sending ? 'Sending...' : 'Send'}
+        </Button>
+      </div>
+    </Form>
   );
 }

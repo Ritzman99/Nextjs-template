@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ConversationList } from '@/components/inbox';
+import { ConversationList, InboxSidebarToggle } from '@/components/inbox';
 import type { ConversationItem } from '@/components/inbox';
 import { Input } from '@/components/ui';
 import styles from './inbox.module.scss';
@@ -59,6 +59,7 @@ export default function InboxPage() {
   return (
     <>
       <div className={styles.toolbar}>
+        <InboxSidebarToggle />
         <h1 className={styles.toolbarTitle}>{toolbarTitle}</h1>
         <div className={styles.searchInputWrap}>
           <Input

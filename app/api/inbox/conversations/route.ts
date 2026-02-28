@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const userObjectId = await getCurrentUserObjectId(session.user.id);
+    const userObjectId = await getCurrentUserObjectId(session.user.id, (session.user as { email?: string | null }).email);
     if (!userObjectId) {
       return NextResponse.json({ error: 'User profile not found' }, { status: 403 });
     }
@@ -103,10 +103,25 @@ export async function GET(request: Request) {
 
     const userIds = new Set<string>();
     const contactIds = new Set<string>();
+    type FirstMsg = {
+      fromType: string;
+      fromRef: mongoose.Types.ObjectId;
+      toRefs?: Array<{ type: string; ref: mongoose.Types.ObjectId }>;
+      ccRefs?: Array<{ type: string; ref: mongoose.Types.ObjectId }>;
+      body?: string;
+    };
     for (const m of latestMessages) {
-      const first = (m as { first: { fromType: string; fromRef: mongoose.Types.ObjectId } }).first;
+      const first = (m as { first: FirstMsg }).first;
       if (first.fromType === 'user') userIds.add(first.fromRef.toString());
       else contactIds.add(first.fromRef.toString());
+      for (const t of first.toRefs ?? []) {
+        if (t.type === 'user') userIds.add(t.ref.toString());
+        else contactIds.add(t.ref.toString());
+      }
+      for (const t of first.ccRefs ?? []) {
+        if (t.type === 'user') userIds.add(t.ref.toString());
+        else contactIds.add(t.ref.toString());
+      }
     }
 
     const users = await UserModel.find({ _id: { $in: Array.from(userIds).map((id) => new mongoose.Types.ObjectId(id)) } })
@@ -127,15 +142,30 @@ export async function GET(request: Request) {
       (contacts as unknown as { _id: mongoose.Types.ObjectId; displayName: string }[]).map((c) => [c._id.toString(), c.displayName])
     );
 
+    const currentUserIdStr = userObjectId.toString();
+    const nameForRef = (type: string, refId: string) =>
+      type === 'user' ? (userMap.get(refId) ?? '') : (contactMap.get(refId) ?? '');
+
     const conversations = convs.map((c) => {
       const cid = c._id.toString();
       const state = stateMap.get(cid);
-      const msg = messageByConv.get(cid);
+      const msg = messageByConv.get(cid) as FirstMsg | undefined;
+      // Show the other party: if I sent the latest message, show recipients; otherwise show sender.
       let senderName = '';
       if (msg) {
-        const fromRef = (msg as { fromRef: mongoose.Types.ObjectId; fromType: string }).fromRef?.toString();
-        const fromType = (msg as { fromType: string }).fromType;
-        senderName = fromType === 'user' ? (userMap.get(fromRef) ?? '') : (contactMap.get(fromRef) ?? '');
+        const iSentLatest = msg.fromRef?.toString() === currentUserIdStr;
+        if (iSentLatest && (msg.toRefs?.length || msg.ccRefs?.length)) {
+          const allToCc = [...(msg.toRefs ?? []), ...(msg.ccRefs ?? [])];
+          const names = allToCc
+            .filter((t) => t.ref.toString() !== currentUserIdStr)
+            .map((t) => nameForRef(t.type, t.ref.toString()))
+            .filter(Boolean);
+          senderName = [...new Set(names)].join(', ') || 'Unknown';
+        } else if (!iSentLatest) {
+          const fromRef = msg.fromRef?.toString();
+          const fromType = msg.fromType;
+          senderName = fromType === 'user' ? (userMap.get(fromRef) ?? '') : (contactMap.get(fromRef) ?? '');
+        }
       }
       return {
         id: cid,
@@ -146,7 +176,7 @@ export async function GET(request: Request) {
         readAt: state?.readAt ?? null,
         starred: state?.starred ?? false,
         labels: state?.labels ?? [],
-        snippet: msg ? String((msg as { body: string }).body).slice(0, 80) : '',
+        snippet: msg ? stripHtmlSnippet(msg.body ?? '') : '',
         senderName,
       };
     });
@@ -169,7 +199,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const userObjectId = await getCurrentUserObjectId(session.user.id);
+    const userObjectId = await getCurrentUserObjectId(session.user.id, (session.user as { email?: string | null }).email);
     if (!userObjectId) {
       return NextResponse.json({ error: 'User profile not found' }, { status: 403 });
     }
@@ -281,4 +311,12 @@ export async function POST(request: Request) {
 
 function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripHtmlSnippet(body: string): string {
+  const text = String(body ?? '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.slice(0, 80);
 }

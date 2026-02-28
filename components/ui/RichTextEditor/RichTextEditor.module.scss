@@ -1,0 +1,116 @@
+@use '../../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+  border: 2px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  background-color: theme.theme-color('content1');
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: theme.theme-color('focus');
+    box-shadow: 0 0 0 1px theme.theme-color('focus');
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: var(--unit-1) var(--unit-2);
+  border-bottom: 1px solid theme.theme-color('divider');
+  background-color: theme.theme-color('content2');
+}
+
+.toolbarBtn {
+  padding: var(--unit-1) var(--unit-2);
+  border: none;
+  border-radius: var(--unit-1);
+  background: none;
+  color: theme.theme-color('foreground');
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: theme.theme-color('content3');
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.toolbarBtnActive {
+  composes: toolbarBtn;
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('primary');
+}
+
+.editorWrap {
+  flex: 1;
+  min-height: 0;
+}
+
+.editorContent {
+  min-height: 100%;
+
+  :global(.ProseMirror) {
+    padding: var(--unit-2) var(--unit-3);
+    min-height: 80px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: theme.theme-color('foreground');
+    outline: none;
+
+    &:empty::before {
+      content: attr(data-placeholder);
+      color: theme.theme-color('default-400');
+    }
+
+    p {
+      margin: 0 0 var(--unit-2);
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul,
+    ol {
+      margin: 0 0 var(--unit-2);
+      padding-left: 1.5em;
+    }
+
+    code {
+      padding: 2px var(--unit-1);
+      border-radius: var(--unit-1);
+      background-color: theme.theme-color('content3');
+      font-size: 0.9em;
+    }
+
+    pre {
+      padding: var(--unit-2);
+      border-radius: var(--unit-1);
+      background-color: theme.theme-color('content3');
+      overflow-x: auto;
+      margin: 0 0 var(--unit-2);
+    }
+
+    blockquote {
+      margin: 0 0 var(--unit-2);
+      padding-left: var(--unit-3);
+      border-left: 3px solid theme.theme-color('divider');
+      color: theme.theme-color('default-600');
+    }
+  }
+}
+
+.editorSkeleton {
+  min-height: 80px;
+  background-color: theme.theme-color('content2');
+  border-radius: var(--unit-1);
+}

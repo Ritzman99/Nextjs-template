@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Star } from 'lucide-react';
+import { LabelPicker } from './LabelPicker';
 import styles from './ConversationList.module.scss';
 
 export interface ConversationItem {
@@ -22,6 +23,8 @@ export interface ConversationListProps {
   pagination: { page: number; limit: number; total: number; pages: number };
   currentFolder: string;
   selectedId?: string | null;
+  /** When labels change from the list row, call with conversation id and new labels (e.g. to update local state). */
+  onLabelsChange?: (id: string, labels: string[]) => void;
 }
 
 function formatTime(updatedAt: string): string {
@@ -37,6 +40,7 @@ export function ConversationList({
   pagination,
   currentFolder,
   selectedId,
+  onLabelsChange,
 }: ConversationListProps) {
   return (
     <div className={styles.wrapper}>
@@ -51,12 +55,20 @@ export function ConversationList({
             {!['inbox', 'sent', 'starred', 'draft', 'trash'].includes(currentFolder) && 'No conversations.'}
           </div>
         ) : (
-          conversations.map((c) => (
+          conversations.map((c) => {
+            const isUnread = !c.readAt;
+            return (
             <Link
               key={c.id}
-              href={`/inbox/conversations/${c.id}`}
-              className={`${styles.row} ${!c.readAt ? styles.rowUnread : ''} ${selectedId === c.id ? styles.rowSelected : ''}`}
+              href={
+                currentFolder === 'inbox'
+                  ? `/inbox/conversations/${c.id}`
+                  : `/inbox/conversations/${c.id}?folder=${currentFolder}`
+              }
+              className={`${styles.row} ${isUnread ? styles.rowUnread : ''} ${selectedId === c.id ? styles.rowSelected : ''}`}
+              aria-label={isUnread ? 'Unread conversation' : undefined}
             >
+              <span className={isUnread ? styles.unreadDot : styles.unreadDotPlaceholder} aria-hidden />
               <span className={styles.starWrap}>
                 <Star
                   size={18}
@@ -75,9 +87,24 @@ export function ConversationList({
                 </span>
               )}
               <span className={styles.subject}>{c.subject || '(No subject)'}</span>
+              <span
+                className={styles.labelPickerWrap}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                role="presentation"
+              >
+                <LabelPicker
+                  conversationId={c.id}
+                  labels={c.labels}
+                  onLabelsChange={(labels) => onLabelsChange?.(c.id, labels)}
+                />
+              </span>
               <span className={styles.time}>{formatTime(c.updatedAt)}</span>
             </Link>
-          ))
+            );
+          })
         )}
       </div>
       {pagination.total > 0 && (

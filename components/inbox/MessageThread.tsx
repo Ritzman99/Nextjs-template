@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Form, FormActions, Button, Textarea } from '@/components/ui';
+import { Form, FormActions, Button, RichTextEditor } from '@/components/ui';
 import { Send } from 'lucide-react';
+import { sanitizeHtml, isHtml } from '@/lib/sanitizeHtml';
 import styles from './MessageThread.module.scss';
 
 export interface MessageItem {
@@ -38,9 +39,14 @@ export function MessageThread({
   const [replyBody, setReplyBody] = useState('');
   const [sending, setSending] = useState(false);
 
+  function isReplyEmpty(html: string): boolean {
+    const t = html?.trim() ?? '';
+    return !t || t === '<p></p>' || t === '<p><br></p>';
+  }
+
   async function handleReply(e: React.FormEvent) {
     e.preventDefault();
-    if (!replyBody.trim() || sending) return;
+    if (isReplyEmpty(replyBody) || sending) return;
     setSending(true);
     try {
       const res = await fetch(`/api/inbox/conversations/${conversationId}/messages`, {
@@ -67,34 +73,44 @@ export function MessageThread({
     });
   }
 
+  function formatTo(msg: MessageItem): string {
+    if (!msg.toRefs?.length) return '—';
+    return msg.toRefs
+      .map((r) => r.display?.name || r.display?.email || 'Unknown')
+      .join(', ');
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.messageList}>
-        {messages.map((msg) => {
-          const isOwn = msg.fromDisplay?.id === currentUserId || msg.fromRef === currentUserId;
-          return (
-            <div
-              key={msg.id}
-              className={`${styles.bubble} ${isOwn ? styles.bubbleOwn : styles.bubbleFrom}`}
-            >
-              <div className={styles.meta}>
-                {msg.fromDisplay?.name || msg.fromDisplay?.email || 'Unknown'} · {formatTime(msg.createdAt)}
-              </div>
-              <div className={styles.body}>{msg.body}</div>
+        {messages.map((msg) => (
+          <div key={msg.id} className={styles.messageBlock}>
+            <div className={styles.messageHeader}>
+              <span><strong>From:</strong> {msg.fromDisplay?.name || msg.fromDisplay?.email || 'Unknown'}</span>
+              <span><strong>To:</strong> {formatTo(msg)}</span>
+              <span><strong>Date:</strong> {formatTime(msg.createdAt)}</span>
             </div>
-          );
-        })}
+            {isHtml(msg.body) ? (
+              <div
+                className={styles.messageBodyRich}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(msg.body) }}
+              />
+            ) : (
+              <div className={styles.messageBody}>{msg.body}</div>
+            )}
+          </div>
+        ))}
       </div>
       <Form onSubmit={handleReply} className={styles.replyForm}>
-        <Textarea
+        <RichTextEditor
           value={replyBody}
-          onChange={(e) => setReplyBody(e.target.value)}
+          onChange={setReplyBody}
           placeholder="Write a reply..."
-          rows={3}
           disabled={sending}
+          minHeight="100px"
         />
-        <FormActions>
-          <Button type="submit" color="primary" size="sm" disabled={sending || !replyBody.trim()}>
+        <FormActions className={styles.replyFormActions}>
+          <Button type="submit" color="primary" size="sm" disabled={sending || isReplyEmpty(replyBody)}>
             <Send size={16} aria-hidden />
             Send
           </Button>

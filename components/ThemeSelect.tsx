@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import {
+  DEFAULT_THEME,
   getStoredCustomTheme,
   PRESET_THEME_IDS,
   type ThemeId,
@@ -19,16 +21,25 @@ const THEME_LABELS: Record<ThemeId, string> = {
 
 export function ThemeSelect() {
   const { theme, setTheme } = useTheme();
-  const customTheme = getStoredCustomTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Before mount, render the same as server (presets only, default value) to avoid hydration mismatch.
+  const customTheme = mounted ? getStoredCustomTheme() : null;
   const hasCustomTheme =
-    customTheme && Object.keys(customTheme).length > 0;
-  const options = hasCustomTheme || theme === 'custom'
-    ? [...PRESET_THEME_IDS, 'custom']
-    : PRESET_THEME_IDS;
+    customTheme != null && Object.keys(customTheme).length > 0;
+  const options =
+    hasCustomTheme || (mounted && theme === 'custom')
+      ? [...PRESET_THEME_IDS, 'custom']
+      : PRESET_THEME_IDS;
+  const value = mounted ? theme : DEFAULT_THEME;
 
   return (
     <select
-      value={theme}
+      value={value}
       onChange={(e) => setTheme(e.target.value as ThemeId)}
       aria-label="Select theme"
     >

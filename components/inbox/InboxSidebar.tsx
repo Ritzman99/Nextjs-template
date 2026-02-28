@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui';
+import { useSearchParams, usePathname } from 'next/navigation';
 import {
   PenSquare,
   Inbox,
@@ -12,57 +12,90 @@ import {
   Trash2,
   Tag,
 } from 'lucide-react';
+import { useInboxSidebar } from './InboxSidebarContext';
 import styles from './InboxSidebar.module.scss';
 
 const FOLDERS = [
-  { href: '/inbox', folder: 'inbox', label: 'Inbox', icon: Inbox },
-  { href: '/inbox?folder=starred', folder: 'starred', label: 'Starred', icon: Star },
-  { href: '/inbox?folder=sent', folder: 'sent', label: 'Sent', icon: Send },
-  { href: '/inbox?folder=draft', folder: 'draft', label: 'Draft', icon: FileText },
-  { href: '/inbox?folder=trash', folder: 'trash', label: 'Trash', icon: Trash2 },
+  { href: '/inbox', folder: 'inbox', label: 'Inbox', icon: Inbox, showUnread: true },
+  { href: '/inbox?folder=starred', folder: 'starred', label: 'Starred', icon: Star, showUnread: false },
+  { href: '/inbox?folder=sent', folder: 'sent', label: 'Sent', icon: Send, showUnread: false },
+  { href: '/inbox?folder=draft', folder: 'draft', label: 'Draft', icon: FileText, showUnread: false },
+  { href: '/inbox?folder=trash', folder: 'trash', label: 'Trash', icon: Trash2, showUnread: false },
 ] as const;
 
-const LABELS = [
-  { label: 'Primary', value: 'Primary' },
-  { label: 'Social', value: 'Social' },
-  { label: 'Work', value: 'Work' },
-  { label: 'Friends', value: 'Friends' },
-];
+import { INBOX_LABELS } from './constants';
+
+const LABELS = INBOX_LABELS;
 
 export interface InboxSidebarProps {
-  onCompose: () => void;
+  /** Optional; reserved for future use. Compose links to /inbox/compose. */
+  onCompose?: () => void;
 }
 
-export function InboxSidebar({ onCompose }: InboxSidebarProps) {
+function closeSidebarOnMobile(setSidebarOpen: (open: boolean) => void) {
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    setSidebarOpen(false);
+  }
+}
+
+export function InboxSidebar(_props?: InboxSidebarProps) {
+  const searchParams = useSearchParams();
   const pathname = usePathname();
-  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const { sidebarOpen, setSidebarOpen } = useInboxSidebar();
   const currentFolder = searchParams?.get('folder') ?? 'inbox';
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchUnread() {
+      try {
+        const res = await fetch('/api/inbox/unread-count');
+        if (!res.ok || cancelled) return;
+        const data = await res.json();
+        if (!cancelled) setUnreadCount(typeof data.count === 'number' ? data.count : 0);
+      } catch {
+        if (!cancelled) setUnreadCount(0);
+      }
+    }
+    fetchUnread();
+    return () => { cancelled = true; };
+  }, [pathname]);
 
   return (
-    <aside className={styles.sidebar}>
+    <aside
+      className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}
+      data-open={sidebarOpen}
+    >
       <div className={styles.composeBtn}>
-        <Button
-          color="primary"
-          onClick={onCompose}
-          className={styles.composeButton}
+        <Link
+          href="/inbox/compose"
+          className={styles.composeLink}
+          onClick={() => closeSidebarOnMobile(setSidebarOpen)}
         >
           <PenSquare className={styles.composeIcon} aria-hidden />
           Compose
-        </Button>
+        </Link>
       </div>
       <div className={styles.sidebarSection}>
         <span className={styles.sidebarSectionLabel}>My Email</span>
         <ul className={styles.sidebarList}>
-          {FOLDERS.map(({ href, folder, label, icon: Icon }) => {
+          {FOLDERS.map(({ href, folder, label, icon: Icon, showUnread }) => {
             const isActive = currentFolder === folder;
+            const count = showUnread ? unreadCount : 0;
             return (
               <li key={folder}>
                 <Link
                   href={href}
                   className={isActive ? styles.sidebarLinkActive : styles.sidebarLink}
+                  onClick={() => closeSidebarOnMobile(setSidebarOpen)}
                 >
                   <Icon className={styles.folderIcon} aria-hidden size={18} />
-                  {label}
+                  <span className={styles.folderLabel}>{label}</span>
+                  {count > 0 && (
+                    <span className={styles.unreadBadge} aria-label={`${count} unread`}>
+                      {count > 99 ? '99+' : count}
+                    </span>
+                  )}
                 </Link>
               </li>
             );
@@ -77,6 +110,7 @@ export function InboxSidebar({ onCompose }: InboxSidebarProps) {
               <Link
                 href={`/inbox?label=${encodeURIComponent(value)}`}
                 className={styles.sidebarLink}
+                onClick={() => closeSidebarOnMobile(setSidebarOpen)}
               >
                 <Tag className={styles.folderIcon} aria-hidden size={18} />
                 {label}

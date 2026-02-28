@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 const topNavItems = [
   { href: "/", label: "Home" },
-  { href: "/inbox", label: "Inbox" },
   { href: "/docs", label: "Components" },
 ];
 
@@ -34,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <script
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
