@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { Input, Button } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Input, Button } from '@/components/ui';
 import styles from '../../admin.module.scss';
 
 function parseActions(value: string): string[] {
@@ -118,10 +118,9 @@ export default function AdminSectionEditPage() {
         <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionTitle}>Details</h2>
-          <div className={styles.formRow}>
+      <Form onSubmit={handleSubmit}>
+        <FormSection title="Details">
+          <FormRow>
             <Input
               label="Name"
               value={name}
@@ -142,10 +141,10 @@ export default function AdminSectionEditPage() {
               onChange={(e) => setAllowedActionsStr(e.target.value)}
               placeholder="view, create, edit, delete, *"
             />
-          </div>
-        </div>
+          </FormRow>
+        </FormSection>
 
-        <div className={styles.formActions}>
+        <FormActions>
           <Button type="submit" disabled={saving}>
             {saving ? 'Saving…' : 'Save'}
           </Button>
@@ -161,8 +160,8 @@ export default function AdminSectionEditPage() {
           >
             {deleting ? 'Deleting…' : 'Delete'}
           </Button>
-        </div>
-      </form>
+        </FormActions>
+      </Form>
     </div>
   );
 }

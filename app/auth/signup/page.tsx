@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Form, Input, Button } from '@/components/ui';
 import styles from './signup.module.scss';
 
 export default function SignUpPage() {
@@ -55,7 +54,7 @@ export default function SignUpPage() {
             {error}
           </p>
         )}
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <Form onSubmit={handleSubmit}>
           <Input
             label="Email"
             type="email"
@@ -86,7 +85,7 @@ export default function SignUpPage() {
           <Button type="submit" disabled={loading} className={styles.submit}>
             {loading ? 'Creating account...' : 'Sign up'}
           </Button>
-        </form>
+        </Form>
         <p className={styles.footer}>
           Already have an account? <Link href="/auth/signin">Sign in</Link>
         </p>

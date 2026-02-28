@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Input, Select, Button } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Input, Select, Button } from '@/components/ui';
 import styles from '../../admin.module.scss';
 
 const STATUS_OPTIONS = [
@@ -58,10 +58,9 @@ export default function AdminCompaniesNewPage() {
         <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionTitle}>Details</h2>
-          <div className={styles.formRow}>
+      <Form onSubmit={handleSubmit}>
+        <FormSection title="Details">
+          <FormRow>
             <Input
               label="Name"
               value={name}
@@ -81,18 +80,18 @@ export default function AdminCompaniesNewPage() {
               value={status}
               onChange={(v) => setStatus(v)}
             />
-          </div>
-        </div>
+          </FormRow>
+        </FormSection>
 
-        <div className={styles.formActions}>
+        <FormActions>
           <Button type="submit" disabled={saving}>
             {saving ? 'Creating…' : 'Create company'}
           </Button>
           <Button type="button" variant="ghost" onClick={() => router.push('/admin/companies')}>
             Cancel
           </Button>
-        </div>
-      </form>
+        </FormActions>
+      </Form>
     </div>
   );
 }

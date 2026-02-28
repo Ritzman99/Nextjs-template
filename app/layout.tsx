@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { TopNav } from "@/components/layout";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ToastProvider } from "@/components/ui";
 import styles from "./layout.module.scss";
 import "./globals.scss";
 
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 const topNavItems = [
   { href: "/", label: "Home" },
+  { href: "/inbox", label: "Inbox" },
   { href: "/docs", label: "Components" },
 ];
 
@@ -38,10 +40,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
         <ThemeProvider>
-          <SessionProvider>
-            <TopNav brand="Next.js Template" items={topNavItems} />
-            <div className={styles.contentWrap}>{children}</div>
-          </SessionProvider>
+          <ToastProvider>
+            <SessionProvider>
+              <TopNav brand="Next.js Template" items={topNavItems} />
+              <div className={styles.contentWrap}>{children}</div>
+            </SessionProvider>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

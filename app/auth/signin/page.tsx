@@ -4,8 +4,7 @@ import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Form, Input, Button } from '@/components/ui';
 import styles from './signin.module.scss';
 
 function SignInForm() {
@@ -57,7 +56,7 @@ function SignInForm() {
             {formError ?? 'Invalid email or password.'}
           </p>
         )}
-        <form onSubmit={handleCredentialsSubmit} className={styles.form}>
+        <Form onSubmit={handleCredentialsSubmit}>
           <Input
             label="Email"
             type="email"
@@ -79,7 +78,7 @@ function SignInForm() {
           <Button type="submit" disabled={loading} className={styles.submit}>
             {loading ? 'Signing in...' : 'Sign in'}
           </Button>
-        </form>
+        </Form>
         <div className={styles.divider}>
           <span>or</span>
         </div>

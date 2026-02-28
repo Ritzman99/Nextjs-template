@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button } from '@/components/ui';
+import { Input, Table, Button, useToast } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type CompanyRow = {
@@ -15,6 +15,7 @@ type CompanyRow = {
 type Pagination = { page: number; limit: number; total: number; pages: number };
 
 export default function AdminCompaniesPage() {
+  const toast = useToast();
   const [companies, setCompanies] = useState<CompanyRow[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
@@ -56,9 +57,10 @@ export default function AdminCompaniesPage() {
             prev ? { ...prev, total: Math.max(0, prev.total - 1) } : null
           );
         }
+        toast.toast.success('Company deleted');
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to delete');
+        toast.toast.error(data.error ?? 'Failed to delete');
       }
     } finally {
       setDeletingId(null);
@@ -67,7 +69,7 @@ export default function AdminCompaniesPage() {
 
   return (
     <div>
-      <div className={styles.formRow} style={{ maxWidth: 'none', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.pageHeaderRow}>
         <h1 className={styles.pageTitle}>Companies</h1>
         <Link href="/admin/companies/new" className={styles.primaryLink}>
           New company
@@ -77,7 +79,7 @@ export default function AdminCompaniesPage() {
         Manage companies.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)' }}>
+      <div className={styles.filterRow}>
         <Input
           placeholder="Search by name, slug…"
           value={search}
@@ -136,7 +138,7 @@ export default function AdminCompaniesPage() {
             />
           </div>
           {pagination && pagination.pages > 1 && (
-            <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+            <div className={styles.rowActions}>
               <Button
                 variant="ghost"
                 size="sm"

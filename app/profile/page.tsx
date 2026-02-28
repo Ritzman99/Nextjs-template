@@ -3,11 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { ButtonGroup } from '@/components/ui/ButtonGroup';
-import { Select } from '@/components/ui/Select';
-import { Avatar } from '@/components/ui/Avatar';
+import { Form, FormRow, FormActions, Input, Button, ButtonGroup, Select, Avatar } from '@/components/ui';
 import { ThemeBuilder } from '@/components/ThemeBuilder';
 import type { User } from '@/types/user';
 import styles from './profile.module.scss';
@@ -295,7 +291,7 @@ export default function ProfilePage() {
             {activeTab === 'details' && (
               <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>Details</h2>
-                <form onSubmit={handleSubmit} className={styles.form}>
+                <Form onSubmit={handleSubmit}>
                   <div className={styles.avatarRow}>
                     <Avatar
                       src={user.avatar}
@@ -323,7 +319,7 @@ export default function ProfilePage() {
                       </Button>
                     </div>
                   </div>
-                  <div className={styles.row}>
+                  <FormRow>
                     <Input
                       label="First name"
                       value={user.firstName ?? ''}
@@ -344,7 +340,7 @@ export default function ProfilePage() {
                       }
                       disabled={saving}
                     />
-                  </div>
+                  </FormRow>
                   <Input
                     label="Display name"
                     value={user.name ?? ''}
@@ -395,7 +391,7 @@ export default function ProfilePage() {
                     }
                     disabled={saving}
                   />
-                  <div className={styles.row}>
+                  <FormRow>
                     <Input
                       label="Age"
                       type="number"
@@ -423,8 +419,8 @@ export default function ProfilePage() {
                       }
                       disabled={saving}
                     />
-                  </div>
-                  <div className={styles.row}>
+                  </FormRow>
+                  <FormRow>
                     <Input
                       label="State"
                       value={user.state ?? ''}
@@ -446,15 +442,16 @@ export default function ProfilePage() {
                       disabled={saving}
                       placeholder="e.g. America/New_York"
                     />
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={saving}
-                    className={styles.submit}
-                  >
-                    {saving ? 'Saving...' : 'Save profile'}
-                  </Button>
-                </form>
+                  </FormRow>
+                  <FormActions>
+                    <Button
+                      type="submit"
+                      disabled={saving}
+                    >
+                      {saving ? 'Saving...' : 'Save profile'}
+                    </Button>
+                  </FormActions>
+                </Form>
               </section>
             )}
 
@@ -462,9 +459,8 @@ export default function ProfilePage() {
               <>
                 <section className={styles.section}>
                   <h2 className={styles.sectionTitle}>Security</h2>
-                  <form
+                  <Form
                     onSubmit={handleChangePassword}
-                    className={styles.form}
                   >
                     {passwordError && (
                       <p className={styles.error} role="alert">
@@ -497,15 +493,17 @@ export default function ProfilePage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       disabled={changingPassword}
                     />
-                    <Button
-                      type="submit"
-                      disabled={changingPassword}
-                    >
-                      {changingPassword
-                        ? 'Changing...'
-                        : 'Change password'}
-                    </Button>
-                  </form>
+                    <FormActions>
+                      <Button
+                        type="submit"
+                        disabled={changingPassword}
+                      >
+                        {changingPassword
+                          ? 'Changing...'
+                          : 'Change password'}
+                      </Button>
+                    </FormActions>
+                  </Form>
                 </section>
 
                 <section className={styles.section}>

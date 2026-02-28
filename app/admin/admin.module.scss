@@ -85,22 +85,28 @@
   border-radius: var(--unit-4);
 }
 
-.formSection {
-  margin-bottom: var(--unit-8);
-}
-
-.formRow {
+// Page layout (list/filter pages) – for form layout use @/components/ui Form, FormSection, FormRow, FormActions
+.pageHeaderRow {
   display: flex;
   flex-wrap: wrap;
   gap: var(--unit-4);
-  margin-bottom: var(--unit-4);
-  max-width: 480px;
+  max-width: none;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.formActions {
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-4);
+  margin-bottom: var(--unit-6);
+  max-width: none;
+}
+
+.rowActions {
   display: flex;
   gap: var(--unit-3);
-  margin-top: var(--unit-6);
+  margin-top: var(--unit-4);
 }
 
 .permissionGrid {

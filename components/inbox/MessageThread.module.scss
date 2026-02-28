@@ -1,0 +1,54 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.messageList {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--unit-4);
+}
+
+.bubble {
+  max-width: 85%;
+  padding: var(--unit-3) var(--unit-4);
+  border-radius: var(--unit-3);
+  margin-bottom: var(--unit-3);
+}
+
+.bubbleFrom {
+  margin-right: auto;
+  background-color: theme.theme-color('content3');
+}
+
+.bubbleOwn {
+  margin-left: auto;
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-contrast');
+}
+
+.meta {
+  font-size: 0.75rem;
+  margin-bottom: var(--unit-1);
+  opacity: 0.9;
+}
+
+.body {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.replyForm {
+  padding: var(--unit-3) var(--unit-4);
+  border-top: 1px solid theme.theme-color('divider');
+  background-color: theme.theme-color('content1');
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+}

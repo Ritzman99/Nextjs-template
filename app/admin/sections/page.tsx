@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button } from '@/components/ui';
+import { Input, Table, Button, useToast } from '@/components/ui';
 import { RequiresAdminFullAccess } from '@/components/admin/RequiresAdminFullAccess';
 import styles from '../admin.module.scss';
 
@@ -14,6 +14,7 @@ type SectionRow = {
 };
 
 export default function AdminSectionsPage() {
+  const toast = useToast();
   const [sections, setSections] = useState<SectionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -39,9 +40,10 @@ export default function AdminSectionsPage() {
       const res = await fetch(`/api/admin/sections/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setSections((prev) => prev.filter((s) => s.id !== id));
+        toast.toast.success('Section deleted');
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to delete');
+        toast.toast.error(data.error ?? 'Failed to delete');
       }
     } finally {
       setDeletingId(null);
@@ -66,7 +68,7 @@ export default function AdminSectionsPage() {
 
   return (
     <div>
-      <div className={styles.formRow} style={{ maxWidth: 'none', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.pageHeaderRow}>
         <h1 className={styles.pageTitle}>Sections</h1>
         <Link href="/admin/sections/new" className={styles.primaryLink}>
           New section
@@ -76,7 +78,7 @@ export default function AdminSectionsPage() {
         Permission sections used for role-based access control. Create and edit sections here; use Generate Section Enums in development to update the code file.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)' }}>
+      <div className={styles.filterRow}>
         <Input
           placeholder="Search by name, slug…"
           value={search}
@@ -86,7 +88,7 @@ export default function AdminSectionsPage() {
       </div>
 
       <RequiresAdminFullAccess>
-        <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-3)', marginBottom: 'var(--unit-6)', alignItems: 'center' }}>
+        <div className={styles.filterRow} style={{ gap: 'var(--unit-3)', marginBottom: 'var(--unit-6)', alignItems: 'center' }}>
           <Button
             variant="outline"
             disabled={generating}

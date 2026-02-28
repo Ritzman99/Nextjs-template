@@ -54,7 +54,7 @@ export default function AdminUsersPage() {
         Manage users, assign roles, and reset passwords.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)' }}>
+      <div className={styles.filterRow}>
         <Input
           placeholder="Search by email, name, username…"
           value={search}
@@ -97,7 +97,7 @@ export default function AdminUsersPage() {
             />
           </div>
           {pagination && pagination.pages > 1 && (
-            <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+            <div className={styles.rowActions}>
               <Button
                 variant="ghost"
                 size="sm"

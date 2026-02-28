@@ -1,0 +1,18 @@
+// Ensure width: 100% means "total box = 100%" (so width is effectively 100% - padding - border)
+// Universal reset so any element with width + padding doesn't overflow
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input,
+textarea,
+select {
+  box-sizing: border-box;
+}
+
+input,
+textarea {
+  min-width: 0;
+}

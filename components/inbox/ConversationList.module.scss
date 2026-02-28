@@ -1,0 +1,111 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  padding: var(--unit-3) var(--unit-4);
+  border-bottom: 1px solid theme.theme-color('divider');
+  cursor: pointer;
+  transition: background-color 0.15s;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background-color: theme.theme-color('content2');
+  }
+}
+
+.rowUnread {
+  background-color: theme.theme-color('content2');
+}
+
+.rowSelected {
+  background-color: theme.theme-color('content3');
+}
+
+.starWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+}
+
+.starOutline {
+  color: theme.theme-color('default-500');
+}
+
+.starFilled {
+  color: theme.theme-color('warning');
+  fill: theme.theme-color('warning');
+}
+
+.sender {
+  min-width: 120px;
+  max-width: 160px;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: theme.theme-color('foreground');
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.labels {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--unit-1);
+}
+
+.labelChip {
+  display: inline-flex;
+  padding: 2px var(--unit-1);
+  border-radius: var(--unit-1);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-contrast');
+}
+
+.subject {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9375rem;
+  color: theme.theme-color('foreground');
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.time {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
+}
+
+.emptyState {
+  padding: var(--unit-8);
+  text-align: center;
+  color: theme.theme-color('default-500');
+  font-size: 0.9375rem;
+}
+
+.pagination {
+  padding: var(--unit-2) var(--unit-4);
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
+  border-top: 1px solid theme.theme-color('divider');
+}

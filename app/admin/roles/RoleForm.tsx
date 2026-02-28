@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { Input, Select, Checkbox, Button } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Input, Select, Checkbox, Button } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 export type ScopeLevel = 'global' | 'company' | 'location' | 'team';
@@ -121,11 +121,10 @@ export function RoleForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       {error && <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>}
-      <div className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Details</h2>
-        <div className={styles.formRow}>
+      <FormSection title="Details">
+        <FormRow>
           <Input
             label="Name"
             value={data.name}
@@ -139,8 +138,8 @@ export function RoleForm({
             value={data.scopeLevel}
             onChange={(v) => update('scopeLevel', v as ScopeLevel)}
           />
-        </div>
-        <div className={styles.formRow}>
+        </FormRow>
+        <FormRow>
           <Input
             label="Company ID (optional)"
             value={data.companyId}
@@ -159,11 +158,10 @@ export function RoleForm({
             onChange={(e) => update('teamId', e.target.value)}
             placeholder="ObjectId"
           />
-        </div>
-      </div>
+        </FormRow>
+      </FormSection>
 
-      <div className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Permissions</h2>
+      <FormSection title="Permissions">
         <p className={styles.pageDescription} style={{ marginBottom: 'var(--unit-4)' }}>
           For each section, select allowed actions. Use * for full access to that section.
         </p>
@@ -214,9 +212,9 @@ export function RoleForm({
             })}
           </div>
         )}
-      </div>
+      </FormSection>
 
-      <div className={styles.formActions}>
+      <FormActions>
         <Button type="submit" disabled={saving}>
           {saving ? 'Saving…' : submitLabel}
         </Button>
@@ -225,7 +223,7 @@ export function RoleForm({
             Cancel
           </Button>
         )}
-      </div>
-    </form>
+      </FormActions>
+    </Form>
   );
 }

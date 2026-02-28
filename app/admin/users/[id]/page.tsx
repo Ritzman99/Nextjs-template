@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Input, Select, Button, Checkbox } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Input, Select, Button, Checkbox, useToast } from '@/components/ui';
 import type { User } from '@/types/user';
 import type { RoleAssignment } from '@/types/user';
 import styles from '../../admin.module.scss';
@@ -12,6 +12,7 @@ type RoleOption = { id: string; name: string };
 
 export default function AdminUserEditPage() {
   const params = useParams();
+  const toast = useToast();
   const id = typeof params.id === 'string' ? params.id : '';
   const [user, setUser] = useState<User | null>(null);
   const [roles, setRoles] = useState<RoleOption[]>([]);
@@ -137,9 +138,10 @@ export default function AdminUserEditPage() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to reset password');
+        toast.toast.error(data.error ?? 'Failed to reset password');
         return;
       }
+      toast.toast.success('Password reset');
       setResetPasswordOpen(false);
       setNewPassword('');
     } finally {
@@ -172,10 +174,9 @@ export default function AdminUserEditPage() {
 
       {error && <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionTitle}>Profile</h2>
-          <div className={styles.formRow}>
+      <Form onSubmit={handleSubmit}>
+        <FormSection title="Profile">
+          <FormRow>
             <Input
               label="Email"
               type="email"
@@ -200,31 +201,30 @@ export default function AdminUserEditPage() {
               value={user.securityRoleId ?? ''}
               onChange={(v) => updateField('securityRoleId', v || null)}
             />
-          </div>
-          <div className={styles.formRow}>
+          </FormRow>
+          <FormRow>
             <Input label="First name" value={user.firstName ?? ''} onChange={(e) => updateField('firstName', e.target.value)} />
             <Input label="Last name" value={user.lastName ?? ''} onChange={(e) => updateField('lastName', e.target.value)} />
             <Input label="Username" value={user.username ?? ''} onChange={(e) => updateField('username', e.target.value)} />
             <Input label="Age" type="number" value={user.age ?? ''} onChange={(e) => { const n = parseInt(String(e.target.value), 10); updateField('age', Number.isNaN(n) ? null : n); }} />
-          </div>
-          <div className={styles.formRow}>
+          </FormRow>
+          <FormRow>
             <Input label="Company ID" value={user.companyId ?? ''} onChange={(e) => updateField('companyId', e.target.value || null)} />
             <Input label="Location ID" value={user.locationId ?? ''} onChange={(e) => updateField('locationId', e.target.value || null)} />
             <Input label="Team ID" value={user.teamId ?? ''} onChange={(e) => updateField('teamId', e.target.value || null)} />
-          </div>
-          <div className={styles.formRow}>
+          </FormRow>
+          <FormRow>
             <Input label="Address" value={user.address ?? ''} onChange={(e) => updateField('address', e.target.value)} />
             <Input label="Region" value={user.region ?? ''} onChange={(e) => updateField('region', e.target.value)} />
             <Input label="State" value={user.state ?? ''} onChange={(e) => updateField('state', e.target.value)} />
             <Input label="Timezone" value={user.timezone ?? ''} onChange={(e) => updateField('timezone', e.target.value)} />
-          </div>
-        </div>
+          </FormRow>
+        </FormSection>
 
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionTitle}>Role assignments</h2>
+        <FormSection title="Role assignments">
           {(user.roleAssignments ?? []).map((assignment, index) => (
             <div key={index} className={styles.permissionSection} style={{ marginBottom: 'var(--unit-3)' }}>
-              <div className={styles.formRow} style={{ flexWrap: 'wrap', maxWidth: 'none' }}>
+              <FormRow fullWidth>
                 <Select
                   label="Security role"
                   options={securityRoleOptions}
@@ -259,23 +259,23 @@ export default function AdminUserEditPage() {
                 <Button type="button" variant="ghost" size="sm" color="danger" onClick={() => removeRoleAssignment(index)} style={{ alignSelf: 'flex-end' }}>
                   Remove
                 </Button>
-              </div>
+              </FormRow>
             </div>
           ))}
           <Button type="button" variant="outline" size="sm" onClick={addRoleAssignment}>
             Add assignment
           </Button>
-        </div>
+        </FormSection>
 
-        <div className={styles.formActions}>
+        <FormActions>
           <Button type="submit" disabled={saving}>
             {saving ? 'Saving…' : 'Save'}
           </Button>
           <Button type="button" variant="ghost" onClick={() => setResetPasswordOpen(true)}>
             Reset password
           </Button>
-        </div>
-      </form>
+        </FormActions>
+      </Form>
 
       {resetPasswordOpen && (
         <div
@@ -301,7 +301,7 @@ export default function AdminUserEditPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 style={{ marginTop: 0 }}>Reset password</h3>
-            <form onSubmit={handleResetPassword}>
+            <Form onSubmit={handleResetPassword}>
               <Input
                 label="New password"
                 type="password"
@@ -311,15 +311,15 @@ export default function AdminUserEditPage() {
                 minLength={8}
                 placeholder="Min 8 characters"
               />
-              <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+              <FormActions>
                 <Button type="submit" disabled={resetting || newPassword.length < 8}>
                   {resetting ? 'Resetting…' : 'Reset'}
                 </Button>
                 <Button type="button" variant="ghost" onClick={() => setResetPasswordOpen(false)} disabled={resetting}>
                   Cancel
                 </Button>
-              </div>
-            </form>
+              </FormActions>
+            </Form>
           </div>
         </div>
       )}

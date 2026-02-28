@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Input, Select, Button } from '@/components/ui';
+import { Form, FormSection, FormActions, Input, Select, Button, Textarea } from '@/components/ui';
 import styles from '../../admin.module.scss';
 
 type UserOption = { id: string; email: string; name: string | null };
@@ -72,8 +72,8 @@ export default function AdminTicketsNewPage() {
         <Link href="/admin/tickets">← Back to tickets</Link>
       </p>
       {error && <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formSection}>
+      <Form onSubmit={handleSubmit}>
+        <FormSection>
           <Input
             label="Subject"
             value={subject}
@@ -100,25 +100,22 @@ export default function AdminTicketsNewPage() {
             value={channel}
             onChange={setChannel}
           />
-          <div style={{ marginTop: 'var(--unit-4)' }}>
-            <label className={styles.sectionTitle} style={{ display: 'block', marginBottom: 'var(--unit-2)' }}>Body (optional)</label>
-            <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={4}
-              style={{ width: '100%', padding: 'var(--unit-2) var(--unit-3)', border: '1px solid var(--theme-divider)', borderRadius: 'var(--unit-1)', background: 'var(--theme-content1)', color: 'var(--theme-foreground)', fontSize: '1rem' }}
-            />
-          </div>
-        </div>
-        <div className={styles.formActions}>
+          <Textarea
+            label="Body (optional)"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={4}
+          />
+        </FormSection>
+        <FormActions>
           <Button type="submit" disabled={submitting}>
             {submitting ? 'Creating…' : 'Create ticket'}
           </Button>
           <Button type="button" variant="ghost" onClick={() => router.push('/admin/tickets')}>
             Cancel
           </Button>
-        </div>
-      </form>
+        </FormActions>
+      </Form>
     </div>
   );
 }

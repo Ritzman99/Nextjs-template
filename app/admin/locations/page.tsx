@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button } from '@/components/ui';
+import { Input, Table, Button, useToast } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type LocationRow = {
@@ -19,6 +19,7 @@ type Pagination = { page: number; limit: number; total: number; pages: number };
 type CompanyOption = { id: string; name: string };
 
 export default function AdminLocationsPage() {
+  const toast = useToast();
   const [locations, setLocations] = useState<LocationRow[]>([]);
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -70,9 +71,10 @@ export default function AdminLocationsPage() {
             prev ? { ...prev, total: Math.max(0, prev.total - 1) } : null
           );
         }
+        toast.toast.success('Location deleted');
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to delete');
+        toast.toast.error(data.error ?? 'Failed to delete');
       }
     } finally {
       setDeletingId(null);
@@ -81,7 +83,7 @@ export default function AdminLocationsPage() {
 
   return (
     <div>
-      <div className={styles.formRow} style={{ maxWidth: 'none', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.pageHeaderRow}>
         <h1 className={styles.pageTitle}>Locations</h1>
         <Link href="/admin/locations/new" className={styles.primaryLink}>
           New location
@@ -91,7 +93,7 @@ export default function AdminLocationsPage() {
         Manage locations. Optionally link to a company.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)' }}>
+      <div className={styles.filterRow}>
         <Input
           placeholder="Search by name, code…"
           value={search}
@@ -167,7 +169,7 @@ export default function AdminLocationsPage() {
             />
           </div>
           {pagination && pagination.pages > 1 && (
-            <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+            <div className={styles.rowActions}>
               <Button
                 variant="ghost"
                 size="sm"

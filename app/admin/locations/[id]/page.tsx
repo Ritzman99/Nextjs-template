@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { Input, Select, Button } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Input, Select, Button } from '@/components/ui';
 import styles from '../../admin.module.scss';
 
 const STATUS_OPTIONS = [
@@ -114,10 +114,9 @@ export default function AdminLocationEditPage() {
         <p style={{ color: 'var(--theme-danger)', marginBottom: 'var(--unit-4)' }}>{error}</p>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formSection}>
-          <h2 className={styles.sectionTitle}>Details</h2>
-          <div className={styles.formRow}>
+      <Form onSubmit={handleSubmit}>
+        <FormSection title="Details">
+          <FormRow>
             <Select
               label="Company"
               options={companyOptions}
@@ -143,18 +142,18 @@ export default function AdminLocationEditPage() {
               value={status}
               onChange={(v) => setStatus(v)}
             />
-          </div>
-        </div>
+          </FormRow>
+        </FormSection>
 
-        <div className={styles.formActions}>
+        <FormActions>
           <Button type="submit" disabled={saving}>
             {saving ? 'Saving…' : 'Save'}
           </Button>
           <Button type="button" variant="ghost" onClick={() => router.push('/admin/locations')}>
             Cancel
           </Button>
-        </div>
-      </form>
+        </FormActions>
+      </Form>
     </div>
   );
 }

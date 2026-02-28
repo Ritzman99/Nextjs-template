@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button } from '@/components/ui';
+import { Input, Table, Button, useToast } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type TeamRow = {
@@ -22,6 +22,7 @@ type CompanyOption = { id: string; name: string };
 type LocationOption = { id: string; name: string };
 
 export default function AdminTeamsPage() {
+  const toast = useToast();
   const [teams, setTeams] = useState<TeamRow[]>([]);
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
   const [locations, setLocations] = useState<LocationOption[]>([]);
@@ -87,9 +88,10 @@ export default function AdminTeamsPage() {
             prev ? { ...prev, total: Math.max(0, prev.total - 1) } : null
           );
         }
+        toast.toast.success('Team deleted');
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to delete');
+        toast.toast.error(data.error ?? 'Failed to delete');
       }
     } finally {
       setDeletingId(null);
@@ -98,7 +100,7 @@ export default function AdminTeamsPage() {
 
   return (
     <div>
-      <div className={styles.formRow} style={{ maxWidth: 'none', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.pageHeaderRow}>
         <h1 className={styles.pageTitle}>Teams</h1>
         <Link href="/admin/teams/new" className={styles.primaryLink}>
           New team
@@ -108,7 +110,7 @@ export default function AdminTeamsPage() {
         Manage teams. Optionally link to a company and location.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)' }}>
+      <div className={styles.filterRow}>
         <Input
           placeholder="Search by name, type…"
           value={search}
@@ -201,7 +203,7 @@ export default function AdminTeamsPage() {
             />
           </div>
           {pagination && pagination.pages > 1 && (
-            <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+            <div className={styles.rowActions}>
               <Button
                 variant="ghost"
                 size="sm"

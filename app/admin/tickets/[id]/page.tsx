@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { Select, Button } from '@/components/ui';
+import { Form, FormSection, FormRow, FormActions, Select, Button, Textarea } from '@/components/ui';
 import styles from '../../admin.module.scss';
 
 type Ticket = {
@@ -143,8 +143,8 @@ export default function AdminTicketDetailPage() {
         )}
       </p>
 
-      <div className={styles.formSection}>
-        <div className={styles.formRow} style={{ maxWidth: 'none', flexWrap: 'wrap' }}>
+      <FormSection>
+        <FormRow fullWidth>
           <Select
             label="Status"
             options={statusOptions}
@@ -158,7 +158,7 @@ export default function AdminTicketDetailPage() {
             onChange={(v) => handleUpdateField('assigneeId', v || null)}
           />
           <div style={{ alignSelf: 'flex-end' }}>{saving ? 'Saving…' : ''}</div>
-        </div>
+        </FormRow>
         <p style={{ marginTop: 'var(--unit-2)', color: 'var(--theme-default-500)', fontSize: '0.875rem' }}>
           Requester: {requester ? (requester.email ?? requester.name ?? requester.id) : ticket.requesterId}
           {assignee && ` · Assignee: ${assignee.email ?? assignee.name ?? assignee.id}`}
@@ -168,10 +168,9 @@ export default function AdminTicketDetailPage() {
             {ticket.body}
           </div>
         )}
-      </div>
+      </FormSection>
 
-      <div className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Messages</h2>
+      <FormSection title="Messages">
         {messages.length === 0 ? (
           <p className={styles.pageDescription}>No replies yet.</p>
         ) : (
@@ -192,25 +191,24 @@ export default function AdminTicketDetailPage() {
           </ul>
         )}
 
-        <form onSubmit={handleSendReply} style={{ marginTop: 'var(--unit-6)' }}>
+        <Form onSubmit={handleSendReply} style={{ marginTop: 'var(--unit-6)' }}>
           <div style={{ marginBottom: 'var(--unit-4)' }}>
-            <label htmlFor="reply-body" className={styles.sectionTitle} style={{ display: 'block', marginBottom: 'var(--unit-2)' }}>Reply</label>
-            <textarea
+            <Textarea
               id="reply-body"
+              label="Reply"
               value={replyBody}
               onChange={(e) => setReplyBody(e.target.value)}
               placeholder="Type your reply…"
               rows={4}
-              style={{ width: '100%', padding: 'var(--unit-2) var(--unit-3)', border: '1px solid var(--theme-divider)', borderRadius: 'var(--unit-1)', background: 'var(--theme-content1)', color: 'var(--theme-foreground)', fontSize: '1rem' }}
             />
           </div>
-          <div className={styles.formActions} style={{ marginTop: 'var(--unit-3)' }}>
+          <FormActions>
             <Button type="submit" disabled={sendingReply || !replyBody.trim()}>
               {sendingReply ? 'Sending…' : 'Send reply'}
             </Button>
-          </div>
-        </form>
-      </div>
+          </FormActions>
+        </Form>
+      </FormSection>
     </div>
   );
 }

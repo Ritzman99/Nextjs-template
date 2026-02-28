@@ -48,7 +48,7 @@ export default function AdminTicketsPage() {
         View and manage support tickets and email-level inbox.
       </p>
 
-      <div className={styles.formRow} style={{ maxWidth: 'none', gap: 'var(--unit-4)', marginBottom: 'var(--unit-6)', justifyContent: 'space-between' }}>
+      <div className={styles.filterRow} style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: 'var(--unit-4)', alignItems: 'center' }}>
         <Link href="/admin/tickets/new" className={styles.primaryLink}>New ticket</Link>
         <select
@@ -96,7 +96,7 @@ export default function AdminTicketsPage() {
             />
           </div>
           {pagination && pagination.pages > 1 && (
-            <div className={styles.formActions} style={{ marginTop: 'var(--unit-4)' }}>
+            <div className={styles.rowActions}>
               <Button
                 variant="ghost"
                 size="sm"

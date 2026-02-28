@@ -1,0 +1,76 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  border-right: 1px solid theme.theme-color('divider');
+  background-color: theme.theme-color('content1');
+  display: flex;
+  flex-direction: column;
+}
+
+.composeBtn {
+  padding: var(--unit-3);
+}
+
+.composeButton {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--unit-2);
+}
+
+.composeIcon {
+  flex-shrink: 0;
+}
+
+.sidebarSection {
+  padding: var(--unit-2) var(--unit-3);
+}
+
+.sidebarSectionLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: theme.theme-color('default-500');
+  margin-bottom: var(--unit-2);
+  display: block;
+}
+
+.sidebarList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  padding: var(--unit-2) var(--unit-3);
+  border-radius: var(--unit-1);
+  color: theme.theme-color('foreground');
+  text-decoration: none;
+  font-size: 0.9375rem;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    background-color: theme.theme-color('content2');
+  }
+}
+
+.sidebarLinkActive {
+  composes: sidebarLink;
+  font-weight: 500;
+  background-color: theme.theme-color('content3');
+}
+
+.folderIcon {
+  flex-shrink: 0;
+  color: theme.theme-color('default-500');
+}

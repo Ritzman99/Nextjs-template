@@ -1,0 +1,54 @@
+@use '../../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: theme.theme-color('foreground');
+}
+
+.textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--unit-2) var(--unit-3);
+  font-size: 1rem;
+  font-family: inherit;
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content1');
+  border: 2px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &::placeholder {
+    color: theme.theme-color('default-400');
+  }
+
+  &:focus {
+    outline: none;
+    border-color: theme.theme-color('focus');
+    box-shadow: 0 0 0 1px theme.theme-color('focus');
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  border-color: theme.theme-color('danger');
+}
+
+.errorText {
+  font-size: 0.875rem;
+  color: theme.theme-color('danger');
+}

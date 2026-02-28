@@ -2,7 +2,7 @@
 $dot-pattern-url: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='4' cy='4' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='14' cy='4' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='4' cy='14' r='0.6' fill='black' fill-opacity='0.04'/><circle cx='14' cy='14' r='0.6' fill='black' fill-opacity='0.04'/></svg>");
 
 .contentWrap {
-  padding-top: var(--top-nav-height);
+  padding-top: calc(var(--top-nav-height) + var(--unit-3));
   min-height: 100vh;
   background-color: var(--theme-content1);
   background-image: linear-gradient(180deg, var(--theme-content1) 0%, var(--theme-content2) 100%), $dot-pattern-url;

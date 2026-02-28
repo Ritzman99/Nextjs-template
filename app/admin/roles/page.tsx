@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Table, Button } from '@/components/ui';
+import { Table, Button, useToast } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 /** Display name for the hardcoded system Admin role (bypasses all security). */
@@ -25,6 +25,7 @@ const ADMIN_SYSTEM_ROW: RoleRow = {
 };
 
 export default function AdminRolesPage() {
+  const toast = useToast();
   const [roles, setRoles] = useState<RoleRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -54,9 +55,10 @@ export default function AdminRolesPage() {
       const res = await fetch(`/api/admin/roles/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setRoles((prev) => prev.filter((r) => r.id !== id));
+        toast.toast.success('Role deleted');
       } else {
         const data = await res.json().catch(() => ({}));
-        alert(data.error ?? 'Failed to delete');
+        toast.toast.error(data.error ?? 'Failed to delete');
       }
     } finally {
       setDeletingId(null);
@@ -69,7 +71,7 @@ export default function AdminRolesPage() {
 
   return (
     <div>
-      <div className={styles.formRow} style={{ maxWidth: 'none', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className={styles.pageHeaderRow}>
         <h1 className={styles.pageTitle}>Roles</h1>
         <Link href="/admin/roles/new" className={styles.primaryLink}>
           New role
