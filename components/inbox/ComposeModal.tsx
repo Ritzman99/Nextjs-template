@@ -10,6 +10,7 @@ export type SuggestionItem = {
   id: string;
   displayName: string;
   identifier: string;
+  contactState?: 'default' | 'friend' | 'favoriteFriend';
 };
 
 export interface ComposeModalProps {
@@ -207,6 +208,12 @@ export function ComposeModal({ open, onClose, onSent }: ComposeModalProps) {
                           onClick={() => addRecipient(s)}
                         >
                           {s.displayName} ({s.identifier})
+                          {s.contactState === 'favoriteFriend' && (
+                            <span className={styles.suggestionBadge} title="Favorite friend">★</span>
+                          )}
+                          {s.contactState === 'friend' && (
+                            <span className={styles.suggestionBadge} title="Friend">Friend</span>
+                          )}
                         </button>
                       ))}
                   </div>

@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 
 const topNavItems = [
   { href: "/", label: "Home" },
+  { href: "/calendar", label: "Calendar" },
+  { href: "/contacts", label: "Contacts" },
+  { href: "/inbox", label: "Inbox" },
   { href: "/docs", label: "Components" },
 ];
 

@@ -6,7 +6,9 @@ export type InboxFolder =
   | 'draft'
   | 'starred'
   | 'trash'
-  | 'spam';
+  | 'spam'
+  | 'friend_requests'
+  | 'event_invites';
 
 export interface IUserConversationState {
   _id: mongoose.Types.ObjectId;
@@ -26,7 +28,7 @@ const userConversationStateSchema = new Schema<IUserConversationState>(
     conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation', required: true },
     folder: {
       type: String,
-      enum: ['inbox', 'sent', 'draft', 'starred', 'trash', 'spam'],
+      enum: ['inbox', 'sent', 'draft', 'starred', 'trash', 'spam', 'friend_requests', 'event_invites'],
       default: 'inbox',
     },
     labels: { type: [String], default: [] },

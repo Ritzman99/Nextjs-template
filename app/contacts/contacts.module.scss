@@ -1,0 +1,129 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--unit-6) var(--unit-4);
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 var(--unit-2);
+  color: theme.theme-color('foreground');
+}
+
+.pageDescription {
+  font-size: 1rem;
+  color: theme.theme-color('default-500');
+  margin: 0 0 var(--unit-6);
+  line-height: 1.5;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-3);
+  margin-bottom: var(--unit-6);
+  align-items: center;
+}
+
+.addRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-2);
+  margin-bottom: var(--unit-6);
+  align-items: center;
+}
+
+.contactList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--unit-3);
+  padding: var(--unit-3) var(--unit-4);
+  border: 1px solid theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  background-color: theme.theme-color('content1');
+}
+
+.contactInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.contactName {
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+  margin: 0 0 var(--unit-1);
+}
+
+.contactMeta {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px var(--unit-2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--unit-1);
+  margin-right: var(--unit-2);
+}
+
+.badgeDefault {
+  composes: badge;
+  background-color: theme.theme-color('content3');
+  color: theme.theme-color('foreground');
+}
+
+.badgeFriend {
+  composes: badge;
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-foreground');
+}
+
+.badgeFavorite {
+  composes: badge;
+  background-color: theme.theme-color('secondary');
+  color: theme.theme-color('secondary-foreground');
+}
+
+.actions {
+  display: flex;
+  gap: var(--unit-2);
+  align-items: center;
+}
+
+.emptyState {
+  padding: var(--unit-8);
+  text-align: center;
+  color: theme.theme-color('default-500');
+  border: 1px dashed theme.theme-color('divider');
+  border-radius: var(--unit-2);
+  background-color: theme.theme-color('content2');
+}
+
+.loading {
+  padding: var(--unit-6);
+  text-align: center;
+  color: theme.theme-color('default-500');
+}
+
+.error {
+  padding: var(--unit-2);
+  font-size: 0.875rem;
+  color: theme.theme-color('danger');
+}

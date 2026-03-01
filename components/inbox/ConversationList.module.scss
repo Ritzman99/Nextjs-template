@@ -111,6 +111,18 @@
   text-overflow: ellipsis;
 }
 
+.rowActions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--unit-1);
+}
+
+.rowActionBtn {
+  padding: var(--unit-1);
+  min-width: 0;
+}
+
 .time {
   flex-shrink: 0;
   font-size: 0.8125rem;

@@ -27,6 +27,8 @@ export interface MessageThreadProps {
   messages: MessageItem[];
   currentUserId?: string | null;
   onReplySent: () => void;
+  /** When true, reply form is hidden (e.g. for friend request accept/decline view). */
+  hideReply?: boolean;
 }
 
 export function MessageThread({
@@ -35,6 +37,7 @@ export function MessageThread({
   messages,
   currentUserId,
   onReplySent,
+  hideReply = false,
 }: MessageThreadProps) {
   const [replyBody, setReplyBody] = useState('');
   const [sending, setSending] = useState(false);
@@ -101,21 +104,23 @@ export function MessageThread({
           </div>
         ))}
       </div>
-      <Form onSubmit={handleReply} className={styles.replyForm}>
-        <RichTextEditor
-          value={replyBody}
-          onChange={setReplyBody}
-          placeholder="Write a reply..."
-          disabled={sending}
-          minHeight="100px"
-        />
-        <FormActions className={styles.replyFormActions}>
-          <Button type="submit" color="primary" size="sm" disabled={sending || isReplyEmpty(replyBody)}>
-            <Send size={16} aria-hidden />
-            Send
-          </Button>
-        </FormActions>
-      </Form>
+      {!hideReply && (
+        <Form onSubmit={handleReply} className={styles.replyForm}>
+          <RichTextEditor
+            value={replyBody}
+            onChange={setReplyBody}
+            placeholder="Write a reply..."
+            disabled={sending}
+            minHeight="100px"
+          />
+          <FormActions className={styles.replyFormActions}>
+            <Button type="submit" color="primary" size="sm" disabled={sending || isReplyEmpty(replyBody)}>
+              <Send size={16} aria-hidden />
+              Send
+            </Button>
+          </FormActions>
+        </Form>
+      )}
     </div>
   );
 }

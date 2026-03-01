@@ -11,16 +11,21 @@ import {
   FileText,
   Trash2,
   Tag,
+  UserPlus,
+  Users,
+  CalendarCheck,
 } from 'lucide-react';
 import { useInboxSidebar } from './InboxSidebarContext';
 import styles from './InboxSidebar.module.scss';
 
 const FOLDERS = [
-  { href: '/inbox', folder: 'inbox', label: 'Inbox', icon: Inbox, showUnread: true },
-  { href: '/inbox?folder=starred', folder: 'starred', label: 'Starred', icon: Star, showUnread: false },
-  { href: '/inbox?folder=sent', folder: 'sent', label: 'Sent', icon: Send, showUnread: false },
-  { href: '/inbox?folder=draft', folder: 'draft', label: 'Draft', icon: FileText, showUnread: false },
-  { href: '/inbox?folder=trash', folder: 'trash', label: 'Trash', icon: Trash2, showUnread: false },
+  { href: '/inbox', folder: 'inbox', label: 'Inbox', icon: Inbox, showUnread: true, showFriendRequestsCount: false },
+  { href: '/inbox?folder=event_invites', folder: 'event_invites', label: 'Event invites', icon: CalendarCheck, showUnread: false, showFriendRequestsCount: false },
+  { href: '/inbox?folder=friend_requests', folder: 'friend_requests', label: 'Friend requests', icon: UserPlus, showUnread: false, showFriendRequestsCount: true },
+  { href: '/inbox?folder=starred', folder: 'starred', label: 'Starred', icon: Star, showUnread: false, showFriendRequestsCount: false },
+  { href: '/inbox?folder=sent', folder: 'sent', label: 'Sent', icon: Send, showUnread: false, showFriendRequestsCount: false },
+  { href: '/inbox?folder=draft', folder: 'draft', label: 'Draft', icon: FileText, showUnread: false, showFriendRequestsCount: false },
+  { href: '/inbox?folder=trash', folder: 'trash', label: 'Trash', icon: Trash2, showUnread: false, showFriendRequestsCount: false },
 ] as const;
 
 import { INBOX_LABELS } from './constants';
@@ -44,6 +49,7 @@ export function InboxSidebar(_props?: InboxSidebarProps) {
   const { sidebarOpen, setSidebarOpen } = useInboxSidebar();
   const currentFolder = searchParams?.get('folder') ?? 'inbox';
   const [unreadCount, setUnreadCount] = useState(0);
+  const [friendRequestsCount, setFriendRequestsCount] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,9 +58,15 @@ export function InboxSidebar(_props?: InboxSidebarProps) {
         const res = await fetch('/api/inbox/unread-count');
         if (!res.ok || cancelled) return;
         const data = await res.json();
-        if (!cancelled) setUnreadCount(typeof data.count === 'number' ? data.count : 0);
+        if (!cancelled) {
+          setUnreadCount(typeof data.count === 'number' ? data.count : 0);
+          setFriendRequestsCount(typeof data.friendRequestsCount === 'number' ? data.friendRequestsCount : 0);
+        }
       } catch {
-        if (!cancelled) setUnreadCount(0);
+        if (!cancelled) {
+          setUnreadCount(0);
+          setFriendRequestsCount(0);
+        }
       }
     }
     fetchUnread();
@@ -79,9 +91,9 @@ export function InboxSidebar(_props?: InboxSidebarProps) {
       <div className={styles.sidebarSection}>
         <span className={styles.sidebarSectionLabel}>My Email</span>
         <ul className={styles.sidebarList}>
-          {FOLDERS.map(({ href, folder, label, icon: Icon, showUnread }) => {
+          {FOLDERS.map(({ href, folder, label, icon: Icon, showUnread, showFriendRequestsCount }) => {
             const isActive = currentFolder === folder;
-            const count = showUnread ? unreadCount : 0;
+            const count = showUnread ? unreadCount : showFriendRequestsCount ? friendRequestsCount : 0;
             return (
               <li key={folder}>
                 <Link
@@ -92,7 +104,7 @@ export function InboxSidebar(_props?: InboxSidebarProps) {
                   <Icon className={styles.folderIcon} aria-hidden size={18} />
                   <span className={styles.folderLabel}>{label}</span>
                   {count > 0 && (
-                    <span className={styles.unreadBadge} aria-label={`${count} unread`}>
+                    <span className={styles.unreadBadge} aria-label={showFriendRequestsCount ? `${count} pending` : `${count} unread`}>
                       {count > 99 ? '99+' : count}
                     </span>
                   )}
@@ -117,6 +129,21 @@ export function InboxSidebar(_props?: InboxSidebarProps) {
               </Link>
             </li>
           ))}
+        </ul>
+      </div>
+      <div className={styles.sidebarSection}>
+        <span className={styles.sidebarSectionLabel}>App</span>
+        <ul className={styles.sidebarList}>
+          <li>
+            <Link
+              href="/contacts"
+              className={styles.sidebarLink}
+              onClick={() => closeSidebarOnMobile(setSidebarOpen)}
+            >
+              <Users className={styles.folderIcon} aria-hidden size={18} />
+              Contacts
+            </Link>
+          </li>
         </ul>
       </div>
     </aside>

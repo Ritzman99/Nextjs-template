@@ -76,7 +76,10 @@ export async function GET(request: Request) {
       }
     }
 
-    const convs = await ConversationModel.find({ _id: { $in: convIdsForList } })
+    const convQuery: Record<string, unknown> = { _id: { $in: convIdsForList } };
+    if (folder === 'friend_requests') convQuery.type = 'friend_request';
+    if (folder === 'event_invites') convQuery.type = 'event';
+    const convs = await ConversationModel.find(convQuery)
       .lean()
       .then((list) => {
         const byId = new Map(list.map((c) => [(c as { _id: mongoose.Types.ObjectId })._id.toString(), c]));
@@ -211,28 +214,35 @@ export async function POST(request: Request) {
       to,
       cc,
       bcc,
+      draft: isDraft,
     } = body as {
       subject?: string;
       body?: string;
       to?: string[];
       cc?: string[];
       bcc?: string[];
+      draft?: boolean;
     };
 
-    if (!to || !Array.isArray(to) || to.length === 0) {
+    const { resolveRecipient } = await import('@/lib/inboxResolver');
+    let toResolved: Array<{ type: 'user' | 'contact'; ref: mongoose.Types.ObjectId }> = [];
+    if (to && Array.isArray(to)) {
+      for (const identifier of to) {
+        if (!identifier || typeof identifier !== 'string') continue;
+        const r = await resolveRecipient(identifier);
+        if (!r) {
+          if (!isDraft) {
+            return NextResponse.json({ error: `Could not resolve recipient: ${identifier}` }, { status: 400 });
+          }
+          continue;
+        }
+        toResolved.push({ type: r.type, ref: r.id });
+      }
+    }
+    if (!isDraft && toResolved.length === 0) {
       return NextResponse.json({ error: 'At least one recipient (to) is required' }, { status: 400 });
     }
 
-    const { resolveRecipient } = await import('@/lib/inboxResolver');
-    const toResolved: Array<{ type: 'user' | 'contact'; ref: mongoose.Types.ObjectId }> = [];
-    for (const identifier of to) {
-      if (!identifier || typeof identifier !== 'string') continue;
-      const r = await resolveRecipient(identifier);
-      if (!r) {
-        return NextResponse.json({ error: `Could not resolve recipient: ${identifier}` }, { status: 400 });
-      }
-      toResolved.push({ type: r.type, ref: r.id });
-    }
     let ccResolved: Array<{ type: 'user' | 'contact'; ref: mongoose.Types.ObjectId }> = [];
     if (cc && Array.isArray(cc)) {
       for (const identifier of cc) {
@@ -268,33 +278,44 @@ export async function POST(request: Request) {
     });
 
     const now = new Date();
-    const statesToCreate: Array<{ userId: mongoose.Types.ObjectId; conversationId: mongoose.Types.ObjectId; folder: InboxFolder; readAt: Date | null; starred: boolean; labels: never[] }> = [
-      { userId: userObjectId, conversationId: conversation._id, folder: 'sent', readAt: now, starred: false, labels: [] },
-    ];
-    for (const t of toResolved) {
-      if (t.type !== 'user') continue;
-      statesToCreate.push({
-        userId: t.ref,
+    if (isDraft) {
+      await UserConversationStateModel.create({
+        userId: userObjectId,
         conversationId: conversation._id,
-        folder: 'inbox',
-        readAt: null,
+        folder: 'draft',
+        readAt: now,
         starred: false,
         labels: [],
       });
+    } else {
+      const statesToCreate: Array<{ userId: mongoose.Types.ObjectId; conversationId: mongoose.Types.ObjectId; folder: InboxFolder; readAt: Date | null; starred: boolean; labels: never[] }> = [
+        { userId: userObjectId, conversationId: conversation._id, folder: 'sent', readAt: now, starred: false, labels: [] },
+      ];
+      for (const t of toResolved) {
+        if (t.type !== 'user') continue;
+        statesToCreate.push({
+          userId: t.ref,
+          conversationId: conversation._id,
+          folder: 'inbox',
+          readAt: null,
+          starred: false,
+          labels: [],
+        });
+      }
+      for (const t of ccResolved) {
+        if (t.type !== 'user') continue;
+        if (statesToCreate.some((s) => s.userId.equals(t.ref))) continue;
+        statesToCreate.push({
+          userId: t.ref,
+          conversationId: conversation._id,
+          folder: 'inbox',
+          readAt: null,
+          starred: false,
+          labels: [],
+        });
+      }
+      await UserConversationStateModel.insertMany(statesToCreate);
     }
-    for (const t of ccResolved) {
-      if (t.type !== 'user') continue;
-      if (statesToCreate.some((s) => s.userId.equals(t.ref))) continue;
-      statesToCreate.push({
-        userId: t.ref,
-        conversationId: conversation._id,
-        folder: 'inbox',
-        readAt: null,
-        starred: false,
-        labels: [],
-      });
-    }
-    await UserConversationStateModel.insertMany(statesToCreate);
 
     return NextResponse.json({
       id: conversation._id.toString(),

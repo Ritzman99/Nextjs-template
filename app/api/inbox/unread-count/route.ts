@@ -20,15 +20,22 @@ export async function GET() {
 
     await connect();
 
-    const count = await UserConversationStateModel.countDocuments({
-      userId: userObjectId,
-      folder: 'inbox',
-      readAt: null,
-    });
+    const [count, friendRequestsCount] = await Promise.all([
+      UserConversationStateModel.countDocuments({
+        userId: userObjectId,
+        folder: 'inbox',
+        readAt: null,
+      }),
+      UserConversationStateModel.countDocuments({
+        userId: userObjectId,
+        folder: 'friend_requests',
+        readAt: null,
+      }),
+    ]);
 
-    return NextResponse.json({ count });
+    return NextResponse.json({ count, friendRequestsCount });
   } catch (e) {
     console.error('GET /api/inbox/unread-count:', e);
-    return NextResponse.json({ count: 0 });
+    return NextResponse.json({ count: 0, friendRequestsCount: 0 });
   }
 }

@@ -1,4 +1,5 @@
 import mongoose, { Schema, model, models } from 'mongoose';
+import { refSchema } from './schemas';
 
 export type SenderType = 'user' | 'contact';
 
@@ -17,11 +18,6 @@ export interface IInboxMessage {
   createdAt: Date;
   updatedAt: Date;
 }
-
-const refSchema = new Schema(
-  { type: { type: String, enum: ['user', 'contact'], required: true }, ref: { type: Schema.Types.ObjectId, required: true } },
-  { _id: false }
-);
 
 const inboxMessageSchema = new Schema<IInboxMessage>(
   {

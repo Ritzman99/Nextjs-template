@@ -54,7 +54,11 @@ export default function InboxPage() {
             ? 'Draft'
             : folder === 'trash'
               ? 'Trash'
-              : 'Inbox';
+              : folder === 'friend_requests'
+                ? 'Friend requests'
+                : folder === 'event_invites'
+                  ? 'Event invites'
+                  : 'Inbox';
 
   return (
     <>
@@ -85,6 +89,17 @@ export default function InboxPage() {
           conversations={conversations}
           pagination={pagination}
           currentFolder={folder}
+          onLabelsChange={(id, labels) => {
+            setConversations((prev) =>
+              prev.map((c) => (c.id === id ? { ...c, labels } : c))
+            );
+          }}
+          onMoveToTrash={(id) => {
+            setConversations((prev) => prev.filter((c) => c.id !== id));
+          }}
+          onDeletePermanent={(id) => {
+            setConversations((prev) => prev.filter((c) => c.id !== id));
+          }}
         />
       )}
     </>

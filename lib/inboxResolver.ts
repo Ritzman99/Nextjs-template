@@ -3,6 +3,7 @@ import connect from '@/lib/mongoose';
 import UserModel from '@/models/User';
 import ContactModel from '@/models/Contact';
 import InboxMessageModel from '@/models/InboxMessage';
+import UserContactModel from '@/models/UserContact';
 
 export type ResolvedRecipient =
   | { type: 'user'; id: mongoose.Types.ObjectId }
@@ -13,6 +14,8 @@ export type SuggestionItem = {
   id: string;
   displayName: string;
   identifier: string;
+  /** Set for user suggestions when they are in the current user's contacts. */
+  contactState?: 'default' | 'friend' | 'favoriteFriend';
 };
 
 /**
@@ -171,6 +174,30 @@ export async function getSuggestions(
         displayName,
         identifier,
       });
+    }
+  }
+
+  const userSuggestionIds = results
+    .filter((r) => r.type === 'user')
+    .map((r) => new mongoose.Types.ObjectId(r.id));
+  if (userSuggestionIds.length > 0) {
+    const contactLinks = await UserContactModel.find({
+      ownerId: userObjectId,
+      contactUserId: { $in: userSuggestionIds },
+    })
+      .select('contactUserId state')
+      .lean();
+    const stateByContactId = new Map(
+      (contactLinks as unknown as { contactUserId: mongoose.Types.ObjectId; state: string }[]).map((c) => [
+        c.contactUserId.toString(),
+        c.state as 'default' | 'friend' | 'favoriteFriend',
+      ])
+    );
+    for (const r of results) {
+      if (r.type === 'user') {
+        const state = stateByContactId.get(r.id);
+        if (state) r.contactState = state;
+      }
     }
   }
 

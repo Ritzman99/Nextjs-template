@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { Star, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui';
 import { LabelPicker } from './LabelPicker';
 import styles from './ConversationList.module.scss';
 
@@ -25,6 +27,10 @@ export interface ConversationListProps {
   selectedId?: string | null;
   /** When labels change from the list row, call with conversation id and new labels (e.g. to update local state). */
   onLabelsChange?: (id: string, labels: string[]) => void;
+  /** When user moves a conversation to trash from the list, call with id (e.g. refetch or remove from list). */
+  onMoveToTrash?: (id: string) => void;
+  /** When user permanently deletes from trash, call with id (e.g. refetch or remove from list). */
+  onDeletePermanent?: (id: string) => void;
 }
 
 function formatTime(updatedAt: string): string {
@@ -35,12 +41,82 @@ function formatTime(updatedAt: string): string {
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
+function RowTrashButton({
+  conversationId,
+  onMoved,
+}: {
+  conversationId: string;
+  onMoved?: (id: string) => void;
+}) {
+  const [loading, setLoading] = useState(false);
+  async function handleClick() {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/inbox/conversations/${conversationId}/state`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folder: 'trash' }),
+      });
+      if (res.ok) onMoved?.(conversationId);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      onClick={handleClick}
+      disabled={loading}
+      aria-label="Move to trash"
+      className={styles.rowActionBtn}
+    >
+      <Trash2 size={18} aria-hidden />
+    </Button>
+  );
+}
+
+function RowDeletePermanentButton({
+  conversationId,
+  onDeleted,
+}: {
+  conversationId: string;
+  onDeleted?: (id: string) => void;
+}) {
+  const [loading, setLoading] = useState(false);
+  async function handleClick() {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/inbox/conversations/${conversationId}`, { method: 'DELETE' });
+      if (res.ok) onDeleted?.(conversationId);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      onClick={handleClick}
+      disabled={loading}
+      aria-label="Delete permanently"
+      className={styles.rowActionBtn}
+    >
+      {loading ? '…' : 'Delete'}
+    </Button>
+  );
+}
+
 export function ConversationList({
   conversations,
   pagination,
   currentFolder,
   selectedId,
   onLabelsChange,
+  onMoveToTrash,
+  onDeletePermanent,
 }: ConversationListProps) {
   return (
     <div className={styles.wrapper}>
@@ -52,7 +128,8 @@ export function ConversationList({
             {currentFolder === 'starred' && 'No starred messages.'}
             {currentFolder === 'draft' && 'No drafts.'}
             {currentFolder === 'trash' && 'Trash is empty.'}
-            {!['inbox', 'sent', 'starred', 'draft', 'trash'].includes(currentFolder) && 'No conversations.'}
+            {currentFolder === 'friend_requests' && 'No friend requests.'}
+            {!['inbox', 'sent', 'starred', 'draft', 'trash', 'friend_requests'].includes(currentFolder) && 'No conversations.'}
           </div>
         ) : (
           conversations.map((c) => {
@@ -77,8 +154,11 @@ export function ConversationList({
                 />
               </span>
               <span className={styles.sender}>{c.senderName || 'Unknown'}</span>
-              {c.labels.length > 0 && (
+              {(c.type === 'friend_request' || c.labels.length > 0) && (
                 <span className={styles.labels}>
+                  {c.type === 'friend_request' && (
+                    <span className={styles.labelChip}>Friend request</span>
+                  )}
                   {c.labels.slice(0, 2).map((l) => (
                     <span key={l} className={styles.labelChip}>
                       {l}
@@ -88,7 +168,7 @@ export function ConversationList({
               )}
               <span className={styles.subject}>{c.subject || '(No subject)'}</span>
               <span
-                className={styles.labelPickerWrap}
+                className={styles.rowActions}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -100,6 +180,11 @@ export function ConversationList({
                   labels={c.labels}
                   onLabelsChange={(labels) => onLabelsChange?.(c.id, labels)}
                 />
+                {currentFolder !== 'trash' ? (
+                  <RowTrashButton conversationId={c.id} onMoved={onMoveToTrash} />
+                ) : (
+                  <RowDeletePermanentButton conversationId={c.id} onDeleted={onDeletePermanent} />
+                )}
               </span>
               <span className={styles.time}>{formatTime(c.updatedAt)}</span>
             </Link>

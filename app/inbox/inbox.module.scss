@@ -195,6 +195,12 @@
   color: theme.theme-color('foreground');
 }
 
+.friendRequestActions {
+  display: flex;
+  gap: var(--unit-2);
+  align-items: center;
+}
+
 .starFilled {
   color: theme.theme-color('warning');
   fill: theme.theme-color('warning');

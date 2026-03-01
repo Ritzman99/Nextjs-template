@@ -10,11 +10,22 @@ export type SuggestionItem = {
   id: string;
   displayName: string;
   identifier: string;
+  contactState?: 'default' | 'friend' | 'favoriteFriend';
 };
+
+export type ToListItem = { id: string; type: 'user' | 'contact'; displayName: string; identifier: string };
 
 export interface ComposeFormProps {
   onSent: (data: { id: string }) => void;
   onCancel?: () => void;
+  /** When user saves a draft (new or existing), call with the conversation id. */
+  onDraftSaved?: (data: { id: string }) => void;
+  /** When editing an existing draft, pass the conversation id. Send will use send-draft API; Save draft will use PATCH draft. */
+  draftId?: string | null;
+  /** Initial values when editing a draft. */
+  initialSubject?: string;
+  initialBody?: string;
+  initialTo?: ToListItem[];
 }
 
 function stripEmptyHtml(html: string): string {
@@ -23,17 +34,38 @@ function stripEmptyHtml(html: string): string {
   return t;
 }
 
-export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
+export function ComposeForm({
+  onSent,
+  onCancel,
+  onDraftSaved,
+  draftId,
+  initialSubject = '',
+  initialBody = '',
+  initialTo = [],
+}: ComposeFormProps) {
   const [toInput, setToInput] = useState('');
-  const [toList, setToList] = useState<Array<{ id: string; type: 'user' | 'contact'; displayName: string; identifier: string }>>([]);
+  const [toList, setToList] = useState<ToListItem[]>(initialTo);
   const [suggestions, setSuggestions] = useState<SuggestionItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [subject, setSubject] = useState('');
-  const [body, setBody] = useState('');
+  const [subject, setSubject] = useState(initialSubject);
+  const [body, setBody] = useState(initialBody);
   const [sending, setSending] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const suggestRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isDraftMode = Boolean(draftId);
+  const initialSyncedRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!draftId) return;
+    const key = `${draftId}-${initialSubject}-${initialBody}-${initialTo.length}`;
+    if (initialSyncedRef.current === key) return;
+    initialSyncedRef.current = key;
+    setSubject(initialSubject ?? '');
+    setBody(initialBody ?? '');
+    if (initialTo.length > 0) setToList(initialTo);
+  }, [draftId, initialSubject, initialBody, initialTo]);
 
   useEffect(() => {
     fetchSuggestions('');
@@ -108,9 +140,7 @@ export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
+  async function resolvePendingRecipient(): Promise<ToListItem[]> {
     let recipients = [...toList];
     const pendingTo = toInput.trim();
     if (recipients.length === 0 && pendingTo) {
@@ -128,10 +158,18 @@ export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
           ];
         }
       } catch {
-        // leave recipients empty so we show the validation error
+        // leave recipients empty
       }
     }
+    return recipients;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    const recipients = await resolvePendingRecipient();
     if (recipients.length === 0) {
+      const pendingTo = toInput.trim();
       setError(
         pendingTo
           ? 'That email or username wasn\'t found. Use a registered user or pick from the suggestions.'
@@ -141,26 +179,90 @@ export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
     }
     setSending(true);
     try {
-      const res = await fetch('/api/inbox/conversations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: recipients.map((r) => r.identifier),
-          subject: subject.trim() || undefined,
-          body: stripEmptyHtml(body) || '',
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError((data.error as string) ?? 'Failed to send.');
-        setSending(false);
-        return;
+      if (isDraftMode && draftId) {
+        const res = await fetch(`/api/inbox/conversations/${draftId}/send-draft`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: recipients.map((r) => r.identifier),
+            subject: subject.trim() || undefined,
+            body: stripEmptyHtml(body) || '',
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError((data.error as string) ?? 'Failed to send.');
+          setSending(false);
+          return;
+        }
+        onSent({ id: draftId });
+      } else {
+        const res = await fetch('/api/inbox/conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: recipients.map((r) => r.identifier),
+            subject: subject.trim() || undefined,
+            body: stripEmptyHtml(body) || '',
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError((data.error as string) ?? 'Failed to send.');
+          setSending(false);
+          return;
+        }
+        onSent({ id: data.id });
       }
-      onSent({ id: data.id });
     } catch {
       setError('Something went wrong.');
     }
     setSending(false);
+  }
+
+  async function handleSaveDraft() {
+    setError(null);
+    const recipients = await resolvePendingRecipient();
+    setSavingDraft(true);
+    try {
+      if (isDraftMode && draftId) {
+        const res = await fetch(`/api/inbox/conversations/${draftId}/draft`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            subject: subject.trim() || undefined,
+            body: stripEmptyHtml(body) || '',
+            to: recipients.map((r) => r.identifier),
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError((data.error as string) ?? 'Failed to save draft.');
+          return;
+        }
+        onDraftSaved?.({ id: draftId });
+      } else {
+        const res = await fetch('/api/inbox/conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            draft: true,
+            to: recipients.map((r) => r.identifier),
+            subject: subject.trim() || undefined,
+            body: stripEmptyHtml(body) || '',
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setError((data.error as string) ?? 'Failed to save draft.');
+          return;
+        }
+        onDraftSaved?.({ id: data.id });
+      }
+    } catch {
+      setError('Something went wrong.');
+    }
+    setSavingDraft(false);
   }
 
   const availableSuggestions = suggestions
@@ -201,6 +303,12 @@ export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
                       onClick={() => addRecipient(s)}
                     >
                       {s.displayName} ({s.identifier})
+                      {s.contactState === 'favoriteFriend' && (
+                        <span className={styles.suggestionBadge} title="Favorite friend">★</span>
+                      )}
+                      {s.contactState === 'friend' && (
+                        <span className={styles.suggestionBadge} title="Friend">Friend</span>
+                      )}
                     </button>
                   ))
                 ) : (
@@ -252,7 +360,15 @@ export function ComposeForm({ onSent, onCancel }: ComposeFormProps) {
             Cancel
           </Button>
         )}
-        <Button type="submit" color="primary" disabled={sending}>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={handleSaveDraft}
+          disabled={sending || savingDraft}
+        >
+          {savingDraft ? 'Saving…' : 'Save draft'}
+        </Button>
+        <Button type="submit" color="primary" disabled={sending || savingDraft}>
           {sending ? 'Sending...' : 'Send'}
         </Button>
       </div>

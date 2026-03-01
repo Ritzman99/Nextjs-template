@@ -94,7 +94,9 @@
 }
 
 .suggestionItem {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
   width: 100%;
   padding: var(--unit-2) var(--unit-3);
   cursor: pointer;
@@ -108,6 +110,15 @@
   &:hover {
     background-color: theme.theme-color('content2');
   }
+}
+
+.suggestionBadge {
+  margin-left: auto;
+  font-size: 0.75rem;
+  padding: 2px var(--unit-1);
+  border-radius: var(--unit-1);
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-foreground');
 }
 
 .suggestionsEmpty {

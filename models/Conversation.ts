@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 
-export type ConversationType = 'email' | 'chat';
+export type ConversationType = 'email' | 'chat' | 'friend_request' | 'event';
 
 export interface IConversation {
   _id: mongoose.Types.ObjectId;
@@ -12,7 +12,7 @@ export interface IConversation {
 
 const conversationSchema = new Schema<IConversation>(
   {
-    type: { type: String, enum: ['email', 'chat'], default: 'email' },
+    type: { type: String, enum: ['email', 'chat', 'friend_request', 'event'], default: 'email' },
     subject: { type: String, default: null },
   },
   { timestamps: true, collection: 'conversations' }

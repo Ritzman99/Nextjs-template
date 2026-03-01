@@ -137,3 +137,48 @@ interface IInboxMessageLean {
   inReplyToId?: mongoose.Types.ObjectId | null;
   createdAt: Date;
 }
+
+/** Permanent delete: only allowed when current user has conversation in trash. */
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  const { id } = await params;
+  if (!id || !mongoose.isValidObjectId(id)) {
+    return NextResponse.json({ error: 'Invalid conversation id' }, { status: 400 });
+  }
+  try {
+    const userObjectId = await getCurrentUserObjectId(session.user.id, (session.user as { email?: string | null }).email);
+    if (!userObjectId) {
+      return NextResponse.json({ error: 'User profile not found' }, { status: 403 });
+    }
+
+    const conversationId = new mongoose.Types.ObjectId(id);
+    await connect();
+
+    const state = await UserConversationStateModel.findOne({
+      userId: userObjectId,
+      conversationId,
+    }).lean();
+    if (!state) {
+      return NextResponse.json({ error: 'Conversation not found or access denied' }, { status: 404 });
+    }
+    const stateFolder = (state as unknown as { folder: string }).folder;
+    if (stateFolder !== 'trash') {
+      return NextResponse.json({ error: 'Conversation must be in trash to delete permanently' }, { status: 400 });
+    }
+
+    await InboxMessageModel.deleteMany({ conversationId });
+    await UserConversationStateModel.deleteMany({ conversationId });
+    await ConversationModel.deleteOne({ _id: conversationId });
+
+    return new NextResponse(null, { status: 204 });
+  } catch (e) {
+    console.error('DELETE /api/inbox/conversations/[id]:', e);
+    return NextResponse.json({ error: 'Failed to delete conversation' }, { status: 500 });
+  }
+}
