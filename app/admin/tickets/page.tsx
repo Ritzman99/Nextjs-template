@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Table, Button } from '@/components/ui';
+import { Table, Button, Select } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type TicketRow = {
@@ -51,17 +51,18 @@ export default function AdminTicketsPage() {
       <div className={styles.filterRow} style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: 'var(--unit-4)', alignItems: 'center' }}>
         <Link href="/admin/tickets/new" className={styles.primaryLink}>New ticket</Link>
-        <select
+        <Select
+          options={[
+            { value: '', label: 'All statuses' },
+            { value: 'open', label: 'open' },
+            { value: 'pending', label: 'pending' },
+            { value: 'resolved', label: 'resolved' },
+            { value: 'closed', label: 'closed' },
+          ]}
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ padding: 'var(--unit-2) var(--unit-3)', borderRadius: 'var(--unit-1)', border: '1px solid var(--theme-divider)' }}
-        >
-          <option value="">All statuses</option>
-          <option value="open">open</option>
-          <option value="pending">pending</option>
-          <option value="resolved">resolved</option>
-          <option value="closed">closed</option>
-        </select>
+          onChange={setStatusFilter}
+          placeholder="Status"
+        />
         </div>
       </div>
 

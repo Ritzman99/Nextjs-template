@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button, Input, Textarea, Form, FormSection, FormRow, FormActions } from '@/components/ui';
+import { Button, Input, Textarea, Form, FormSection, FormRow, FormActions, Select } from '@/components/ui';
 import styles from '../calendar.module.scss';
 
 interface CalendarOption {
@@ -130,19 +130,14 @@ export default function NewEventPage() {
       <Form onSubmit={handleSubmit}>
         <FormSection>
           <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Calendar</label>
-            <select
+            <Select
+              label="Calendar"
+              options={calendars.map((c) => ({ value: c.id, label: c.name }))}
               value={calendarId}
-              onChange={(e) => setCalendarId(e.target.value)}
-              required
-              style={{ padding: 'var(--unit-2)', borderRadius: 'var(--unit-1)', minWidth: 200 }}
-            >
-              {calendars.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+              onChange={setCalendarId}
+              placeholder="Select calendar"
+              style={{ minWidth: 200 }}
+            />
           </FormRow>
           <FormRow>
             <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Title</label>

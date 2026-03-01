@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button, useToast } from '@/components/ui';
+import { Input, Table, Button, Select, useToast } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type CompanyRow = {
@@ -86,20 +86,17 @@ export default function AdminCompaniesPage() {
           onChange={(e) => setSearch(e.target.value)}
           style={{ minWidth: 200 }}
         />
-        <select
+        <Select
+          options={[
+            { value: '', label: 'All statuses' },
+            { value: 'active', label: 'active' },
+            { value: 'inactive', label: 'inactive' },
+            { value: 'archived', label: 'archived' },
+          ]}
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          style={{
-            padding: 'var(--unit-2) var(--unit-3)',
-            borderRadius: 'var(--unit-1)',
-            border: '1px solid var(--theme-divider)',
-          }}
-        >
-          <option value="">All statuses</option>
-          <option value="active">active</option>
-          <option value="inactive">inactive</option>
-          <option value="archived">archived</option>
-        </select>
+          onChange={setStatusFilter}
+          placeholder="Status"
+        />
       </div>
 
       {loading ? (

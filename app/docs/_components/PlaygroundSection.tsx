@@ -163,42 +163,45 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       {slug === 'button' && (
         <>
           <Control label="Variant">
-            <select
+            <Select
+              options={[
+                { value: 'solid', label: 'solid' },
+                { value: 'outline', label: 'outline' },
+                { value: 'ghost', label: 'ghost' },
+                { value: 'shadow', label: 'shadow' },
+                { value: 'link', label: 'link' },
+              ]}
               value={buttonVariant}
-              onChange={(e) => setButtonVariant(e.target.value as ButtonVariant)}
-              aria-label="Variant"
-            >
-              <option value="solid">solid</option>
-              <option value="outline">outline</option>
-              <option value="ghost">ghost</option>
-              <option value="shadow">shadow</option>
-              <option value="link">link</option>
-            </select>
+              onChange={(v) => setButtonVariant(v as ButtonVariant)}
+              placeholder="Variant"
+            />
           </Control>
           <Control label="Color">
-            <select
+            <Select
+              options={[
+                { value: 'default', label: 'default' },
+                { value: 'primary', label: 'primary' },
+                { value: 'secondary', label: 'secondary' },
+                { value: 'success', label: 'success' },
+                { value: 'warning', label: 'warning' },
+                { value: 'danger', label: 'danger' },
+              ]}
               value={buttonColor}
-              onChange={(e) => setButtonColor(e.target.value as ButtonColor)}
-              aria-label="Color"
-            >
-              <option value="default">default</option>
-              <option value="primary">primary</option>
-              <option value="secondary">secondary</option>
-              <option value="success">success</option>
-              <option value="warning">warning</option>
-              <option value="danger">danger</option>
-            </select>
+              onChange={(v) => setButtonColor(v as ButtonColor)}
+              placeholder="Color"
+            />
           </Control>
           <Control label="Size">
-            <select
+            <Select
+              options={[
+                { value: 'sm', label: 'sm' },
+                { value: 'md', label: 'md' },
+                { value: 'lg', label: 'lg' },
+              ]}
               value={buttonSize}
-              onChange={(e) => setButtonSize(e.target.value as ButtonSize)}
-              aria-label="Size"
-            >
-              <option value="sm">sm</option>
-              <option value="md">md</option>
-              <option value="lg">lg</option>
-            </select>
+              onChange={(v) => setButtonSize(v as ButtonSize)}
+              placeholder="Size"
+            />
           </Control>
           <Control label="Disabled">
             <input
@@ -221,28 +224,30 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       {slug === 'badge' && (
         <>
           <Control label="Variant">
-            <select
+            <Select
+              options={[
+                { value: 'solid', label: 'solid' },
+                { value: 'outline', label: 'outline' },
+                { value: 'soft', label: 'soft' },
+              ]}
               value={badgeVariant}
-              onChange={(e) => setBadgeVariant(e.target.value as 'solid' | 'outline' | 'soft')}
-              aria-label="Variant"
-            >
-              <option value="solid">solid</option>
-              <option value="outline">outline</option>
-              <option value="soft">soft</option>
-            </select>
+              onChange={(v) => setBadgeVariant(v as 'solid' | 'outline' | 'soft')}
+              placeholder="Variant"
+            />
           </Control>
           <Control label="Color">
-            <select
+            <Select
+              options={[
+                { value: 'primary', label: 'primary' },
+                { value: 'secondary', label: 'secondary' },
+                { value: 'success', label: 'success' },
+                { value: 'warning', label: 'warning' },
+                { value: 'danger', label: 'danger' },
+              ]}
               value={badgeColor}
-              onChange={(e) => setBadgeColor(e.target.value as BadgeColor)}
-              aria-label="Color"
-            >
-              <option value="primary">primary</option>
-              <option value="secondary">secondary</option>
-              <option value="success">success</option>
-              <option value="warning">warning</option>
-              <option value="danger">danger</option>
-            </select>
+              onChange={(v) => setBadgeColor(v as BadgeColor)}
+              placeholder="Color"
+            />
           </Control>
           <Control label="Dot">
             <input
@@ -265,42 +270,45 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       {slug === 'alert' && (
         <>
           <Control label="Variant">
-            <select
+            <Select
+              options={[
+                { value: 'solid', label: 'solid' },
+                { value: 'outline', label: 'outline' },
+                { value: 'soft', label: 'soft' },
+              ]}
               value={alertVariant}
-              onChange={(e) => setAlertVariant(e.target.value as 'solid' | 'outline' | 'soft')}
-              aria-label="Variant"
-            >
-              <option value="solid">solid</option>
-              <option value="outline">outline</option>
-              <option value="soft">soft</option>
-            </select>
+              onChange={(v) => setAlertVariant(v as 'solid' | 'outline' | 'soft')}
+              placeholder="Variant"
+            />
           </Control>
           <Control label="Color">
-            <select
+            <Select
+              options={[
+                { value: 'default', label: 'default' },
+                { value: 'primary', label: 'primary' },
+                { value: 'secondary', label: 'secondary' },
+                { value: 'success', label: 'success' },
+                { value: 'warning', label: 'warning' },
+                { value: 'danger', label: 'danger' },
+              ]}
               value={alertColor}
-              onChange={(e) => setAlertColor(e.target.value as 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger')}
-              aria-label="Color"
-            >
-              <option value="default">default</option>
-              <option value="primary">primary</option>
-              <option value="secondary">secondary</option>
-              <option value="success">success</option>
-              <option value="warning">warning</option>
-              <option value="danger">danger</option>
-            </select>
+              onChange={(v) => setAlertColor(v as 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger')}
+              placeholder="Color"
+            />
           </Control>
           <Control label="Icon">
-            <select
+            <Select
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'info', label: 'Info' },
+                { value: 'check', label: 'Check circle' },
+                { value: 'warning', label: 'Warning triangle' },
+                { value: 'danger', label: 'Alert circle' },
+              ]}
               value={alertIcon}
-              onChange={(e) => setAlertIcon(e.target.value as 'none' | 'info' | 'check' | 'warning' | 'danger')}
-              aria-label="Icon"
-            >
-              <option value="none">None</option>
-              <option value="info">Info</option>
-              <option value="check">Check circle</option>
-              <option value="warning">Warning triangle</option>
-              <option value="danger">Alert circle</option>
-            </select>
+              onChange={(v) => setAlertIcon(v as 'none' | 'info' | 'check' | 'warning' | 'danger')}
+              placeholder="Icon"
+            />
           </Control>
           <Control label="Message">
             <input
@@ -385,17 +393,12 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       )}
       {slug === 'select' && (
         <Control label="Value">
-          <select
+          <Select
+            options={selectOptions}
             value={selectValue}
-            onChange={(e) => setSelectValue(e.target.value)}
-            aria-label="Selected value"
-          >
-            {selectOptions.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectValue}
+            placeholder="Selected value"
+          />
         </Control>
       )}
       {slug === 'switch' && (
@@ -435,17 +438,12 @@ export function PlaygroundSection({ slug, name }: PlaygroundSectionProps) {
       )}
       {slug === 'tabs' && (
         <Control label="Active tab">
-          <select
+          <Select
+            options={tabsItems.map((t) => ({ value: t.id, label: t.label }))}
             value={tabsActiveId}
-            onChange={(e) => setTabsActiveId(e.target.value)}
-            aria-label="Active tab"
-          >
-            {tabsItems.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.label}
-              </option>
-            ))}
-          </select>
+            onChange={setTabsActiveId}
+            placeholder="Active tab"
+          />
         </Control>
       )}
     </div>

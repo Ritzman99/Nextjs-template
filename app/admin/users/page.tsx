@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Input, Table, Button } from '@/components/ui';
+import { Input, Table, Button, Select } from '@/components/ui';
 import styles from '../admin.module.scss';
 
 type UserRow = {
@@ -61,15 +61,16 @@ export default function AdminUsersPage() {
           onChange={(e) => setSearch(e.target.value)}
           style={{ minWidth: 200 }}
         />
-        <select
+        <Select
+          options={[
+            { value: '', label: 'All roles' },
+            { value: 'user', label: 'user' },
+            { value: 'admin', label: 'admin' },
+          ]}
           value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
-          style={{ padding: 'var(--unit-2) var(--unit-3)', borderRadius: 'var(--unit-1)', border: '1px solid var(--theme-divider)' }}
-        >
-          <option value="">All roles</option>
-          <option value="user">user</option>
-          <option value="admin">admin</option>
-        </select>
+          onChange={setRoleFilter}
+          placeholder="Role"
+        />
       </div>
 
       {loading ? (

@@ -2,35 +2,126 @@
 
 .container {
   position: fixed;
-  bottom: var(--unit-4);
-  right: var(--unit-4);
+  top: var(--unit-4);
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: var(--unit-2);
-  max-width: 24rem;
+  align-items: center;
+  gap: var(--unit-3);
+  width: 100%;
+  max-width: 28rem;
+  padding: 0 var(--unit-4);
   pointer-events: none;
 }
 
 .toast {
   pointer-events: auto;
-  padding: var(--unit-3) var(--unit-4);
+  position: relative;
+  width: 100%;
+  padding: var(--unit-4) var(--unit-5);
+  padding-right: var(--unit-10);
+
+  &.hasTimer {
+    padding-left: calc(2 * var(--unit-2) + 20px);
+  }
   border-radius: var(--unit-2);
-  font-size: 0.875rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border: 1px solid theme.theme-color('divider');
   background-color: theme.theme-color('content1');
   color: theme.theme-color('foreground');
-  animation: slideIn 0.2s ease;
+  animation: slideIn 0.25s ease;
+}
+
+.toastContent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--unit-2);
+}
+
+.toastMessage {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--unit-8);
+  height: var(--unit-8);
+  margin: calc(var(--unit-1) * -1);
+  padding: 0;
+  border: none;
+  border-radius: var(--unit-1);
+  background: transparent;
+  color: theme.theme-color('default-500');
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+
+  &:hover {
+    color: theme.theme-color('foreground');
+    background-color: theme.theme-color('content2');
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px theme.theme-color('focus');
+  }
+}
+
+.timerRing {
+  position: absolute;
+  bottom: var(--unit-2);
+  left: var(--unit-2);
+  width: 20px;
+  height: 20px;
+  --toast-duration: 5000ms;
+}
+
+.timerSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timerBg {
+  fill: none;
+  stroke: theme.theme-color('default-200');
+  stroke-width: 2;
+}
+
+.timerProgress {
+  fill: none;
+  stroke: theme.theme-color('default-500');
+  stroke-width: 2;
+  stroke-dasharray: 62.83;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: toastCountdown var(--toast-duration) linear forwards;
+}
+
+@keyframes toastCountdown {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 62.83;
+  }
 }
 
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }

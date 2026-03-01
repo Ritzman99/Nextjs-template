@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { Select } from '@/components/ui';
 import {
   DEFAULT_THEME,
   getStoredCustomTheme,
@@ -31,23 +32,24 @@ export function ThemeSelect() {
   const customTheme = mounted ? getStoredCustomTheme() : null;
   const hasCustomTheme =
     customTheme != null && Object.keys(customTheme).length > 0;
-  const options =
+  const optionIds =
     hasCustomTheme || (mounted && theme === 'custom')
       ? [...PRESET_THEME_IDS, 'custom']
       : PRESET_THEME_IDS;
   const value = mounted ? theme : DEFAULT_THEME;
 
+  const options = optionIds.map((id) => ({
+    value: id,
+    label: THEME_LABELS[id as ThemeId],
+  }));
+
   return (
-    <select
+    <Select
+      options={options}
       value={value}
-      onChange={(e) => setTheme(e.target.value as ThemeId)}
+      onChange={(v) => setTheme(v as ThemeId)}
+      placeholder="Select theme"
       aria-label="Select theme"
-    >
-      {options.map((id) => (
-        <option key={id} value={id}>
-          {THEME_LABELS[id as ThemeId]}
-        </option>
-      ))}
-    </select>
+    />
   );
 }

@@ -1,9 +1,23 @@
 @use '../../scss/abstracts/theme-variables' as theme;
 
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--unit-6) var(--unit-4);
+}
+
+// ---- Header ----
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--unit-4);
+  margin-bottom: var(--unit-8);
+}
+
+.headerContent {
+  min-width: 0;
 }
 
 .pageTitle {
@@ -11,31 +25,227 @@
   font-weight: 700;
   margin: 0 0 var(--unit-2);
   color: theme.theme-color('foreground');
+  letter-spacing: -0.02em;
 }
 
 .pageDescription {
   font-size: 1rem;
   color: theme.theme-color('default-500');
-  margin: 0 0 var(--unit-6);
+  margin: 0;
   line-height: 1.5;
 }
 
-.filterRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--unit-3);
-  margin-bottom: var(--unit-6);
-  align-items: center;
+.headerActions {
+  flex-shrink: 0;
 }
 
-.addRow {
+// ---- Two-column grid ----
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) 1fr;
+  gap: var(--unit-6);
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-4);
+  position: sticky;
+  top: var(--unit-4);
+
+  @media (max-width: 768px) {
+    position: static;
+  }
+}
+
+.rightColumn {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-4);
+}
+
+.card {
+  width: 100%;
+}
+
+// ---- Add people card ----
+.addPeople {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-3);
+}
+
+.addInput {
+  width: 100%;
+}
+
+.addButtons {
   display: flex;
   flex-wrap: wrap;
   gap: var(--unit-2);
-  margin-bottom: var(--unit-6);
-  align-items: center;
 }
 
+.addHint {
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+  line-height: 1.4;
+}
+
+.addHint a {
+  color: theme.theme-color('primary');
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ---- Collapsible card headers ----
+.collapsibleHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: theme.theme-color('foreground');
+
+  &:hover {
+    color: theme.theme-color('foreground');
+  }
+}
+
+.collapsibleTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.collapsibleDescription {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-400');
+  margin: 0 0 var(--unit-3);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: theme.theme-color('default-500');
+  transition: transform 0.2s;
+}
+
+.chevronOpen {
+  composes: chevron;
+  transform: rotate(-180deg);
+}
+
+.pendingBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--unit-1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 999px;
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-foreground');
+}
+
+// ---- Filter chips ----
+.chipsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-2);
+}
+
+.chip,
+.chipSelected {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--unit-1) var(--unit-3);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--unit-2);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  background: none;
+  color: theme.theme-color('default-600');
+  font-family: inherit;
+}
+
+.chip {
+  background-color: theme.theme-color('content2');
+  border-color: theme.theme-color('divider');
+
+  &:hover {
+    background-color: theme.theme-color('content3');
+    color: theme.theme-color('foreground');
+  }
+}
+
+.chipSelected {
+  background-color: theme.theme-color('primary');
+  border-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-foreground');
+
+  &:hover {
+    opacity: 0.95;
+  }
+}
+
+.searchInput {
+  width: 100%;
+}
+
+// ---- Contacts list card ----
+.listHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--unit-3);
+  width: 100%;
+}
+
+.listTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+  margin: 0;
+}
+
+.sortWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+}
+
+.sortLabel {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+}
+
+.sortSelect {
+  min-width: 140px;
+  font-size: 0.875rem;
+}
+
+// ---- Contact list ----
 .contactList {
   list-style: none;
   margin: 0;
@@ -54,7 +264,12 @@
   padding: var(--unit-3) var(--unit-4);
   border: 1px solid theme.theme-color('divider');
   border-radius: var(--unit-2);
-  background-color: theme.theme-color('content1');
+  background-color: theme.theme-color('content2');
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: theme.theme-color('content3');
+  }
 }
 
 .contactInfo {
@@ -107,19 +322,88 @@
   align-items: center;
 }
 
+// ---- Empty state ----
 .emptyState {
-  padding: var(--unit-8);
+  padding: var(--unit-8) var(--unit-4);
   text-align: center;
-  color: theme.theme-color('default-500');
-  border: 1px dashed theme.theme-color('divider');
-  border-radius: var(--unit-2);
-  background-color: theme.theme-color('content2');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--unit-4);
 }
 
-.loading {
-  padding: var(--unit-6);
-  text-align: center;
+.emptyIllustration {
+  color: theme.theme-color('default-400');
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: theme.theme-color('foreground');
+  margin: 0;
+}
+
+.emptyDescription {
+  font-size: 0.9375rem;
   color: theme.theme-color('default-500');
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.emptyCta {
+  margin-top: var(--unit-2);
+}
+
+// ---- Loading ----
+.loadingBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--unit-3);
+  padding: var(--unit-8);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid theme.theme-color('divider');
+  border-top-color: theme.theme-color('primary');
+  border-radius: 50%;
+  animation: contactsSpin 0.7s linear infinite;
+}
+
+@keyframes contactsSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 0.9375rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+}
+
+// ---- Pagination ----
+.pagination {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+  margin: var(--unit-3) 0 0;
+}
+
+// ---- Bottom section (Pending requests) ----
+.bottomSection {
+  margin-top: var(--unit-8);
+  max-width: 600px;
+}
+
+.pendingHint {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+  line-height: 1.5;
 }
 
 .error {

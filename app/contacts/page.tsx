@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Input, Button, useToast } from '@/components/ui';
+import { Input, Button, Card, Select, useToast } from '@/components/ui';
+import { Users, ChevronDown } from 'lucide-react';
 import styles from './contacts.module.scss';
 
 type ContactState = 'default' | 'friend' | 'favoriteFriend';
@@ -19,6 +20,16 @@ type ContactItem = {
 
 type Pagination = { page: number; limit: number; total: number; pages: number };
 
+type FilterChip = '' | 'friend' | 'default' | 'favoriteFriend';
+type SortOption = 'recent' | 'name';
+
+const FILTER_CHIPS: { value: FilterChip; label: string }[] = [
+  { value: '', label: 'All' },
+  { value: 'friend', label: 'Friends' },
+  { value: 'default', label: 'Pending' },
+  { value: 'favoriteFriend', label: 'Favorites' },
+];
+
 export default function ContactsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -26,14 +37,20 @@ export default function ContactsPage() {
   const [contacts, setContacts] = useState<ContactItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 20, total: 0, pages: 0 });
   const [loading, setLoading] = useState(true);
-  const [stateFilter, setStateFilter] = useState<ContactState | ''>('');
+  const [stateFilter, setStateFilter] = useState<FilterChip>('');
   const [search, setSearch] = useState('');
   const [addIdentifier, setAddIdentifier] = useState('');
   const [adding, setAdding] = useState(false);
-  const [friendRequestId, setFriendRequestId] = useState('');
   const [sendingRequest, setSendingRequest] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
+  const [addPeopleOpen, setAddPeopleOpen] = useState(false);
+  const [pendingRequestsOpen, setPendingRequestsOpen] = useState(false);
+  const [friendRequestsCount, setFriendRequestsCount] = useState(0);
+  const addCardRef = useRef<HTMLDivElement>(null);
+  const toastRef = useRef(toast);
+  toastRef.current = toast;
 
   const fetchContacts = useCallback(async () => {
     setLoading(true);
@@ -50,11 +67,22 @@ export default function ContactsPage() {
       setPagination(data.pagination ?? { page: 1, limit: 20, total: 0, pages: 0 });
     } catch {
       setContacts([]);
-      toast.toast.error('Failed to load contacts');
+      toastRef.current.toast.error('Failed to load contacts');
     } finally {
       setLoading(false);
     }
   }, [stateFilter, search]);
+
+  const fetchFriendRequestsCount = useCallback(async () => {
+    try {
+      const res = await fetch('/api/inbox/unread-count');
+      if (!res.ok) return;
+      const data = await res.json();
+      setFriendRequestsCount(data.friendRequestsCount ?? 0);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -63,10 +91,11 @@ export default function ContactsPage() {
     }
     if (status === 'loading' || !session?.user) return;
     fetchContacts();
-  }, [status, session?.user, router, fetchContacts]);
+    fetchFriendRequestsCount();
+  }, [status, session?.user, router, fetchContacts, fetchFriendRequestsCount]);
 
   const handleSendFriendRequest = async () => {
-    const identifier = friendRequestId.trim();
+    const identifier = addIdentifier.trim();
     if (!identifier) {
       toast.toast.error('Enter an email or username');
       return;
@@ -84,7 +113,8 @@ export default function ContactsPage() {
         return;
       }
       toast.toast.success('Friend request sent');
-      setFriendRequestId('');
+      setAddIdentifier('');
+      fetchFriendRequestsCount();
       router.push(`/inbox?folder=friend_requests`);
     } catch {
       toast.toast.error('Failed to send friend request');
@@ -175,142 +205,281 @@ export default function ContactsPage() {
     }
   };
 
+  const sortedContacts = useMemo(() => {
+    const list = [...contacts];
+    if (sortBy === 'name') {
+      list.sort((a, b) => {
+        const nameA = (a.displayName || a.email).toLowerCase();
+        const nameB = (b.displayName || b.email).toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+    }
+    return list;
+  }, [contacts, sortBy]);
+
+  const showEmptyState = !loading && sortedContacts.length === 0;
+  const showFilters = search || stateFilter;
+
   if (status === 'loading' || !session?.user) {
     return (
       <div className={styles.container}>
-        <p className={styles.loading}>Loading…</p>
+        <div className={styles.loadingBlock}>
+          <div className={styles.spinner} aria-hidden />
+          <p className={styles.loadingText}>Loading…</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.pageTitle}>Contacts</h1>
-      <p className={styles.pageDescription}>
-        Manage your contacts. Add users by exact email or username. Friend status is set when they
-        accept your request from the inbox.
-      </p>
-
-      <div className={styles.addRow}>
-        <Input
-          type="text"
-          placeholder="Email or username to add"
-          value={addIdentifier}
-          onChange={(e) => setAddIdentifier(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleAddContact()}
-          style={{ minWidth: 220 }}
-        />
-        <Button onClick={handleAddContact} disabled={adding}>
-          {adding ? 'Adding…' : 'Add contact'}
-        </Button>
-      </div>
-      <div className={styles.addRow}>
-        <Input
-          type="text"
-          placeholder="Email or username to send friend request"
-          value={friendRequestId}
-          onChange={(e) => setFriendRequestId(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSendFriendRequest()}
-          style={{ minWidth: 220 }}
-        />
-        <Button onClick={handleSendFriendRequest} disabled={sendingRequest}>
-          {sendingRequest ? 'Sending…' : 'Send friend request'}
-        </Button>
-        <span className={styles.pageDescription} style={{ margin: 0, fontSize: '0.875rem' }}>
-          Request will appear in their <Link href="/inbox?folder=friend_requests">Friend requests</Link>.
-        </span>
-      </div>
-
-      <div className={styles.filterRow}>
-        <Input
-          type="search"
-          placeholder="Search contacts"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ minWidth: 200 }}
-        />
-        <select
-          value={stateFilter}
-          onChange={(e) => setStateFilter(e.target.value as ContactState | '')}
-          style={{
-            padding: 'var(--unit-2) var(--unit-3)',
-            borderRadius: 'var(--unit-1)',
-            border: '1px solid var(--theme-divider)',
-            background: 'var(--theme-content1)',
-          }}
-        >
-          <option value="">All</option>
-          <option value="default">Default</option>
-          <option value="friend">Friend</option>
-          <option value="favoriteFriend">Favorite</option>
-        </select>
-      </div>
-
-      {loading ? (
-        <p className={styles.loading}>Loading contacts…</p>
-      ) : contacts.length === 0 ? (
-        <div className={styles.emptyState}>
-          {search || stateFilter
-            ? 'No contacts match your filters.'
-            : 'No contacts yet. Add someone by email or username above.'}
+      <header className={styles.pageHeader}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.pageTitle}>Contacts</h1>
+          <p className={styles.pageDescription}>
+            Manage your contacts and friend requests.
+          </p>
         </div>
-      ) : (
-        <ul className={styles.contactList}>
-          {contacts.map((c) => (
-            <li key={c.id} className={styles.contactItem}>
-              <div className={styles.contactInfo}>
-                <p className={styles.contactName}>
-                  <span
-                    className={
-                      c.state === 'favoriteFriend'
-                        ? styles.badgeFavorite
-                        : c.state === 'friend'
-                          ? styles.badgeFriend
-                          : styles.badgeDefault
-                    }
-                  >
-                    {c.state === 'favoriteFriend' ? 'Favorite' : c.state === 'friend' ? 'Friend' : 'Default'}
+        <div className={styles.headerActions}>{/* Future buttons */}</div>
+      </header>
+
+      <div className={styles.grid}>
+        <aside className={styles.leftColumn} ref={addCardRef}>
+          <Card
+            className={styles.card}
+            header={
+              <button
+                type="button"
+                className={styles.collapsibleHeader}
+                onClick={() => setAddPeopleOpen((o) => !o)}
+                aria-expanded={addPeopleOpen}
+              >
+                <span className={styles.collapsibleTitle}>Add people</span>
+                <ChevronDown
+                  className={addPeopleOpen ? styles.chevronOpen : styles.chevron}
+                  size={20}
+                  aria-hidden
+                />
+              </button>
+            }
+          >
+            {addPeopleOpen && (
+              <>
+                <p className={styles.collapsibleDescription}>
+                  Add by email or username. Send a friend request or add directly.
+                </p>
+                <div className={styles.addPeople}>
+                  <Input
+                    type="text"
+                    placeholder="Email or username"
+                    value={addIdentifier}
+                    onChange={(e) => setAddIdentifier(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddContact()}
+                    className={styles.addInput}
+                  />
+                  <div className={styles.addButtons}>
+                    <Button
+                      onClick={handleAddContact}
+                      disabled={adding}
+                      color="primary"
+                      size="md"
+                    >
+                      {adding ? 'Adding…' : 'Add contact'}
+                    </Button>
+                    <Button
+                      onClick={handleSendFriendRequest}
+                      disabled={sendingRequest}
+                      variant="outline"
+                      color="secondary"
+                      size="md"
+                    >
+                      {sendingRequest ? 'Sending…' : 'Send friend request'}
+                    </Button>
+                  </div>
+                  <p className={styles.addHint}>
+                    Requests appear in <Link href="/inbox?folder=friend_requests">Friend requests</Link>.
+                  </p>
+                </div>
+              </>
+            )}
+          </Card>
+
+          <Card
+            className={styles.card}
+            header={
+              <button
+                type="button"
+                className={styles.collapsibleHeader}
+                onClick={() => setPendingRequestsOpen((o) => !o)}
+                aria-expanded={pendingRequestsOpen}
+              >
+                <span className={styles.collapsibleTitle}>Pending requests</span>
+                {friendRequestsCount > 0 && (
+                  <span className={styles.pendingBadge} aria-label={`${friendRequestsCount} pending`}>
+                    {friendRequestsCount}
                   </span>
-                  {c.displayName || c.email}
-                </p>
-                <p className={styles.contactMeta}>
-                  {c.email}
-                  {c.username ? ` (@${c.username})` : ''}
-                </p>
-              </div>
-              <div className={styles.actions}>
-                {c.state === 'friend' && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    color="secondary"
-                    onClick={() => handleSetFavorite(c.id)}
-                    disabled={updatingId === c.id}
-                  >
-                    {updatingId === c.id ? '…' : 'Set favorite'}
-                  </Button>
                 )}
+                <ChevronDown
+                  className={pendingRequestsOpen ? styles.chevronOpen : styles.chevron}
+                  size={20}
+                  aria-hidden
+                />
+              </button>
+            }
+            footer={
+              pendingRequestsOpen ? (
+                <Link href="/inbox?folder=friend_requests">
+                  <Button variant="outline" color="secondary" size="sm">
+                    Open friend requests
+                  </Button>
+                </Link>
+              ) : undefined
+            }
+          >
+            {pendingRequestsOpen && (
+              <p className={styles.pendingHint}>
+                Friend requests you send or receive appear in your inbox. Accept or decline from there.
+              </p>
+            )}
+          </Card>
+        </aside>
+
+        <main className={styles.rightColumn}>
+          <div className={styles.chipsWrap}>
+            {FILTER_CHIPS.map(({ value, label }) => (
+              <button
+                key={value || 'all'}
+                type="button"
+                className={stateFilter === value ? styles.chipSelected : styles.chip}
+                onClick={() => setStateFilter(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <Input
+            type="search"
+            placeholder="Search contacts"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={styles.searchInput}
+            aria-label="Search contacts"
+          />
+
+          <Card
+            className={styles.card}
+            header={
+              <div className={styles.listHeader}>
+                <h3 className={styles.listTitle}>Contacts list</h3>
+                <div className={styles.sortWrap}>
+                  <span className={styles.sortLabel}>Sort:</span>
+                  <Select
+                    options={[
+                      { value: 'recent', label: 'Recently added' },
+                      { value: 'name', label: 'Name' },
+                    ]}
+                    value={sortBy}
+                    onChange={(v) => setSortBy(v as SortOption)}
+                    placeholder="Sort"
+                    className={styles.sortSelect}
+                  />
+                </div>
+              </div>
+            }
+          >
+            {loading ? (
+              <div className={styles.loadingBlock}>
+                <div className={styles.spinner} aria-hidden />
+                <p className={styles.loadingText}>Loading contacts…</p>
+              </div>
+            ) : showEmptyState ? (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIllustration} aria-hidden>
+                  <Users size={80} strokeWidth={1.25} opacity={0.5} />
+                </div>
+                <h4 className={styles.emptyTitle}>
+                  {showFilters ? 'No contacts match' : 'No contacts yet'}
+                </h4>
+                <p className={styles.emptyDescription}>
+                  {showFilters
+                    ? 'Try changing your search or filter.'
+                    : 'Add someone by email or username to get started.'}
+                </p>
                 <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleRemove(c.id)}
-                  disabled={removingId === c.id}
+                  color="primary"
+                  size="md"
+                  onClick={() => {
+                    if (showFilters) {
+                      setSearch('');
+                      setStateFilter('');
+                    } else {
+                      addCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className={styles.emptyCta}
                 >
-                  {removingId === c.id ? '…' : 'Remove'}
+                  {showFilters ? 'Clear filters' : 'Add your first contact'}
                 </Button>
               </div>
-            </li>
-          ))}
-        </ul>
-      )}
+            ) : (
+              <ul className={styles.contactList}>
+                {sortedContacts.map((c) => (
+                  <li key={c.id} className={styles.contactItem}>
+                    <div className={styles.contactInfo}>
+                      <p className={styles.contactName}>
+                        <span
+                          className={
+                            c.state === 'favoriteFriend'
+                              ? styles.badgeFavorite
+                              : c.state === 'friend'
+                                ? styles.badgeFriend
+                                : styles.badgeDefault
+                          }
+                        >
+                          {c.state === 'favoriteFriend' ? 'Favorite' : c.state === 'friend' ? 'Friend' : 'Pending'}
+                        </span>
+                        {c.displayName || c.email}
+                      </p>
+                      <p className={styles.contactMeta}>
+                        {c.email}
+                        {c.username ? ` (@${c.username})` : ''}
+                      </p>
+                    </div>
+                    <div className={styles.actions}>
+                      {c.state === 'friend' && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          color="secondary"
+                          onClick={() => handleSetFavorite(c.id)}
+                          disabled={updatingId === c.id}
+                        >
+                          {updatingId === c.id ? '…' : 'Set favorite'}
+                        </Button>
+                      )}
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleRemove(c.id)}
+                        disabled={removingId === c.id}
+                      >
+                        {removingId === c.id ? '…' : 'Remove'}
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
 
-      {pagination.pages > 1 && (
-        <div className={styles.filterRow} style={{ marginTop: 'var(--unit-4)' }}>
-          <span className={styles.pageDescription} style={{ margin: 0 }}>
-            Page {pagination.page} of {pagination.pages} ({pagination.total} total)
-          </span>
-        </div>
-      )}
+          {pagination.pages > 1 && (
+            <p className={styles.pagination}>
+              Page {pagination.page} of {pagination.pages} ({pagination.total} total)
+            </p>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
