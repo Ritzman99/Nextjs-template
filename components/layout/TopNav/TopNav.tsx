@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 import { Bell, Menu, X } from 'lucide-react';
 import { User as UserComponent } from '@/components/ui/User';
 import { Button } from '@/components/ui/Button';
-import { ThemeSelect } from '@/components/ThemeSelect';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { ADMIN_ROLE } from '@/lib/adminConstants';
 import styles from './TopNav.module.scss';
 
@@ -92,8 +92,8 @@ export function TopNav({ brand = 'App', items }: TopNavProps) {
           );
         })}
         <li className={styles.item}>
-          <div className={styles.themeSelectWrap}>
-            <ThemeSelect />
+          <div className={styles.themeToggleWrap}>
+            <ThemeToggle />
           </div>
         </li>
         {status === 'loading' ? (
@@ -129,9 +129,10 @@ export function TopNav({ brand = 'App', items }: TopNavProps) {
                 >
                   <UserComponent
                     name={session.user.name ?? session.user.email ?? 'User'}
-                    description={session.user.email}
                     avatar={session.user.avatar ?? session.user.image ?? null}
                     size="sm"
+                    className={styles.profileUser}
+                    avatarClassName={styles.avatarRing}
                   />
                 </Link>
                 <Button

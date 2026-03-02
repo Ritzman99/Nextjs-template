@@ -1,0 +1,57 @@
+@use '../../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: theme.theme-color('foreground');
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--unit-2);
+  min-height: var(--unit-8);
+  padding: var(--unit-1) var(--unit-3);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  &:focus-within {
+    outline: none;
+    border-color: theme.theme-color('primary');
+    box-shadow: 0 0 0 3px color-mix(in srgb, theme.theme-color('primary') 20%, transparent);
+  }
+
+  &[data-disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  background: transparent;
+  padding: var(--unit-1) 0;
+  font-size: 1rem;
+  font-family: inherit;
+  color: theme.theme-color('foreground');
+
+  &::placeholder {
+    color: theme.theme-color('default-400');
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

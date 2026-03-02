@@ -88,3 +88,14 @@
   font-size: 0.875rem;
   color: theme.theme-color('foreground');
 }
+
+.presetHint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
+}
+
+.variantButtons {
+  display: flex;
+  gap: var(--unit-1);
+}

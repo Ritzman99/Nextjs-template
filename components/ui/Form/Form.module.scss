@@ -42,3 +42,10 @@
   gap: var(--unit-3);
   margin-top: var(--unit-6);
 }
+
+@media (max-width: 768px) {
+  .formRow {
+    flex-direction: column;
+    max-width: none;
+  }
+}

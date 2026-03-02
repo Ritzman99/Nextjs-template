@@ -3,7 +3,22 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button, Input, Textarea, Form, FormSection, FormRow, FormActions, Select } from '@/components/ui';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
+import {
+  Button,
+  Input,
+  Textarea,
+  Form,
+  FormSection,
+  FormRow,
+  FormActions,
+  Select,
+  Switch,
+  Card,
+  Alert,
+  ButtonGroup,
+  TagInput,
+} from '@/components/ui';
 import styles from '../calendar.module.scss';
 
 interface CalendarOption {
@@ -28,7 +43,7 @@ export default function NewEventPage() {
   const [allDay, setAllDay] = useState(false);
   const [locationText, setLocationText] = useState('');
   const [description, setDescription] = useState('');
-  const [attendeeLines, setAttendeeLines] = useState('');
+  const [attendeeIdentifiers, setAttendeeIdentifiers] = useState<string[]>([]);
   const [createThread, setCreateThread] = useState(true);
 
   useEffect(() => {
@@ -38,11 +53,13 @@ export default function NewEventPage() {
         const res = await fetch('/api/calendar/calendars');
         if (!res.ok) throw new Error('Failed to load calendars');
         const data = await res.json();
-        const list = (data.calendars ?? []).map((c: { id: string; name: string; isDefault: boolean }) => ({
-          id: c.id,
-          name: c.name,
-          isDefault: c.isDefault,
-        }));
+        const list = (data.calendars ?? []).map(
+          (c: { id: string; name: string; isDefault: boolean }) => ({
+            id: c.id,
+            name: c.name,
+            isDefault: c.isDefault,
+          })
+        );
         if (!cancelled) {
           setCalendars(list);
           if (list.length > 0 && !calendarId) {
@@ -56,7 +73,9 @@ export default function NewEventPage() {
         if (!cancelled) setLoadingCalendars(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -84,10 +103,6 @@ export default function NewEventPage() {
     }
     setSubmitting(true);
     try {
-      const attendeeIdentifiers = attendeeLines
-        .split(/[\n,]+/)
-        .map((s) => s.trim())
-        .filter(Boolean);
       const res = await fetch('/api/calendar/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,7 +114,7 @@ export default function NewEventPage() {
           allDay,
           locationText: locationText.trim() || null,
           description: description.trim() || null,
-          attendeeIdentifiers,
+          attendeeIdentifiers: attendeeIdentifiers.filter(Boolean),
           createConversationThread: createThread,
         }),
       });
@@ -116,137 +131,185 @@ export default function NewEventPage() {
   if (loadingCalendars) {
     return (
       <main className={styles.formPage}>
-        <div className={styles.emptyState}>Loading…</div>
+        <div className={styles.newEventPage}>
+          <div className={styles.emptyState}>Loading…</div>
+        </div>
       </main>
     );
   }
 
   return (
     <main className={styles.formPage}>
-      <Link href="/calendar" style={{ display: 'inline-block', marginBottom: 'var(--unit-3)', fontSize: '0.875rem' }}>
-        ← Back to Calendar
-      </Link>
-      <h1 className={styles.formPageTitle}>New event</h1>
-      <Form onSubmit={handleSubmit}>
-        <FormSection>
-          <FormRow>
-            <Select
-              label="Calendar"
-              options={calendars.map((c) => ({ value: c.id, label: c.name }))}
-              value={calendarId}
-              onChange={setCalendarId}
-              placeholder="Select calendar"
-              style={{ minWidth: 200 }}
-            />
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Title</label>
-            <Input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Event title"
-              required
-            />
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Start</label>
-            <div style={{ display: 'flex', gap: 'var(--unit-2)', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                required
-              />
-              {!allDay && (
-                <Input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
+      <div className={styles.newEventPage}>
+        <Link href="/calendar" className={styles.settingsBackLink}>
+          <ArrowLeft size={20} aria-hidden />
+          Back to calendar
+        </Link>
+
+        <Card
+          className={styles.newEventCard}
+          header={
+            <>
+              <div className={styles.newEventHeader}>
+                <h1 className={styles.newEventTitle}>New Event</h1>
+                <p className={styles.newEventSubtitle}>Create an event and invite others.</p>
+              </div>
+              <div className={styles.newEventHeaderDivider} aria-hidden />
+            </>
+          }
+        >
+          <Form onSubmit={handleSubmit} className={styles.newEventForm}>
+            <div className={styles.newEventFormGrid}>
+              <div className={styles.newEventFormLeft}>
+                <FormSection title="Details">
+                  <FormRow fullWidth>
+                    <Select
+                      label="Calendar"
+                      options={calendars.map((c) => ({ value: c.id, label: c.name }))}
+                      value={calendarId}
+                      onChange={setCalendarId}
+                      placeholder="Select calendar"
+                      aria-label="Calendar"
+                    />
+                  </FormRow>
+                  <FormRow fullWidth>
+                    <Input
+                      type="text"
+                      label="Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Event title"
+                      required
+                    />
+                  </FormRow>
+                </FormSection>
+
+                <FormSection title="When">
+                  <div className={styles.whenSection}>
+                    <div className={styles.whenRow}>
+                      <div className={styles.whenGroup}>
+                        <Input
+                          type="date"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          required
+                          aria-label="Start date"
+                        />
+                        {!allDay && (
+                          <Input
+                            type="time"
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
+                            aria-label="Start time"
+                          />
+                        )}
+                      </div>
+                      <span className={styles.whenArrow} aria-hidden>
+                        →
+                      </span>
+                      <div className={styles.whenGroup}>
+                        <Input
+                          type="date"
+                          value={endDate}
+                          onChange={(e) => setEndDate(e.target.value)}
+                          required
+                          aria-label="End date"
+                        />
+                        {!allDay && (
+                          <Input
+                            type="time"
+                            value={endTime}
+                            onChange={(e) => setEndTime(e.target.value)}
+                            aria-label="End time"
+                          />
+                        )}
+                      </div>
+                      <div className={styles.whenAllDay}>
+                        <Switch
+                          label="All day"
+                          checked={allDay}
+                          onChange={(e) => setAllDay(e.target.checked)}
+                          className={styles.switchPill}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </FormSection>
+
+                <FormSection title="Location">
+                  <FormRow fullWidth>
+                    <Input
+                      type="text"
+                      label="Location"
+                      value={locationText}
+                      onChange={(e) => setLocationText(e.target.value)}
+                      placeholder="Address or place"
+                    />
+                  </FormRow>
+                </FormSection>
+              </div>
+
+              <div className={styles.newEventFormRight}>
+                <FormSection title="Description">
+                  <FormRow fullWidth>
+                    <Textarea
+                      label="Description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Add details, agenda, or notes…"
+                      rows={5}
+                      className={styles.descriptionTextarea}
+                    />
+                  </FormRow>
+                </FormSection>
+
+                <FormSection title="Attendees & options">
+              <FormRow fullWidth>
+                <TagInput
+                  label="Attendees"
+                  value={attendeeIdentifiers}
+                  onChange={setAttendeeIdentifiers}
+                  placeholder="Add email or username…"
                 />
-              )}
+              </FormRow>
+              <div className={styles.threadOptionCard}>
+                <div className={styles.threadOptionRow}>
+                  <MessageCircle size={20} className={styles.threadOptionIcon} aria-hidden />
+                  <Switch
+                    label="Create conversation thread for this event"
+                    checked={createThread}
+                    onChange={(e) => setCreateThread(e.target.checked)}
+                  />
+                </div>
+                <p className={styles.threadOptionDescription}>
+                  Allow comments and updates in a thread.
+                </p>
+              </div>
+              </FormSection>
+              </div>
             </div>
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>End</label>
-            <div style={{ display: 'flex', gap: 'var(--unit-2)', flexWrap: 'wrap', alignItems: 'center' }}>
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                required
-              />
-              {!allDay && (
-                <Input
-                  type="time"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                />
-              )}
-            </div>
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--unit-2)', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={allDay}
-                onChange={(e) => setAllDay(e.target.checked)}
-              />
-              All day
-            </label>
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Location</label>
-            <Input
-              type="text"
-              value={locationText}
-              onChange={(e) => setLocationText(e.target.value)}
-              placeholder="Address or place"
-            />
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Description</label>
-            <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Optional description"
-              rows={3}
-            />
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'block', marginBottom: 'var(--unit-1)', fontWeight: 500 }}>Attendees</label>
-            <Textarea
-              value={attendeeLines}
-              onChange={(e) => setAttendeeLines(e.target.value)}
-              placeholder="One email or username per line"
-              rows={2}
-            />
-          </FormRow>
-          <FormRow>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--unit-2)', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={createThread}
-                onChange={(e) => setCreateThread(e.target.checked)}
-              />
-              Create conversation thread for this event
-            </label>
-          </FormRow>
-        </FormSection>
-        {error && (
-          <p style={{ color: 'var(--color-danger)', marginBottom: 'var(--unit-2)' }}>{error}</p>
-        )}
-        <FormActions>
-          <Button type="submit" color="primary" disabled={submitting}>
-            {submitting ? 'Creating…' : 'Create event'}
-          </Button>
-          <Link href="/calendar">
-            <Button type="button" variant="outline">
-              Cancel
-            </Button>
-          </Link>
-        </FormActions>
-      </Form>
+
+            {error && (
+              <Alert color="danger" variant="soft" className={styles.formAlert}>
+                {error}
+              </Alert>
+            )}
+
+            <FormActions>
+              <ButtonGroup attached>
+                <Button type="submit" color="primary" disabled={submitting}>
+                  {submitting ? 'Creating…' : 'Create event'}
+                </Button>
+                <Link href="/calendar">
+                  <Button type="button" variant="ghost" className={styles.cancelBtn}>
+                    Cancel
+                  </Button>
+                </Link>
+              </ButtonGroup>
+            </FormActions>
+          </Form>
+        </Card>
+      </div>
     </main>
   );
 }

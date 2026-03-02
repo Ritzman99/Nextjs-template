@@ -1,0 +1,52 @@
+@use '../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: theme.theme-color('content2');
+  padding: var(--unit-0-5);
+  gap: 0;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--unit-1);
+  padding: var(--unit-1) var(--unit-2);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: theme.theme-color('default-500');
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    color: theme.theme-color('foreground');
+    background-color: theme.theme-color('content3');
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px theme.theme-color('focus');
+  }
+}
+
+.optionActive {
+  color: theme.theme-color('foreground');
+  background-color: theme.theme-color('content1');
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  cursor: default;
+
+  &:hover {
+    background-color: theme.theme-color('content1');
+  }
+}

@@ -109,11 +109,9 @@
   background-color: theme.theme-color('content2');
 }
 
-.themeSelectWrap {
+.themeToggleWrap {
   display: flex;
   align-items: center;
-  // Ensure the Select dropdown (portaled to body) is not clipped by nav overflow
-  overflow: visible;
 }
 
 .bellWrap {
@@ -150,17 +148,29 @@
   align-items: center;
   color: inherit;
   text-decoration: none;
-  border-radius: var(--unit-1);
-  transition: background-color 0.15s;
+  padding: var(--unit-2) var(--unit-4);
+  border-radius: 999px;
+  background-color: theme.theme-color('content2');
+  transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: theme.theme-color('content2');
+    background-color: theme.theme-color('content3');
   }
 
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px theme.theme-color('focus');
   }
+}
+
+.profileUser {
+  gap: var(--unit-2);
+}
+
+.avatarRing {
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px theme.theme-color('default-300');
 }
 
 // Mobile: hamburger + slide-out menu
@@ -228,7 +238,7 @@
     border-radius: var(--unit-1);
   }
 
-  .menuOverlay .themeSelectWrap {
+  .menuOverlay .themeToggleWrap {
     padding: var(--unit-3) var(--unit-2);
   }
 
@@ -237,5 +247,9 @@
     align-items: stretch;
     padding: var(--unit-3) var(--unit-2);
     gap: var(--unit-2);
+    border-left: none;
+    border-top: 1px solid theme.theme-color('divider');
+    padding-top: var(--unit-3);
+    margin-top: var(--unit-2);
   }
 }

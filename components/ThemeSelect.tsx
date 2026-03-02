@@ -45,6 +45,7 @@ export function ThemeSelect() {
 
   return (
     <Select
+      id="theme-select"
       options={options}
       value={value}
       onChange={(v) => setTheme(v as ThemeId)}

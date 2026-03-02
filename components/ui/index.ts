@@ -34,6 +34,8 @@ export { Slider } from './Slider';
 export { Spinner } from './Spinner';
 export { Switch } from './Switch';
 export { Table } from './Table';
+export { TagInput } from './TagInput';
+export type { TagInputProps } from './TagInput';
 export { Tabs } from './Tabs';
 export { Tooltip } from './Tooltip';
 export { User } from './User';

@@ -9,6 +9,34 @@ export type ThemeId =
 
 export const THEME_STORAGE_KEY = 'app-theme';
 export const THEME_CUSTOM_STORAGE_KEY = 'app-theme-custom';
+export const THEME_PRESET_VARIANT_KEY = 'app-theme-preset-variant';
+
+export type ThemeMode = 'light' | 'dark';
+export type ThemePresetVariant = 1 | 2 | 3;
+
+/** Get mode (light/dark) from a preset theme id; null for custom. */
+export function getThemeMode(themeId: ThemeId): ThemeMode | null {
+  if (themeId === 'custom') return null;
+  return themeId.startsWith('light') ? 'light' : 'dark';
+}
+
+/** Get variant (1, 2, 3) from a preset theme id. */
+export function getThemeVariant(themeId: ThemeId): ThemePresetVariant {
+  if (themeId === 'dark' || themeId === 'light') return 1;
+  if (themeId === 'dark2' || themeId === 'light2') return 2;
+  if (themeId === 'dark3' || themeId === 'light3') return 3;
+  return 1;
+}
+
+/** Build preset theme id from mode and variant. */
+export function getPresetThemeId(
+  mode: ThemeMode,
+  variant: ThemePresetVariant
+): Extract<ThemeId, 'dark' | 'light' | 'dark2' | 'light2' | 'dark3' | 'light3'> {
+  if (variant === 1) return mode;
+  if (variant === 2) return (mode + '2') as 'dark2' | 'light2';
+  return (mode + '3') as 'dark3' | 'light3';
+}
 
 export const THEME_IDS: ThemeId[] = [
   'dark',
@@ -287,6 +315,28 @@ export function setStoredTheme(theme: ThemeId): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // ignore
+  }
+}
+
+const PRESET_VARIANT_VALID = [1, 2, 3] as const;
+
+export function getStoredPresetVariant(): ThemePresetVariant {
+  if (typeof window === 'undefined') return 1;
+  try {
+    const raw = window.localStorage.getItem(THEME_PRESET_VARIANT_KEY);
+    const n = raw != null ? parseInt(raw, 10) : NaN;
+    return PRESET_VARIANT_VALID.includes(n as 1 | 2 | 3) ? (n as ThemePresetVariant) : 1;
+  } catch {
+    return 1;
+  }
+}
+
+export function setStoredPresetVariant(variant: ThemePresetVariant): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(THEME_PRESET_VARIANT_KEY, String(variant));
   } catch {
     // ignore
   }

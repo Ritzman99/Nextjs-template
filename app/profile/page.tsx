@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Form, FormRow, FormActions, Input, Button, ButtonGroup, Select, Avatar } from '@/components/ui';
+import { Form, FormSection, FormActions, Input, Button, Select, Avatar } from '@/components/ui';
 import { ThemeBuilder } from '@/components/ThemeBuilder';
+import { User as UserIcon, Lock, Palette } from 'lucide-react';
 import type { User } from '@/types/user';
 import styles from './profile.module.scss';
 
@@ -208,6 +209,12 @@ export default function ProfilePage() {
     setChangingPassword(false);
   }
 
+  function handleCancel() {
+    setError(null);
+    setSuccess(null);
+    fetchProfile();
+  }
+
   async function handleDeleteAccount() {
     if (!showDeleteConfirm || deleting) return;
     setDeleting(true);
@@ -230,7 +237,7 @@ export default function ProfilePage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className={styles.wrapper}>
+      <div className={styles.profilePage}>
         <p className={styles.loading}>Loading...</p>
       </div>
     );
@@ -240,219 +247,316 @@ export default function ProfilePage() {
     return null;
   }
 
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>Profile</h1>
-        {error && (
-          <p className={styles.error} role="alert">
-            {error}
-          </p>
-        )}
-        {success && (
-          <p className={styles.success} role="status">
-            {success}
-          </p>
-        )}
+  const tabItems: { id: ProfileTab; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
+    { id: 'details', label: 'Details', icon: UserIcon },
+    { id: 'security', label: 'Security', icon: Lock },
+    { id: 'theme', label: 'Theme', icon: Palette },
+  ];
 
-        <div className={styles.profileLayout}>
-          <nav className={styles.navColumn} aria-label="Profile sections">
-            <ButtonGroup
-              orientation="vertical"
-              attached
+  return (
+    <div className={styles.profilePage}>
+      <header className={styles.pageHeader}>
+        <div>
+          <h1 className={styles.pageTitle}>Profile</h1>
+          <p className={styles.pageSubtitle}>
+            Manage your personal details and preferences.
+          </p>
+        </div>
+        {activeTab === 'details' && (
+          <div className={styles.headerActions}>
+            <Button
+              type="button"
               variant="outline"
               color="default"
+              onClick={handleCancel}
+              disabled={saving}
             >
-              <Button
-                variant={activeTab === 'details' ? 'solid' : 'outline'}
-                color={activeTab === 'details' ? 'primary' : 'default'}
-                onClick={() => setActiveTab('details')}
-              >
-                Details
-              </Button>
-              <Button
-                variant={activeTab === 'security' ? 'solid' : 'outline'}
-                color={activeTab === 'security' ? 'primary' : 'default'}
-                onClick={() => setActiveTab('security')}
-              >
-                Security
-              </Button>
-              <Button
-                variant={activeTab === 'theme' ? 'solid' : 'outline'}
-                color={activeTab === 'theme' ? 'primary' : 'default'}
-                onClick={() => setActiveTab('theme')}
-              >
-                Theme
-              </Button>
-            </ButtonGroup>
-          </nav>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="profile-details-form"
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save profile'}
+            </Button>
+          </div>
+        )}
+      </header>
 
-          <div className={styles.contentColumn}>
+      {(error || success) && (
+        <div className={styles.messages}>
+          {error && (
+            <p className={styles.error} role="alert">
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className={styles.success} role="status">
+              {success}
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className={styles.profileShell}>
+        <aside className={styles.sidebarColumn}>
+          <nav className={styles.sidebarCard} aria-label="Profile sections">
+            <ul className={styles.sidebarNav}>
+              {tabItems.map(({ id, label, icon: Icon }) => (
+                <li key={id} className={styles.sidebarNavItem}>
+                  <button
+                    type="button"
+                    className={`${styles.sidebarNavLink} ${activeTab === id ? styles.sidebarNavLinkActive : ''}`.trim()}
+                    onClick={() => setActiveTab(id)}
+                    aria-current={activeTab === id ? 'page' : undefined}
+                  >
+                    <Icon className={styles.sidebarNavIcon} size={18} aria-hidden />
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        <div className={styles.mobileTabs}>
+          <div className={styles.mobileTabsList} role="tablist">
+            {tabItems.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={activeTab === id}
+                className={`${styles.mobileTab} ${activeTab === id ? styles.mobileTabActive : ''}`.trim()}
+                onClick={() => setActiveTab(id)}
+              >
+                <Icon size={16} aria-hidden />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.contentColumn}>
+          <div className={styles.card}>
             {activeTab === 'details' && (
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>Details</h2>
-                <Form onSubmit={handleSubmit}>
-                  <div className={styles.avatarRow}>
-                    <Avatar
-                      src={user.avatar}
-                      alt={user.name ?? 'Avatar'}
-                      fallback={user.name ?? user.email ?? '?'}
-                      size="lg"
-                    />
-                    <div className={styles.avatarActions}>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept={ACCEPT_IMAGE}
-                        onChange={handleAvatarChange}
-                        className={styles.fileInput}
-                        disabled={uploading}
-                      />
-                      <Button
-                        type="button"
-                        color="secondary"
-                        size="sm"
-                        disabled={uploading}
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        {uploading ? 'Uploading...' : 'Change photo'}
-                      </Button>
+              <div className={styles.formCardInner}>
+                <Form
+                  id="profile-details-form"
+                  onSubmit={handleSubmit}
+                  className={styles.detailsForm}
+                >
+                  <FormSection title="Identity" className={styles.section}>
+                    <div className={styles.avatarRow}>
+                      <div className={styles.avatarWrap}>
+                        <Avatar
+                          src={user.avatar}
+                          alt={user.name ?? 'Avatar'}
+                          fallback={user.name ?? user.email ?? '?'}
+                          size="lg"
+                        />
+                      </div>
+                      <div className={styles.avatarLabel}>
+                        <span className={styles.avatarLabelText}>Profile photo</span>
+                        <span className={styles.avatarHelper}>
+                          JPG, PNG or WebP. Max 5 MB.
+                        </span>
+                      </div>
+                      <div className={styles.avatarActions}>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept={ACCEPT_IMAGE}
+                          onChange={handleAvatarChange}
+                          className={styles.fileInput}
+                          disabled={uploading}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          color="secondary"
+                          disabled={uploading}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          {uploading ? 'Uploading...' : 'Change photo'}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  <FormRow>
-                    <Input
-                      label="First name"
-                      value={user.firstName ?? ''}
-                      onChange={(e) =>
-                        setUser((u) =>
-                          u ? { ...u, firstName: e.target.value } : u
-                        )
-                      }
+                    <div className={styles.detailsGrid}>
+                      <div>
+                        <Input
+                          label="First name"
+                          value={user.firstName ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, firstName: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="Last name"
+                          value={user.lastName ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, lastName: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div className={styles.gridFull}>
+                        <Input
+                          label="Display name"
+                          value={user.name ?? ''}
+                          onChange={(e) =>
+                            setUser((u) => (u ? { ...u, name: e.target.value } : u))
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                    </div>
+                  </FormSection>
+
+                  <FormSection title="Contact" className={styles.section}>
+                    <div className={styles.detailsGrid}>
+                      <div className={styles.gridFull}>
+                        <Input
+                          label="Email"
+                          type="email"
+                          value={user.email ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, email: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div className={styles.gridFull}>
+                        <Input
+                          label="Address"
+                          value={user.address ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, address: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                    </div>
+                  </FormSection>
+
+                  <FormSection title="Personal" className={styles.section}>
+                    <div className={styles.detailsGrid}>
+                      <div>
+                        <Select
+                          label="Gender"
+                          options={GENDER_OPTIONS}
+                          value={user.gender ?? ''}
+                          onChange={(value) =>
+                            setUser((u) =>
+                              u ? { ...u, gender: value || null } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="Username"
+                          value={user.username ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, username: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="Age"
+                          type="number"
+                          min={0}
+                          max={150}
+                          value={user.age ?? ''}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            const n = v === '' ? null : parseInt(v, 10);
+                            setUser((u) =>
+                              u
+                                ? { ...u, age: Number.isNaN(n) ? null : n }
+                                : u
+                            );
+                          }}
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="Region"
+                          value={user.region ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, region: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="State"
+                          value={user.state ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, state: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                        />
+                      </div>
+                      <div>
+                        <Input
+                          label="Timezone"
+                          value={user.timezone ?? ''}
+                          onChange={(e) =>
+                            setUser((u) =>
+                              u ? { ...u, timezone: e.target.value } : u
+                            )
+                          }
+                          disabled={saving}
+                          placeholder="e.g. America/New_York"
+                          helperText="Use IANA format, e.g. America/New_York"
+                        />
+                      </div>
+                    </div>
+                  </FormSection>
+
+                  <div className={styles.stickyActions}>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      color="default"
+                      onClick={handleCancel}
                       disabled={saving}
-                    />
-                    <Input
-                      label="Last name"
-                      value={user.lastName ?? ''}
-                      onChange={(e) =>
-                        setUser((u) =>
-                          u ? { ...u, lastName: e.target.value } : u
-                        )
-                      }
-                      disabled={saving}
-                    />
-                  </FormRow>
-                  <Input
-                    label="Display name"
-                    value={user.name ?? ''}
-                    onChange={(e) =>
-                      setUser((u) => (u ? { ...u, name: e.target.value } : u))
-                    }
-                    disabled={saving}
-                  />
-                  <Input
-                    label="Email"
-                    type="email"
-                    value={user.email ?? ''}
-                    onChange={(e) =>
-                      setUser((u) =>
-                        u ? { ...u, email: e.target.value } : u
-                      )
-                    }
-                    disabled={saving}
-                  />
-                  <Select
-                    label="Gender"
-                    options={GENDER_OPTIONS}
-                    value={user.gender ?? ''}
-                    onChange={(value) =>
-                      setUser((u) =>
-                        u ? { ...u, gender: value || null } : u
-                      )
-                    }
-                    disabled={saving}
-                  />
-                  <Input
-                    label="Username"
-                    value={user.username ?? ''}
-                    onChange={(e) =>
-                      setUser((u) =>
-                        u ? { ...u, username: e.target.value } : u
-                      )
-                    }
-                    disabled={saving}
-                  />
-                  <Input
-                    label="Address"
-                    value={user.address ?? ''}
-                    onChange={(e) =>
-                      setUser((u) =>
-                        u ? { ...u, address: e.target.value } : u
-                      )
-                    }
-                    disabled={saving}
-                  />
-                  <FormRow>
-                    <Input
-                      label="Age"
-                      type="number"
-                      min={0}
-                      max={150}
-                      value={user.age ?? ''}
-                      onChange={(e) => {
-                        const v = e.target.value;
-                        const n = v === '' ? null : parseInt(v, 10);
-                        setUser((u) =>
-                          u
-                            ? { ...u, age: Number.isNaN(n) ? null : n }
-                            : u
-                        );
-                      }}
-                      disabled={saving}
-                    />
-                    <Input
-                      label="Region"
-                      value={user.region ?? ''}
-                      onChange={(e) =>
-                        setUser((u) =>
-                          u ? { ...u, region: e.target.value } : u
-                        )
-                      }
-                      disabled={saving}
-                    />
-                  </FormRow>
-                  <FormRow>
-                    <Input
-                      label="State"
-                      value={user.state ?? ''}
-                      onChange={(e) =>
-                        setUser((u) =>
-                          u ? { ...u, state: e.target.value } : u
-                        )
-                      }
-                      disabled={saving}
-                    />
-                    <Input
-                      label="Timezone"
-                      value={user.timezone ?? ''}
-                      onChange={(e) =>
-                        setUser((u) =>
-                          u ? { ...u, timezone: e.target.value } : u
-                        )
-                      }
-                      disabled={saving}
-                      placeholder="e.g. America/New_York"
-                    />
-                  </FormRow>
-                  <FormActions>
+                    >
+                      Cancel
+                    </Button>
                     <Button
                       type="submit"
                       disabled={saving}
                     >
                       {saving ? 'Saving...' : 'Save profile'}
                     </Button>
-                  </FormActions>
+                  </div>
                 </Form>
-              </section>
+              </div>
             )}
 
             {activeTab === 'security' && (

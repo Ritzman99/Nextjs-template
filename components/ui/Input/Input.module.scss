@@ -8,23 +8,24 @@
 }
 
 .label {
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: theme.theme-color('foreground');
 }
 
 .input {
   width: 100%;
   min-width: 0;
+  min-height: 44px;
   box-sizing: border-box;
-  padding: var(--unit-2) var(--unit-3);
+  padding: 0 var(--unit-3);
   font-size: 1rem;
   font-family: inherit;
   color: theme.theme-color('foreground');
   background-color: theme.theme-color('content1');
   border: 1px solid theme.theme-color('divider');
-  border-radius: var(--unit-2);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: var(--unit-3);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
   &::placeholder {
     color: theme.theme-color('default-400');
@@ -33,7 +34,7 @@
   &:focus {
     outline: none;
     border-color: theme.theme-color('focus');
-    box-shadow: 0 0 0 1px theme.theme-color('focus');
+    box-shadow: 0 0 0 2px theme.theme-color('focus');
   }
 
   &:disabled {
@@ -49,4 +50,9 @@
 .errorText {
   font-size: 0.875rem;
   color: theme.theme-color('danger');
+}
+
+.helperText {
+  font-size: 0.8125rem;
+  color: theme.theme-color('default-500');
 }

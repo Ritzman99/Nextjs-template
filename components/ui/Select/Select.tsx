@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useMemo } from 'react';
+import { forwardRef, useId, useMemo } from 'react';
 import ReactSelect, { components, type GroupBase, type Props, type SelectInstance } from 'react-select';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import styles from './Select.module.scss';
@@ -41,7 +41,8 @@ export const Select = forwardRef<SelectInstance<SelectOption, false, GroupBase<S
     },
     ref
   ) {
-    const id = idProp ?? `select-${Math.random().toString(36).slice(2, 9)}`;
+    const generatedId = useId();
+    const id = idProp ?? `select-${generatedId.replace(/:/g, '-')}`;
     const { theme: currentTheme } = useTheme();
 
     const selectedOption = useMemo(() => {
@@ -80,6 +81,7 @@ export const Select = forwardRef<SelectInstance<SelectOption, false, GroupBase<S
         )}
         <ReactSelect
           ref={ref}
+          instanceId={id}
           inputId={id}
           options={options}
           value={selectedOption}

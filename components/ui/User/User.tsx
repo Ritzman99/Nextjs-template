@@ -9,6 +9,8 @@ export interface UserProps extends HTMLAttributes<HTMLDivElement> {
   description?: React.ReactNode;
   avatar?: string | null | React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
+  /** Optional class for the avatar wrapper (e.g. nav profile ring) */
+  avatarClassName?: string;
 }
 
 export function User({
@@ -17,11 +19,12 @@ export function User({
   avatar,
   size = 'md',
   className = '',
+  avatarClassName,
   ...rest
 }: UserProps) {
   return (
     <div className={`${styles.wrapper} ${className}`.trim()} {...rest}>
-      <span className={styles.avatar}>
+      <span className={`${styles.avatar} ${avatarClassName ?? ''}`.trim()}>
         {typeof avatar === 'string' || avatar == null ? (
           <Avatar src={typeof avatar === 'string' ? avatar : undefined} fallback={name} size={size} />
         ) : (

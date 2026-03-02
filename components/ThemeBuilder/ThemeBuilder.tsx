@@ -2,16 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { ThemeSelect } from '@/components/ThemeSelect';
 import { Button } from '@/components/ui/Button';
 import {
   clearStoredCustomTheme,
   DARK_THEME_VALUES,
+  getPresetThemeId,
   getStoredCustomTheme,
+  getStoredPresetVariant,
+  getThemeMode,
   setStoredCustomTheme,
+  setStoredPresetVariant,
   THEME_TOKEN_GROUPS,
   type CustomThemeRecord,
   type ThemeId,
+  type ThemePresetVariant,
   type ThemeTokenKey,
 } from '@/lib/theme';
 import styles from './ThemeBuilder.module.scss';
@@ -31,8 +35,11 @@ function colorInputValue(hex: string): string {
   return hex;
 }
 
+const PRESET_VARIANTS: ThemePresetVariant[] = [1, 2, 3];
+
 export function ThemeBuilder() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const presetVariant = getStoredPresetVariant();
   const [values, setValues] = useState<CustomThemeRecord>(() => {
     const stored = getStoredCustomTheme();
     if (stored && Object.keys(stored).length > 0) return stored;
@@ -91,12 +98,41 @@ export function ThemeBuilder() {
     setTheme('custom' as ThemeId);
   }, [values, persist, setTheme]);
 
+  const setPresetVariant = useCallback(
+    (variant: ThemePresetVariant) => {
+      setStoredPresetVariant(variant);
+      const mode = getThemeMode(theme);
+      if (mode != null) {
+        const nextTheme = getPresetThemeId(mode, variant) as ThemeId;
+        setTheme(nextTheme);
+      }
+    },
+    [theme, setTheme]
+  );
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.presetRow}>
-        <span className={styles.presetLabel}>Preset theme</span>
-        <ThemeSelect />
+        <span className={styles.presetLabel}>Preset theme variant</span>
+        <div className={styles.variantButtons} role="group" aria-label="Dark/Light preset (1, 2, or 3)">
+          {PRESET_VARIANTS.map((v) => (
+            <Button
+              key={v}
+              type="button"
+              variant={presetVariant === v ? 'solid' : 'outline'}
+              color={presetVariant === v ? 'primary' : 'default'}
+              size="sm"
+              onClick={() => setPresetVariant(v)}
+              aria-pressed={presetVariant === v}
+            >
+              {v}
+            </Button>
+          ))}
+        </div>
       </div>
+      <p className={styles.presetHint}>
+        Choose which preset (1, 2, or 3) the light/dark toggle in the nav uses. The nav toggle only switches between light and dark.
+      </p>
 
       <h3 className={styles.sectionTitle}>Custom theme</h3>
       <p className={styles.presetLabel} style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--theme-default-500)' }}>
