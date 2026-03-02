@@ -39,32 +39,8 @@
   flex-shrink: 0;
 }
 
-// ---- Two-column grid ----
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 340px) 1fr;
-  gap: var(--unit-6);
-  align-items: start;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.leftColumn {
-  display: flex;
-  flex-direction: column;
-  gap: var(--unit-4);
-  position: sticky;
-  top: var(--unit-4);
-
-  @media (max-width: 768px) {
-    position: static;
-  }
-}
-
-.rightColumn {
-  min-width: 0;
+// ---- Main content ----
+.mainContent {
   display: flex;
   flex-direction: column;
   gap: var(--unit-4);
@@ -104,65 +80,6 @@
   &:hover {
     text-decoration: underline;
   }
-}
-
-// ---- Collapsible card headers ----
-.collapsibleHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--unit-2);
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: none;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  color: theme.theme-color('foreground');
-
-  &:hover {
-    color: theme.theme-color('foreground');
-  }
-}
-
-.collapsibleTitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  flex: 1;
-}
-
-.collapsibleDescription {
-  font-size: 0.875rem;
-  color: theme.theme-color('default-400');
-  margin: 0 0 var(--unit-3);
-}
-
-.chevron {
-  flex-shrink: 0;
-  color: theme.theme-color('default-500');
-  transition: transform 0.2s;
-}
-
-.chevronOpen {
-  composes: chevron;
-  transform: rotate(-180deg);
-}
-
-.pendingBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  padding: 0 var(--unit-1);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1;
-  border-radius: 999px;
-  background-color: theme.theme-color('primary');
-  color: theme.theme-color('primary-foreground');
 }
 
 // ---- Filter chips ----
@@ -208,6 +125,27 @@
   }
 }
 
+.chipBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--unit-1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 999px;
+  background-color: theme.theme-color('primary');
+  color: theme.theme-color('primary-foreground');
+  margin-left: var(--unit-1);
+
+  .chipSelected & {
+    background-color: theme.theme-color('primary-foreground');
+    color: theme.theme-color('primary');
+  }
+}
+
 .searchInput {
   width: 100%;
 }
@@ -222,11 +160,23 @@
   width: 100%;
 }
 
+.listHeaderColumn {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .listTitle {
   font-size: 1.125rem;
   font-weight: 600;
   color: theme.theme-color('foreground');
   margin: 0;
+}
+
+.listDescription {
+  font-size: 0.875rem;
+  color: theme.theme-color('default-400');
+  margin: var(--unit-1) 0 0;
+  line-height: 1.4;
 }
 
 .sortWrap {
@@ -391,12 +341,6 @@
   font-size: 0.875rem;
   color: theme.theme-color('default-500');
   margin: var(--unit-3) 0 0;
-}
-
-// ---- Bottom section (Pending requests) ----
-.bottomSection {
-  margin-top: var(--unit-8);
-  max-width: 600px;
 }
 
 .pendingHint {

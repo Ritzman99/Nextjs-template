@@ -59,32 +59,34 @@ function ToastContainer() {
         return (
           <div
             key={t.id}
-            className={`${styles.toast} ${t.type !== 'default' ? styles[t.type] : ''} ${duration > 0 ? styles.hasTimer : ''}`}
+            className={`${styles.toast} ${t.type !== 'default' ? styles[t.type] : ''}`}
             role="alert"
           >
             <div className={styles.toastContent}>
               <p className={styles.toastMessage}>{t.message}</p>
-              <button
-                type="button"
-                className={styles.closeButton}
-                onClick={() => remove(t.id)}
-                aria-label="Dismiss"
-              >
-                <X size={18} strokeWidth={2} aria-hidden />
-              </button>
-            </div>
-            {duration > 0 && (
-              <div
-                className={styles.timerRing}
-                style={{ ['--toast-duration' as string]: `${duration}ms` }}
-                aria-hidden
-              >
-                <svg viewBox="0 0 24 24" className={styles.timerSvg}>
-                  <circle className={styles.timerBg} cx="12" cy="12" r="10" />
-                  <circle className={styles.timerProgress} cx="12" cy="12" r="10" />
-                </svg>
+              <div className={styles.closeButtonWrapper}>
+                {duration > 0 && (
+                  <div
+                    className={styles.timerRing}
+                    style={{ ['--toast-duration' as string]: `${duration}ms` }}
+                    aria-hidden
+                  >
+                    <svg viewBox="0 0 24 24" className={styles.timerSvg}>
+                      <circle className={styles.timerBg} cx="12" cy="12" r="10" />
+                      <circle className={styles.timerProgress} cx="12" cy="12" r="10" />
+                    </svg>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={() => remove(t.id)}
+                  aria-label="Dismiss"
+                >
+                  <X size={18} strokeWidth={2} aria-hidden />
+                </button>
               </div>
-            )}
+            </div>
           </div>
         );
       })}
