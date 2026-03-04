@@ -1,0 +1,95 @@
+@use '../../scss/abstracts/theme-variables' as theme;
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--unit-6) var(--unit-8);
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 var(--unit-2);
+  color: theme.theme-color('foreground');
+}
+
+.pageDescription {
+  font-size: 1rem;
+  color: theme.theme-color('default-500');
+  margin: 0 0 var(--unit-6);
+  line-height: 1.5;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: var(--unit-6) 0 var(--unit-3);
+  color: theme.theme-color('foreground');
+}
+
+.card {
+  margin-bottom: var(--unit-6);
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit-2);
+}
+
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--unit-2);
+}
+
+.applyBlock {
+  padding: var(--unit-4);
+  background: theme.theme-color('default-100');
+  border-radius: var(--unit-3);
+  border: 1px solid theme.theme-color('divider');
+  margin: var(--unit-4) 0;
+}
+
+.applyBlock code {
+  font-family: ui-monospace, monospace;
+  padding: 2px 6px;
+  background: theme.theme-color('default-200');
+  border-radius: 4px;
+}
+
+.actionsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-3);
+  align-items: center;
+  margin-top: var(--unit-4);
+}
+
+.seedRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--unit-3);
+  align-items: flex-end;
+  margin-top: var(--unit-2);
+}
+
+.roleCountRow {
+  display: flex;
+  align-items: center;
+  gap: var(--unit-2);
+  margin-bottom: var(--unit-2);
+}
+
+.roleCountRow label {
+  min-width: 80px;
+  font-weight: 500;
+}
+
+.roleCountRow input {
+  width: 72px;
+}
+
+.message {
+  margin-top: var(--unit-3);
+}
