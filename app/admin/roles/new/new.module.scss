@@ -1,0 +1,104 @@
+@use '../../../../scss/abstracts/theme-variables' as theme;
+
+.wrapper {
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.header {
+  position: relative;
+  margin-bottom: var(--unit-8);
+  padding-bottom: var(--unit-6);
+}
+
+.headerAccent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(
+    180deg,
+    theme.theme-color('primary') 0%,
+    theme.theme-color('primary-hover') 100%
+  );
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  font-size: 0.875rem;
+  color: theme.theme-color('default-500');
+  margin-bottom: var(--unit-4);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--unit-2);
+  color: theme.theme-color('default-500');
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s, gap 0.2s;
+
+  &:hover {
+    color: theme.theme-color('primary');
+    gap: var(--unit-3);
+  }
+}
+
+.titleRow {
+  padding-left: var(--unit-6);
+}
+
+.pageTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 0 0 var(--unit-2);
+  color: theme.theme-color('foreground');
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: theme.theme-color('default-500');
+  margin: 0;
+  padding-left: var(--unit-6);
+  line-height: 1.5;
+}
+
+.formCard {
+  border-radius: var(--unit-4);
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.06),
+    0 1px 2px -1px rgb(0 0 0 / 0.06);
+  overflow: hidden;
+  border: 1px solid theme.theme-color('divider');
+  background: theme.theme-color('content1');
+}
+
+.formCardBody {
+  padding: var(--unit-6);
+}
+
+@media (max-width: 640px) {
+  .formCardBody {
+    padding: var(--unit-4);
+  }
+
+  .pageTitle {
+    font-size: 1.75rem;
+  }
+
+  .titleRow,
+  .subtitle {
+    padding-left: var(--unit-4);
+  }
+
+  .headerAccent {
+    width: 3px;
+  }
+}

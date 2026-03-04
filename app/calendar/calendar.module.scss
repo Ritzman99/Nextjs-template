@@ -546,7 +546,7 @@
 }
 
 .formPage {
-  max-width: 560px;
+  max-width: 640px;
   margin: 0 auto;
   padding: var(--unit-6) var(--unit-4);
   min-height: 100%;
@@ -614,27 +614,11 @@
   }
 }
 
-// Two-column layout at large breakpoint
+// Single-column layout so When section has full width
 .newEventFormGrid {
   display: flex;
   flex-direction: column;
   gap: 0;
-}
-
-.newEventFormLeft,
-.newEventFormRight {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-@media (min-width: 900px) {
-  .newEventFormGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--unit-8);
-    align-items: start;
-  }
 }
 
 // Elevated form: inputs and textareas (12px radius, soft border/bg, glow focus)
@@ -653,6 +637,19 @@
     }
   }
 
+  // TagInput provides its own .field border; avoid double border on inner input
+  .attendeesTagInput input {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:focus {
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
   // React-Select control (same elevated look)
   :global(.react-select__control) {
     border-radius: 12px !important;
@@ -667,7 +664,7 @@
   }
 }
 
-// When section: single-row range with soft card background
+// When section: All day + Start row + End row (two-column grid per row for date/time)
 .whenSection {
   background: color-mix(in srgb, theme.theme-color('content2') 50%, transparent);
   border-radius: 12px;
@@ -675,54 +672,35 @@
   width: 100%;
 }
 
+.whenAllDayRow {
+  margin-bottom: var(--unit-3);
+}
+
 .whenRow {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--unit-3);
+  flex-direction: column;
+  gap: var(--unit-2);
+  margin-bottom: var(--unit-3);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.whenGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--unit-2);
-  align-items: center;
-  flex: 1;
+.whenRowLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: theme.theme-color('default-600');
+}
+
+.whenRowFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--unit-3);
   min-width: 0;
 
-  input {
-    min-width: 120px;
-  }
-}
-
-.whenArrow {
-  flex-shrink: 0;
-  color: theme.theme-color('default-500');
-  font-size: 1rem;
-  align-self: center;
-  margin-bottom: var(--unit-2);
-}
-
-.whenAllDay {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  margin-bottom: var(--unit-2);
-}
-
-@media (max-width: 640px) {
-  .whenRow {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .whenArrow {
-    align-self: center;
-    margin-bottom: 0;
-  }
-
-  .whenAllDay {
-    margin-bottom: 0;
+  > div {
+    min-width: 0;
   }
 }
 
@@ -747,8 +725,8 @@
   margin-top: var(--unit-2);
 }
 
-// Primary submit: gradient, 12px radius, shadow, hover lift
-.newEventCard [type='submit'] {
+// Primary submit: gradient, shadow, hover lift (only when NOT in a button group)
+.newEventCard [type='submit']:not([role='group'] *) {
   border-radius: 12px;
   border: none;
   background: linear-gradient(
@@ -762,6 +740,18 @@
   &:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px color-mix(in srgb, theme.theme-color('primary') 45%, transparent);
+  }
+}
+
+// When submit is inside ButtonGroup (role="group"), respect attached styling
+.newEventCard [role='group'] [type='submit'] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: none;
+
+  &:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
   }
 }
 
